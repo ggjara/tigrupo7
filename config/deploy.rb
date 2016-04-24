@@ -1,5 +1,5 @@
 # config valid only for Capistrano 3.1
-lock '3.4.0'
+lock '3.4.1'
 
 set :application, 'tigrupo7'
 set :repo_url, 'git@github.com:ggjara/tigrupo7.git'

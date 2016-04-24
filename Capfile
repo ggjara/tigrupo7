@@ -10,7 +10,6 @@ set :rvm_ruby_version, '2.3.0'
 
 require 'capistrano/bundler'
 require 'capistrano/rails'
-require 'capistrano/passenger'
 
 # Includes tasks from other gems included in your Gemfile
 #

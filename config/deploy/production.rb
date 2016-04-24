@@ -9,9 +9,9 @@ server 'integra7.ing.puc.cl', user: 'deploy', roles: %w{web app db}
 # server in each group is considered to be the first
 # unless any hosts have the primary property set.
 # Don't declare `role :all`, it's a meta role
-r#ole :app, %w{deploy@example.com}
-r#ole :web, %w{deploy@example.com}
-r#ole :db,  %w{deploy@example.com}
+#role :app, %w{deploy@example.com}
+#role :web, %w{deploy@example.com}
+#role :db,  %w{deploy@example.com}
 
 # Extended Server Syntax
 # ======================
