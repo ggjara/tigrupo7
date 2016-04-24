@@ -1,10 +1,11 @@
 Rails.application.routes.draw do
   resources :pizzas
 
-  root 'pizzas#index'
+  root 'application#index'
 
   namespace :api, defaults: {format: :json} do
-
+    root  'application#index'
+    match '/prueba'=> 'application#prueba', via: :get
   end
 
 end

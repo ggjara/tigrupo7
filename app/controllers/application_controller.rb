@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   def index
-	render json: {Bienvenida: "Probando Restar!"}
+	render json: {Bienvenida: "Probando Home!"}
   end
 
 end
