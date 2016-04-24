@@ -10,6 +10,7 @@ group :development do
 	# gem 'capistrano-rbenv', github: "capistrano/rbenv"	
 	# Add this if you're using rvm
 	gem 'capistrano-rvm', github: "capistrano/rvm"
+	gem 'pg'
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
