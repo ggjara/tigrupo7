@@ -5,49 +5,61 @@ class ApplicationController < ActionController::Base
 
 
 
-  def index
-	render json: {Bienvenida: requestWeb('prueba','lala')}
-  #render json: {Bienvenida: generateAuthToken('GET','571262aaa980ba030058a31c','23'), Plural: 'Almacen'.pluralize}
-  end
+def index
+  paramPrueba= generateParam('almacenId','571262aaa980ba030058a2f9')
+  uri= 'http://integracion-2016-dev.herokuapp.com/bodega/skusWithStock'
 
+  render json: requestWeb('GET',uri,paramPrueba)
+end
 
+def crearAlmacenes()
+  almacenes = Array.new
+  fd
+  sdf
+  sdf
+  ds
+end
 
 #Metodo que Realiza una request.
-#uri, typeOfRequest, *Params,
-
-  def requestWeb(typeOfRequest, uri, *paramsRequest)
-    param1 = Param.new(name: "probando", value: "holi")
-    param2 = Param.new(name: "probando2", value: "holi2")
-    return param1
-  end
-
-
-
-
-
-
+def requestWeb(typeOfRequest, uri, *paramsRequest)
+  authKey = generateAuthToken(typeOfRequest, *paramsRequest)
+  headers = { "Content-Type"=> "application/json", "Authorization"=> authKey} 
   
-#Recibe un data y una key secret y retorna un procesado de HMAC-SHA1 en Base64
-  def hmac_sha1(data, secret)
-  	require 'base64'
-	require 'cgi'
-	require 'openssl'
-	require 'hmac-sha1'
-	hmac = OpenSSL::HMAC.digest(OpenSSL::Digest::Digest.new('sha1'), secret.encode("ASCII"), data.encode("ASCII"))
-	signature = Base64.encode64(hmac).chomp
-    return signature
+  query = Hash.new
+  paramsRequest.each do |param|
+   query.store(param.name, param.value)
   end
   
-#BODEGA
+  response =HTTParty.get(uri, :query => query, :headers => headers)
+  return JSON.parse(response.body)   
+end
+
+#Genera una Instancia de Param
+def generateParam(name, value)
+  return Param.new(name: name, value: value)
+end
+
+
 #Recibe el tipo de request y el valor de los params y entrega la authToken
-  def generateAuthToken(typeOfRequest, *paramsRequestValues)
-  	data = typeOfRequest
- 	paramsRequestValues.each do |value|
-   	 data= data << value
-	end
-	#Clave única Grupo7
-	authToken= hmac_sha1(data, 'Z2ngwOHM%Jb.oMx')
-	return authToken
+def generateAuthToken(typeOfRequest, *paramsRequest)
+	data = typeOfRequest
+	paramsRequest.each do |param|
+ 	 data= data << param.value.to_s
   end
+  #Clave única Grupo7
+  authToken= 'INTEGRACION grupo7:' << hmac_sha1(data, 'Z2ngwOHM%Jb.oMx')
+  return authToken
+  end
+
+#Recibe un data y una key secret y retorna un procesado de HMAC-SHA1 en Base64
+def hmac_sha1(data, secret)
+  require 'base64'
+  require 'cgi'
+  require 'openssl'
+  require 'hmac-sha1'
+  hmac = OpenSSL::HMAC.digest(OpenSSL::Digest::Digest.new('sha1'), secret.encode("ASCII"), data.encode("ASCII"))
+  signature = Base64.encode64(hmac).chomp
+  return signature
+end
 
 end
