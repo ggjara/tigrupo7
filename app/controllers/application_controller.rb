@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
 
   def index
   	
-	render json: {Bienvenida: generateAuthToken('GET')}
+	render json: {Bienvenida: generateAuthToken('GET'), Plural: 'Almacen'.pluralize}
   end
 
 
@@ -32,6 +32,7 @@ class ApplicationController < ActionController::Base
  	paramsRequest.each do |value|
    	 data= data << value
 	end
+	#Clave única Grupo7
 	authToken= hmac_sha1(data, 'Z2ngwOHM%Jb.oMx')
 	return authToken
   end
