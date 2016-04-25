@@ -1,2 +1,0 @@
-class AlmacenController < ApplicationController
-end

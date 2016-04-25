@@ -7,19 +7,15 @@ class ApplicationController < ActionController::Base
 
 def index
   paramPrueba= generateParam('almacenId','571262aaa980ba030058a2f9')
-  uri= 'http://integracion-2016-dev.herokuapp.com/bodega/skusWithStock'
-
-  render json: requestWeb('GET',uri,paramPrueba)
-end
-
-def crearAlmacenes()
+  uri= 'http://integracion-2016-dev.herokuapp.com/bodega/almacenes'
+  jsonResponse = requestWeb('GET',uri)
   almacenes = Array.new
-  fd
-  sdf
-  sdf
-  ds
-end
+  jsonResponse.each do |almacen|
+    almacenes.append(almacen['grupo'])
+  end
 
+  render json: almacenes
+end
 #Metodo que Realiza una request.
 def requestWeb(typeOfRequest, uri, *paramsRequest)
   authKey = generateAuthToken(typeOfRequest, *paramsRequest)
@@ -38,7 +34,6 @@ end
 def generateParam(name, value)
   return Param.new(name: name, value: value)
 end
-
 
 #Recibe el tipo de request y el valor de los params y entrega la authToken
 def generateAuthToken(typeOfRequest, *paramsRequest)
