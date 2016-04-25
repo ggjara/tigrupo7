@@ -6,9 +6,22 @@ class ApplicationController < ActionController::Base
 
 
   def index
-  	
-	render json: {Bienvenida: generateAuthToken('GET'), Plural: 'Almacen'.pluralize}
+	render json: {Bienvenida: requestWeb('prueba','lala')}
+  #render json: {Bienvenida: generateAuthToken('GET','571262aaa980ba030058a31c','23'), Plural: 'Almacen'.pluralize}
   end
+
+
+
+#Metodo que Realiza una request.
+#uri, typeOfRequest, *Params,
+
+  def requestWeb(typeOfRequest, uri, *paramsRequest)
+    param1 = Param.new(name: "probando", value: "holi")
+    param2 = Param.new(name: "probando2", value: "holi2")
+    return param1
+  end
+
+
 
 
 
@@ -27,9 +40,9 @@ class ApplicationController < ActionController::Base
   
 #BODEGA
 #Recibe el tipo de request y el valor de los params y entrega la authToken
-  def generateAuthToken(typeOfRequest, *paramsRequest)
+  def generateAuthToken(typeOfRequest, *paramsRequestValues)
   	data = typeOfRequest
- 	paramsRequest.each do |value|
+ 	paramsRequestValues.each do |value|
    	 data= data << value
 	end
 	#Clave única Grupo7
