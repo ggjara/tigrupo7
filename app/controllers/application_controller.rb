@@ -4,18 +4,10 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
 
-
 def index
-  paramPrueba= generateParam('almacenId','571262aaa980ba030058a2f9')
-  uri= 'http://integracion-2016-dev.herokuapp.com/bodega/almacenes'
-  jsonResponse = requestWeb('GET',uri)
-  almacenes = Array.new
-  jsonResponse.each do |almacen|
-    almacenes.append(almacen['grupo'])
-  end
-
-  render json: almacenes
+  render json: {Bienvenida: 'Bienvenido a la Home de la página'}
 end
+
 #Metodo que Realiza una request.
 def requestWeb(typeOfRequest, uri, *paramsRequest)
   authKey = generateAuthToken(typeOfRequest, *paramsRequest)
@@ -28,11 +20,6 @@ def requestWeb(typeOfRequest, uri, *paramsRequest)
   
   response =HTTParty.get(uri, :query => query, :headers => headers)
   return JSON.parse(response.body)   
-end
-
-#Genera una Instancia de Param
-def generateParam(name, value)
-  return Param.new(name: name, value: value)
 end
 
 #Recibe el tipo de request y el valor de los params y entrega la authToken
@@ -55,6 +42,11 @@ def hmac_sha1(data, secret)
   hmac = OpenSSL::HMAC.digest(OpenSSL::Digest::Digest.new('sha1'), secret.encode("ASCII"), data.encode("ASCII"))
   signature = Base64.encode64(hmac).chomp
   return signature
+end
+
+#Genera una Instancia de Param
+def generateParam(name, value)
+  return Param.new(name: name, value: value)
 end
 
 end

@@ -11,16 +11,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160425182458) do
+ActiveRecord::Schema.define(version: 20160425231701) do
 
   create_table "almacenes", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string   "_id"
+    t.integer  "grupo"
+    t.boolean  "pulmon"
+    t.boolean  "despacho"
+    t.boolean  "recepcion"
+    t.integer  "totalSpace"
+    t.integer  "usedSpace"
+    t.integer  "bodega_id"
   end
 
   create_table "bodegas", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.string   "name"
+    t.integer  "cantAlmacenes"
+    t.integer  "cantProductos"
   end
 
   create_table "params", force: :cascade do |t|
@@ -33,6 +44,20 @@ ActiveRecord::Schema.define(version: 20160425182458) do
   create_table "pizzas", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "productos", force: :cascade do |t|
+    t.string   "_id"
+    t.integer  "grupo"
+    t.string   "almacen"
+    t.string   "sku"
+    t.string   "direccion"
+    t.float    "precio"
+    t.float    "costo"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "almacen_id"
+    t.boolean  "despachado"
   end
 
 end

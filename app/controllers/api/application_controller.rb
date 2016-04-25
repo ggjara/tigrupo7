@@ -10,13 +10,12 @@ respond_to :json
   	render json: {Bienvenida: "Probando Home con API!"}
   end
 
-  def consultar
-  	skuAsked= params[:id]
-  	render json: {Sku: skuAsked}
+def consultar
+	skuAsked= params[:id]
+	bodegaGrupo7 = Bodega.find_by name: 'grupo7'
+	cantDisponible = bodegaGrupo7.productos.where(sku: skuAsked).count
+	render json: {Sku: cantDisponible}
+end
 
-  end
-  def prueba
-  	render json: {Muestra: "Hli"}
-  end
 
 end
