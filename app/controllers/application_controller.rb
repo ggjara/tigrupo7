@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
 
 def index
-  render json: {Bienvenida: 'Bienvenido a la Home de la página'}
+  render json: {Bienvenida: 'Bienvenido a la Home de nuestra pagina'}
 end
 
 #Metodo que Realiza una request.
