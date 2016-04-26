@@ -17,8 +17,12 @@ def requestWeb(typeOfRequest, uri, *paramsRequest)
   paramsRequest.each do |param|
    query.store(param.name, param.value)
   end
+  if typeOfRequest=='GET'
+    response =HTTParty.get(uri, :query => query, :headers => headers)
+  elsif typeOfRequest=='POST'  
+    #Hacer respuesta para POST
+  end
   
-  response =HTTParty.get(uri, :query => query, :headers => headers)
   return JSON.parse(response.body)   
 end
 
