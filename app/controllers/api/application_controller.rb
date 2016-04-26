@@ -7,14 +7,23 @@ respond_to :json
   end
 
   def index
-  	render json: {Bienvenida: "Probando Home con API!"}
+  	render json: (Bodega.find_by name: 'grupo7').almacenes
   end
 
+#Consulta por SKU y retorna cantidad en bodega
+#Si la Bodega no está iniciada, se inicia
 def consultar
+
 	skuAsked= params[:id]
 	bodegaGrupo7 = Bodega.find_by name: 'grupo7'
-	cantDisponible = bodegaGrupo7.productos.where(sku: skuAsked).count
-	render json: {Sku: cantDisponible}
+	if (bodegaGrupo7!=nil)
+		cantDisponible = bodegaGrupo7.productos.where(sku: skuAsked).count
+		render json: {sku: cantDisponible}
+	else
+		bodegaGrupo7 = iniciarBodega
+		cantDisponible = bodegaGrupo7.productos.where(sku: skuAsked).count
+		render json: {sku: cantDisponible}
+	end
 end
 
 
