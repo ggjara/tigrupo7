@@ -13,14 +13,13 @@ respond_to :json
 #Consulta por SKU y retorna cantidad en bodega
 #Si la Bodega no está iniciada, se inicia
 def consultar
-
 	skuAsked= params[:id]
 	bodegaGrupo7 = Bodega.find_by name: 'grupo7'
 	if (bodegaGrupo7!=nil)
 		cantDisponible = bodegaGrupo7.productos.where(sku: skuAsked).count
 		render json: {sku: cantDisponible}
 	else
-		bodegaGrupo7 = iniciarBodega
+		bodegaGrupo7 = IniciarBodega.new({nameBodega: 'grupo7'}).iniciarBodega
 		cantDisponible = bodegaGrupo7.productos.where(sku: skuAsked).count
 		render json: {sku: cantDisponible}
 	end
