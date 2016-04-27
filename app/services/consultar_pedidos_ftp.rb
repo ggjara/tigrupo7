@@ -3,6 +3,7 @@ def initialize(params)
 	
 end
 
+#Genera (Si no existe) una OC
 def consultarOcsFTP
 	idsOcsEnFtp = consultarPedidos
 	idsOcsEnFtp.each do |id|
@@ -52,7 +53,7 @@ def consultarPedidos
 	return pedidos
 end
 
-#Revisa si existe la OC. Si no existe, la crea.
+#Revisa si existe la OC. Si no existe, la obtiene de otro metodo y después la crea.
 def actualizarOc(id)
 	if noExisteOc(id)
 		paramsOc = obtenerOc(id)
