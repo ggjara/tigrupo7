@@ -3,6 +3,16 @@ def initialize(params)
 	
 end
 
+def consultarOcsFTP
+	idsOcsEnFtp = consultarPedidos
+	idsOcsEnFtp.each do |id|
+		actualizarOc(id)
+	end
+	return Oc.all
+end
+
+private
+#Revisa el FTP y retorna un arreglo con los _ids de las OCs que están
 def consultarPedidos
 	require 'net/ftp'
 	require 'nokogiri'
@@ -15,13 +25,12 @@ def consultarPedidos
 	pedidos =Array.new
 
 	begin
-
 	  # Instance SSH/SFTP session :
 	  session = Net::SSH.start(@host, @user, password: @password, port: 22)
 	  sftp = Net::SFTP::Session.new(session)
 
 	  # Always good to timeout :
-	  Timeout.timeout(100) do
+	  Timeout.timeout(400) do
 	    sftp.connect! # Establish connection
 	    sftp.dir.foreach("/pedidos") do |namePedido|
 	    	if (namePedido.name!= '.' && namePedido.name != '..')
@@ -31,7 +40,6 @@ def consultarPedidos
 		   end
 		end
 	  end
-
 	rescue Timeout::Error => e
 	  # Do some custom logging
 	  render json: {error: e.message} 
@@ -41,29 +49,26 @@ def consultarPedidos
 	  sftp.close_channel unless sftp.nil? # Close SFTP
 	  session.close unless session.nil? # Then SSH
 	end
-	#Crear o no OCs
-	pedidos.each do |pedido|
-		actualizarOcs(pedido)
-	end
+	return pedidos
 end
 
-
-def actualizarOc(pedido)
-	if noExisteOc(pedido)
-		paramsOc = obtenerOc
+#Revisa si existe la OC. Si no existe, la crea.
+def actualizarOc(id)
+	if noExisteOc(id)
+		paramsOc = obtenerOc(id)
 		ocNueva = Oc.new(paramsOc)
 		ocNueva.save
 	end
 end
 
-
+#Retorna hash con los parametros de la Oc
 def obtenerOc(id)
 	jsonResponse = requestWebWithoutParams('GET', ('http://mare.ing.puc.cl/oc/obtener/'<<id)).first
 	paramsOc = { _id: jsonResponse['_id'],
 				cliente: jsonResponse['cliente'],
 				proveedor: jsonResponse['proveedor'],
 				sku: jsonResponse['39'],
-				fechaDespachos: jsonResponse['fechaDespachos'],
+				#fechaDespachos: jsonResponse['fechaDespachos'],
 				fechaEntrega: jsonResponse['fechaEntrega'],
 				precioUnitario: jsonResponse['precioUnitario'],
 				cantidadDespachada: jsonResponse['cantidadDespachada'],
@@ -74,16 +79,12 @@ def obtenerOc(id)
 	return paramsOc
 end
 
+#Revisa si existe una OC con el _id consultado
 def noExisteOc(id)
-	!Ocs.find_by(_id: id).present?
+	!Oc.find_by(_id: id).present?
 end
 
-#1. Metodo que recibe todos los XML.
 
-#2. Metodo que analiza un XML. 
-#Si no existe la OC, se cre.
-#Si existe la OC, no se hace nada
 
-#3. Método para crear OC
 
 end

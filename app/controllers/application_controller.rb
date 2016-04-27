@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
 
 def index
- render json: (ConsultarPedidosFtp.new('prueba').obtenerOc('571280108358ec0300a8360c'))
+ render json: (ConsultarPedidosFtp.new('prueba').consultarOcsFTP)
 end
 
 #Metodo que Realiza una request y retorna el body de la respuesta Parseado
