@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
 
 def index
-  render json: {Bienvenida: 'Bienvenido a la Home de nuestra pagina'}
+ render json: (ConsultarPedidosFtp.new('prueba').obtenerOc('571280108358ec0300a8360c'))
 end
 
 #Metodo que Realiza una request y retorna el body de la respuesta Parseado
@@ -23,6 +23,19 @@ def requestWeb(typeOfRequest, uri, *paramsRequest)
     response =HTTParty.get(uri, :query => query, :headers => headers)
   end
   
+  return JSON.parse(response.body)   
+end
+
+#Metodo que Realiza una request (sin params) y retorna el body de la respuesta Parseado
+def requestWebWithoutParams(typeOfRequest, uri)
+  headers = { "Content-Type"=> "application/json"} 
+  response
+  query = Hash.new
+  if typeOfRequest=='GET'
+    response =HTTParty.get(uri, :query => query, :headers => headers)
+  else
+    response =HTTParty.get(uri, :query => query, :headers => headers)
+  end
   return JSON.parse(response.body)   
 end
 
