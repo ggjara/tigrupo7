@@ -1,11 +1,12 @@
 class ApplicationController < ActionController::Base
+  require 'requests.rb'
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-
+#Metodo de prueba
 def index
- render json: (ConsultarPedidosFtp.new('prueba').consultarOcsFTP)
+ render json: RequestsOc.new.obtenerOc('571280108358ec0300a8360c')
 end
 
 #Metodo que Realiza una request y retorna el body de la respuesta Parseado
@@ -50,6 +51,12 @@ def generateAuthToken(typeOfRequest, *paramsRequest)
   return authToken
   end
 
+#Retorna una Instancia de Param con los params 'name' y 'value'
+def generateParam(name, value)
+  return Param.new(name: name, value: value)
+end
+
+private
 #Recibe un data y una key secret y retorna un procesado de HMAC-SHA1 en Base64
 def hmac_sha1(data, secret)
   require 'base64'
@@ -61,9 +68,5 @@ def hmac_sha1(data, secret)
   return signature
 end
 
-#Retorna una Instancia de Param con los params 'name' y 'value'
-def generateParam(name, value)
-  return Param.new(name: name, value: value)
-end
 
 end
