@@ -2,7 +2,7 @@ class RequestsBodega < ApplicationController
 def initialize
 end
 
-#Pregunta a Servidor los Almacenes y Retorna un arreglo con todos los Almacenes
+#Pregunta a Servidor los Almacenes y Retorna un arreglo con todos los params de cada Almacen
 def getAlmacenes
 	bodegaGrupo7 = Bodega.find_by(name: 'grupo7')
 	almacenes = Array.new
