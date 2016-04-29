@@ -8,8 +8,8 @@ class ApplicationController < ActionController::Base
 def index
   rb = RequestsBodega.new
   roc= RequestsOc.new
-  sc = ConsultarPedidosFtp.new
-  render json: roc.obtenerOc('57239cf62e846f03001ac9de')
+  ct = ConsultarPedidosFtp.new
+  render json: ct.consultarOcsFTP
   #render json: Bodega.first.productos
   # render json: generateAuthToken('DELETE', generateParam('productId','571262aaa980ba030058a314'),
   #   generateParam('direccion', 'direccion'), generateParam('precio', '5144'), 
