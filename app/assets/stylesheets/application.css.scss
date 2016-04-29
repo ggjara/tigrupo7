@@ -11,6 +11,9 @@
  * file per style scope.
  *
  *= require AdminLTE.min
+ *= require skin-blue
+ *= require select2
+ *= require select2-bootstrap.min
  *= require_tree .
  *= require_self
  */
@@ -19,3 +22,4 @@
  @import "bootstrap";
  @import "font-awesome-sprockets";
  @import "font-awesome";
+
