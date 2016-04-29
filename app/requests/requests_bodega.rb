@@ -20,7 +20,7 @@ def getAlmacenes
     	}
     	almacenes.append(almacen)
     end 
-    return almacenes
+    return almacenes #CHECK
 end
 
 #Recibe un :_id de un almacen y retorna que sku (y su total) tienen disponible en almacen
@@ -32,7 +32,7 @@ def getSkusWithStock(almacen_id)
       skuAndTotal = {sku: jsonSku['_id'], total: jsonSku['total']}
       skusAndTotals.append(skuAndTotal)
     end
-    return skusAndTotals
+    return skusAndTotals #CHECK
 end
 
 #Recibe un :_id de un almacen y un :sku de un producto y retorna todos los productos con ese sku en ese almacen.
@@ -51,7 +51,33 @@ def getStock(almacen_id, sku)
         grupo: jsonProduct['grupo']}
         paramsProductos.append(paramsProducto)
     end
-    return paramsProductos
+    return paramsProductos #CHECK
+end
+
+# Recibe un producto_id y un almacen_id y mueve ese producto al almacen (solo si hay espacio)
+def moverStock(producto_id, almacen_id)
+  jsonMoverStock = requestWeb('POST', 'http://integracion-2016-dev.herokuapp.com/bodega/moveStock', 
+    generateParam('productoId', producto_id), generateParam('almacenId', almacen_id))
+  return jsonMoverStock
+end
+
+# Recibe un productoId y un almacen_id (recepcion) y mueve el producto a otra bodega
+def moverStockBodega(producto_id, almacen_id)  
+end 
+
+# Despacha un producto a un grupo
+def despacharStock(producto_id, direccion, precio, oc_id)
+end
+
+# Se necesita haber pagado y tener las materias primas en despacho
+# Manda a producir un producto, de acuerdo a una trx pagada anteriormente y con la cantidad pagada
+def producirStock(sku, trx_id, cantidad)
+end
+
+# Entrega la cuenta de la fábrica 
+def getCuentaFabrica #CHECK
+    jsonCuentaFabrica = requestWeb('GET', 'http://integracion-2016-dev.herokuapp.com/bodega/fabrica/getCuenta')
+    return jsonCuentaFabrica
 end
 
 
