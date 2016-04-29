@@ -7,9 +7,13 @@ class ApplicationController < ActionController::Base
 #Metodo de prueba
 def index
   rb = RequestsBodega.new
+  roc= RequestsOc.new
   sc = ConsultarPedidosFtp.new
+  render json: rb.getCuentaFabrica
   #render json: Bodega.first.productos
-  render json: rb.moverStock('571262b6a980ba030058a701', '571262aaa980ba030058a2f9')
+  # render json: generateAuthToken('DELETE', generateParam('productId','571262aaa980ba030058a314'),
+  #   generateParam('direccion', 'direccion'), generateParam('precio', '5144'), 
+  #   generateParam('ordenDeCompraId','5714504fee972703008203d9'))
 end
 
 #Metodo que Realiza una request y retorna el body de la respuesta Parseado

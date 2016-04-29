@@ -80,7 +80,6 @@ end
 def moverStockBodega(producto_id, almacen_id) #CHECK
   jsonMoverStockBodega = requestWeb('POST', 'http://integracion-2016-dev.herokuapp.com/bodega/moveStockBodega', 
     generateParam('productoId', producto_id), generateParam('almacenId', almacen_id)) 
-
       if(jsonMoverStockBodega['almacen']!=nil)
       productoParams = {
       _id: jsonMoverStockBodega['_id'],
@@ -101,7 +100,7 @@ end
 def despacharStock(producto_id, direccion, precio, oc_id) 
   jsonDespacharStock = requestWeb('DELETE', 'http://integracion-2016-dev.herokuapp.com/bodega/stock', 
     generateParam('productoId', producto_id), generateParam('direccion', direccion),
-    generateParam('precio', precio), generateParam('ordenDeCompraId', oc_id)) 
+    generateParam('precio', precio), generateParam('pedidoId', oc_id)) 
   return jsonDespacharStock
 end
 
@@ -114,10 +113,10 @@ def producirStock(sku, cantidad, trx_id)
     return jsonProducirStock
 end
 
-# Entrega la cuenta de la fábrica 
+# Entrega la cuenta de la fábrica (string)
 def getCuentaFabrica #CHECK
     jsonCuentaFabrica = requestWeb('GET', 'http://integracion-2016-dev.herokuapp.com/bodega/fabrica/getCuenta')
-    return jsonCuentaFabrica
+    return jsonCuentaFabrica['cuentaId']
 end
 
 
