@@ -9,7 +9,7 @@ Rails.application.routes.draw do
 
   get 'ocs/show'
 
-  get 'bodegas/show'
+  get 'bodegaG7', to: 'bodegas#show'
   get 'bodegas/consultar/:id' => 'bodegas#consultarProducto'
 
   resources :pizzas

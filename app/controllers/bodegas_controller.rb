@@ -7,7 +7,7 @@ class BodegasController < ApplicationController
   end
 
   def show
-    @Bodega = Bodega.find_by name: 'grupo7'
+   @Bodega = Bodega.find_by name: 'grupo7'
   end
 
 
