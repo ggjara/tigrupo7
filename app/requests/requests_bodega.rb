@@ -106,10 +106,10 @@ end
 
 # Se necesita haber pagado y tener las materias primas en despacho
 # Manda a producir un producto, de acuerdo a una trx pagada anteriormente y con la cantidad pagada
-def producirStock(sku, cantidad, trx_id)
-  jsonProducirStock = requestWeb('PUT', 'http://integracion-2016-dev.herokuapp.com/bodega/fabrica/fabricas', 
+def producirStock(sku, cantidad, trx_id) #CHECK
+  jsonProducirStock = requestWeb('PUT', 'http://integracion-2016-dev.herokuapp.com/bodega/fabrica/fabricar', 
     generateParam('sku', sku), generateParam('cantidad', cantidad),
-    generateParam('trxid', trx_Id))
+    generateParam('trxId', trx_id))
     return jsonProducirStock
 end
 

@@ -9,7 +9,7 @@ def index
   rb = RequestsBodega.new
   roc= RequestsOc.new
   sc = ConsultarPedidosFtp.new
-  render json: rb.getCuentaFabrica
+  render json: rb.producirStock(1,300,'57238829293fbc03004998dc')
   #render json: Bodega.first.productos
   # render json: generateAuthToken('DELETE', generateParam('productId','571262aaa980ba030058a314'),
   #   generateParam('direccion', 'direccion'), generateParam('precio', '5144'), 
