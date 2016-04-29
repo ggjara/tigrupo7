@@ -14,11 +14,11 @@ def consultar
 	bodegaGrupo7 = Bodega.find_by name: 'grupo7'
 	if (bodegaGrupo7!=nil)
 		cantDisponible = bodegaGrupo7.productos.where(sku: skuAsked).count
-		render json: {sku: cantDisponible}
+		render json: {total: cantDisponible}
 	else
 		bodegaGrupo7 = IniciarBodega.new('grupo7').iniciarBodega
 		cantDisponible = bodegaGrupo7.productos.where(sku: skuAsked).count
-		render json: {sku: cantDisponible}
+		render json: {total: cantDisponible}
 	end
 end
 

@@ -9,7 +9,7 @@ def index
   rb = RequestsBodega.new
   roc= RequestsOc.new
   sc = ConsultarPedidosFtp.new
-  render json: rb.producirStock(1,300,'57238829293fbc03004998dc')
+  render json: roc.obtenerOc('57239cf62e846f03001ac9de')
   #render json: Bodega.first.productos
   # render json: generateAuthToken('DELETE', generateParam('productId','571262aaa980ba030058a314'),
   #   generateParam('direccion', 'direccion'), generateParam('precio', '5144'), 
@@ -32,6 +32,8 @@ def requestWeb(typeOfRequest, uri, *paramsRequest)
     response =HTTParty.post(uri, :body => query.to_json, :headers => headers)
   elsif typeOfRequest.start_with?('PUT')
     response=HTTParty.put(uri, :body => query.to_json, :headers => headers)
+  elsif typeOfRequest.start_with?('DELETE')
+    response=HTTParty.delete(uri, :body => query.to_json, :headers => headers)
   else
     response ='Blank'
   end

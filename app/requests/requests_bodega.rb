@@ -4,12 +4,10 @@ end
 
 #Pregunta a Servidor los Almacenes y Retorna un arreglo con todos los params de cada Almacen
 def getAlmacenes
-	bodegaGrupo7 = Bodega.find_by(name: 'grupo7')
 	almacenes = Array.new
     jsonAlmacenes = requestWeb('GET', 'http://integracion-2016-dev.herokuapp.com/bodega/almacenes')
     jsonAlmacenes.each do |jsonAlmacen|
     	almacen = {
-    		bodega_id: bodegaGrupo7.id,
     		_id: jsonAlmacen['_id'], 
          	grupo: jsonAlmacen['grupo'], 
          	pulmon: jsonAlmacen['pulmon'], 
@@ -42,7 +40,6 @@ def getStock(almacen_id, sku)
       generateParam('almacenId', almacen_id), generateParam('sku', sku))
     jsonProducts.each do |jsonProduct|
       paramsProducto = {
-        almacen_id: Almacen.find_by(_id: almacen_id).id, 
         _id: jsonProduct['_id'], 
         sku: jsonProduct['sku'], 
         costo: jsonProduct['costo'], 
@@ -96,7 +93,7 @@ def moverStockBodega(producto_id, almacen_id) #CHECK
   return productoParams
 end 
 
-# Despacha un producto a una dirección de una OC
+# Despacha un producto a una dirección de una OC #CHECK
 def despacharStock(producto_id, direccion, precio, oc_id) 
   jsonDespacharStock = requestWeb('DELETE', 'http://integracion-2016-dev.herokuapp.com/bodega/stock', 
     generateParam('productoId', producto_id), generateParam('direccion', direccion),
