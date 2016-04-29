@@ -5,7 +5,8 @@ set :whenever_command, "bundle exec whenever"
 require "whenever/capistrano"
 
 set :application, 'tigrupo7'
-set :repo_url, 'git@github.com:ggjara/tigrupo7.git'
+#set :repo_url, 'git@github.com:ggjara/tigrupo7.git'
+set :repo_url, 'https://ggjara:tigrupo7@github.com/ggjara/tigrupo7'
 
 set :passenger_restart_with_touch, true
 # Default branch is :master
