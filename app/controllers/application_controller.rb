@@ -6,8 +6,14 @@ class ApplicationController < ActionController::Base
 
 #Metodo de prueba
 def index
-  b=Bodega.first
- render json: b
+  rb = RequestsBodega.new
+  roc= RequestsOc.new
+  sc = ConsultarPedidosFtp.new
+  render json: roc.obtenerOc('57239cf62e846f03001ac9de')
+  #render json: Bodega.first.productos
+  # render json: generateAuthToken('DELETE', generateParam('productId','571262aaa980ba030058a314'),
+  #   generateParam('direccion', 'direccion'), generateParam('precio', '5144'), 
+  #   generateParam('ordenDeCompraId','5714504fee972703008203d9'))
 end
 
 #Metodo que Realiza una request y retorna el body de la respuesta Parseado
@@ -19,12 +25,19 @@ def requestWeb(typeOfRequest, uri, *paramsRequest)
   paramsRequest.each do |param|
    query.store(param.name, param.value)
   end
-  if typeOfRequest=='GET'
+
+  if typeOfRequest.start_with?('GET')
     response =HTTParty.get(uri, :query => query, :headers => headers)
+  elsif typeOfRequest.start_with? ('POST')
+    response =HTTParty.post(uri, :body => query.to_json, :headers => headers)
+  elsif typeOfRequest.start_with?('PUT')
+    response=HTTParty.put(uri, :body => query.to_json, :headers => headers)
+  elsif typeOfRequest.start_with?('DELETE')
+    response=HTTParty.delete(uri, :body => query.to_json, :headers => headers)
   else
-    response =HTTParty.get(uri, :query => query, :headers => headers)
+    response ='Blank'
   end
-  
+
   return JSON.parse(response.body)   
 end
 
@@ -33,11 +46,19 @@ def requestWebWithoutParams(typeOfRequest, uri)
   headers = { "Content-Type"=> "application/json"} 
   response
   query = Hash.new
-  if typeOfRequest=='GET'
+
+  if typeOfRequest.start_with?('GET')
     response =HTTParty.get(uri, :query => query, :headers => headers)
+  elsif typeOfRequest.start_with?('POST')
+    response =HTTParty.post(uri, :body => query.to_json, :headers => headers)
+  elsif typeOfRequest.start_with?('PUT')
+    response =HTTParty.put(uri, :body => query.to_json, :headers => headers)
+  elsif typeOfRequest.start_with?('DELETE')
+    response =HTTParty.delete(uri, :body => query.to_json, :headers => headers)
   else
-    response =HTTParty.get(uri, :query => query, :headers => headers)
+    response = "Blank"   
   end
+
   return JSON.parse(response.body)   
 end
 

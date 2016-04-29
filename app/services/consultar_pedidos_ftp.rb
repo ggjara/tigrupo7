@@ -1,5 +1,5 @@
 class ConsultarPedidosFtp < ApplicationController
-def initialize(params)
+def initialize
 	
 end
 
@@ -31,10 +31,10 @@ def consultarPedidos
 	  sftp = Net::SFTP::Session.new(session)
 
 	  # Always good to timeout :
-	  Timeout.timeout(400) do
+	  Timeout.timeout(1000) do
 	    sftp.connect! # Establish connection
 	    sftp.dir.foreach("/pedidos") do |namePedido|
-	    	if (namePedido.name!= '.' && namePedido.name != '..')
+	    	if (namePedido.name!= '.' && namePedido.name != '..' && namePedido.name != 'leidos')
 			file = sftp.download!('/pedidos/'<<namePedido.name)
 		   	doc = Nokogiri::XML(file)
 		   	pedidos.append(doc.css("id").map.first.children.text)

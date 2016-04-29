@@ -9,10 +9,10 @@ def iniciarBodega
   Bodega.destroy_all
   Almacen.destroy_all
   Producto.destroy_all
-  bodegaGrupo7 = Bodega.new(name: @nameBodega)
-  bodegaGrupo7.save
+  @bodegaGrupo7 = Bodega.new(name: @nameBodega)
+  @bodegaGrupo7.save
   iniciarAlmacenes(true)
-  return bodegaGrupo7
+  return @bodegaGrupo7
 end
 
 def iniciarAlmacenes(conCreacion)
@@ -20,6 +20,7 @@ def iniciarAlmacenes(conCreacion)
     paramsAlmacenes = RequestsBodega.new.getAlmacenes
     paramsAlmacenes.each do |paramsAlmacen|
         almacenCreado = Almacen.new(paramsAlmacen)
+        almacenCreado.bodega = @bodegaGrupo7
         almacenCreado.save
         iniciarSkusWithStock(almacenCreado._id, conCreacion)
     end 
@@ -42,6 +43,7 @@ def iniciarStock(almacen_id, sku, conCreacion)
     paramsProductos = RequestsBodega.new.getStock(almacen_id, sku)
     paramsProductos.each do |paramsProducto|
       productoCreado = Producto.new(paramsProducto)
+      productoCreado.almacen = Almacen.where(_id: almacen_id).first
       productoCreado.save
     end
   else

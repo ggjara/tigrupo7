@@ -6,8 +6,9 @@ def initialize
 	cantAlmacenes=0
 end
 
-def consultarInfo
-	render json: Bodega.first
+def iniciarBodega
+	ib = Bodega.iniciarBodega
+	render json: ib
 end
 
 end
