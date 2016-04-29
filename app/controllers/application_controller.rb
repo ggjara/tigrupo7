@@ -6,7 +6,8 @@ class ApplicationController < ActionController::Base
 
 #Metodo de prueba
 def index
- render json: RequestsOc.new.obtenerOc('571280108358ec0300a8360c')
+  render 'layouts/application_controller'
+ #render json: RequestsOc.new.obtenerOc('571280108358ec0300a8360c')
 end
 
 #Metodo que Realiza una request y retorna el body de la respuesta Parseado

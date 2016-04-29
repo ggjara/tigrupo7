@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'layouts/index'
+
   get 'ocs/despachos'
 
   get 'ocs/facturas'
