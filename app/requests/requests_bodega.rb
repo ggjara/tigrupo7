@@ -53,25 +53,65 @@ def getStock(almacen_id, sku)
     end
     return paramsProductos #CHECK
 end
-
+ 
 # Recibe un producto_id y un almacen_id y mueve ese producto al almacen (solo si hay espacio)
-def moverStock(producto_id, almacen_id)
+def moverStock(producto_id, almacen_id) #CHECK
   jsonMoverStock = requestWeb('POST', 'http://integracion-2016-dev.herokuapp.com/bodega/moveStock', 
     generateParam('productoId', producto_id), generateParam('almacenId', almacen_id))
-  return jsonMoverStock
+
+    if(jsonMoverStock['almacen']!=nil)
+      productoParams = {
+      _id: jsonMoverStock['_id'],
+      grupo: jsonMoverStock['grupo'],
+      almacen_id: jsonMoverStock['almacen']['_id'],
+      sku: jsonMoverStock['sku'],
+      direccion: jsonMoverStock['direccion'],
+      precio: jsonMoverStock['precio'],
+      despachado: jsonMoverStock['despachado'],
+      costo: jsonMoverStock['costo']
+      }
+    else
+      productoParams=nil
+    end
+  return productoParams
 end
 
 # Recibe un productoId y un almacen_id (recepcion) y mueve el producto a otra bodega
-def moverStockBodega(producto_id, almacen_id)  
+def moverStockBodega(producto_id, almacen_id) #CHECK
+  jsonMoverStockBodega = requestWeb('POST', 'http://integracion-2016-dev.herokuapp.com/bodega/moveStockBodega', 
+    generateParam('productoId', producto_id), generateParam('almacenId', almacen_id)) 
+
+      if(jsonMoverStockBodega['almacen']!=nil)
+      productoParams = {
+      _id: jsonMoverStockBodega['_id'],
+      grupo: jsonMoverStockBodega['grupo'],
+      sku: jsonMoverStockBodega['sku'],
+      direccion: jsonMoverStockBodega['direccion'],
+      precio: jsonMoverStockBodega['precio'],
+      despachado: jsonMoverStockBodega['despachado'],
+      costo: jsonMoverStockBodega['costo']
+      }
+    else
+      productoParams=nil
+    end
+  return productoParams
 end 
 
-# Despacha un producto a un grupo
-def despacharStock(producto_id, direccion, precio, oc_id)
+# Despacha un producto a una dirección de una OC
+def despacharStock(producto_id, direccion, precio, oc_id) 
+  jsonDespacharStock = requestWeb('DELETE', 'http://integracion-2016-dev.herokuapp.com/bodega/stock', 
+    generateParam('productoId', producto_id), generateParam('direccion', direccion),
+    generateParam('precio', precio), generateParam('ordenDeCompraId', oc_id)) 
+  return jsonDespacharStock
 end
 
 # Se necesita haber pagado y tener las materias primas en despacho
 # Manda a producir un producto, de acuerdo a una trx pagada anteriormente y con la cantidad pagada
-def producirStock(sku, trx_id, cantidad)
+def producirStock(sku, cantidad, trx_id)
+  jsonProducirStock = requestWeb('PUT', 'http://integracion-2016-dev.herokuapp.com/bodega/fabrica/fabricas', 
+    generateParam('sku', sku), generateParam('cantidad', cantidad),
+    generateParam('trxid', trx_Id))
+    return jsonProducirStock
 end
 
 # Entrega la cuenta de la fábrica 

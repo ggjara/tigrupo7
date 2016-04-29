@@ -8,7 +8,8 @@ class ApplicationController < ActionController::Base
 def index
   rb = RequestsBodega.new
   sc = ConsultarPedidosFtp.new
-  render json: Bodega.first.almacenes.where(despacho: true)
+  #render json: Bodega.first.productos
+  render json: rb.moverStock('571262b6a980ba030058a701', '571262aaa980ba030058a2f9')
 end
 
 #Metodo que Realiza una request y retorna el body de la respuesta Parseado
@@ -28,7 +29,7 @@ def requestWeb(typeOfRequest, uri, *paramsRequest)
   elsif typeOfRequest.start_with?('PUT')
     response=HTTParty.put(uri, :body => query.to_json, :headers => headers)
   else
-    response ='quewea'
+    response ='Blank'
   end
 
   return JSON.parse(response.body)   
@@ -39,6 +40,7 @@ def requestWebWithoutParams(typeOfRequest, uri)
   headers = { "Content-Type"=> "application/json"} 
   response
   query = Hash.new
+
   if typeOfRequest.start_with?('GET')
     response =HTTParty.get(uri, :query => query, :headers => headers)
   elsif typeOfRequest.start_with?('POST')
@@ -50,7 +52,7 @@ def requestWebWithoutParams(typeOfRequest, uri)
   else
     response = "Blank"   
   end
-  
+
   return JSON.parse(response.body)   
 end
 
