@@ -4,7 +4,11 @@ respond_to :json
 
 #Metodo de prueba
 def index
-	render json: (Bodega.find_by name: 'grupo7').almacenes
+	if( !Bodega.first.nil?)
+		render json: {cantidadAlmacenes: Bodega.first.cantAlmacenes}
+	else
+		render json: 'Hola'
+	end
 end
 
 #Consulta por SKU y retorna cantidad en bodega
@@ -16,7 +20,7 @@ def consultar
 		cantDisponible = bodegaGrupo7.productos.where(sku: skuAsked).count
 		render json: {total: cantDisponible}
 	else
-		bodegaGrupo7 = IniciarBodega.new('grupo7').iniciarBodega
+		bodegaGrupo7 = Bodega.iniciarBodega
 		cantDisponible = bodegaGrupo7.productos.where(sku: skuAsked).count
 		render json: {total: cantDisponible}
 	end

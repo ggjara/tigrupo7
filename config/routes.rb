@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
   root 'application#index'
   match '/iniciar' => 'bodegas#iniciarBodega', via: :get
-  match '/consultar' => 'bodegas#consultarInfo', via: :get
+  match '/consultarFtp' => 'application#consultarFtp', via: :get
   namespace :api, defaults: {format: :json} do
     root  'application#index'
     match '/consultar/:id'=> 'application#consultar', via: :get

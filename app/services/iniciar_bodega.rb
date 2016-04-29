@@ -1,6 +1,7 @@
 class IniciarBodega < ApplicationController
 def initialize(name)
 	@nameBodega = name
+  @cantAlmacenes = 0
 end
 
 
@@ -9,7 +10,7 @@ def iniciarBodega
   Bodega.destroy_all
   Almacen.destroy_all
   Producto.destroy_all
-  @bodegaGrupo7 = Bodega.new(name: @nameBodega)
+  @bodegaGrupo7 = Bodega.new(name: @nameBodega, cantAlmacenes: @cantAlmacenes)
   @bodegaGrupo7.save
   iniciarAlmacenes(true)
   return @bodegaGrupo7

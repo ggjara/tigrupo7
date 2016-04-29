@@ -6,15 +6,15 @@ class ApplicationController < ActionController::Base
 
 #Metodo de prueba
 def index
-  rb = RequestsBodega.new
-  roc= RequestsOc.new
-  ct = ConsultarPedidosFtp.new
-  render json: ct.consultarOcsFTP
-  #render json: Bodega.first.productos
-  # render json: generateAuthToken('DELETE', generateParam('productId','571262aaa980ba030058a314'),
-  #   generateParam('direccion', 'direccion'), generateParam('precio', '5144'), 
-  #   generateParam('ordenDeCompraId','5714504fee972703008203d9'))
+  render json: 'Index Aplicación'
 end
+
+#Retorna todas las OC luego de revisar FTP
+def consultarFtp
+  cp= ConsultarPedidosFtp.new
+  render json: cp.consultarOcsFTP
+end
+
 
 #Metodo que Realiza una request y retorna el body de la respuesta Parseado
 def requestWeb(typeOfRequest, uri, *paramsRequest)
