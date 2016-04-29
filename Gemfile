@@ -18,6 +18,9 @@ group :production do
 	gem 'pg'
 end
 
+#Parseo
+gem 'ruby-hmac'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.6'
 # Use sqlite3 as the database for Active Record
@@ -43,6 +46,14 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'active_model_serializers'
 
 gem 'responders'
+
+gem 'httparty'
+
+gem 'nokogiri'
+
+gem 'net-sftp'
+
+gem 'whenever', :require => false
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

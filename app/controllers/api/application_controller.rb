@@ -2,16 +2,33 @@ class Api::ApplicationController < ApplicationController
 protect_from_forgery with: :null_session
 respond_to :json
 
-  def self.respond_to(*mimes)
-    include ActionController::RespondWith::ClassMethods
-  end
+#Metodo de prueba
+def index
+	if( !Bodega.first.nil?)
+		render json: {cantidadAlmacenes: Bodega.first.cantAlmacenes}
+	else
+		render json: 'Hola'
+	end
+end
 
-  def index
-  	render json: {Bienvenida: "Probando Home con API!"}
-  end
+#Consulta por SKU y retorna cantidad en bodega
+#Si la Bodega no está iniciada, se inicia
+def consultar
+	skuAsked= params[:id]
+	bodegaGrupo7 = Bodega.find_by name: 'grupo7'
+	if (bodegaGrupo7!=nil)
+		cantDisponible = bodegaGrupo7.productos.where(sku: skuAsked).count
+		render json: {total: cantDisponible}
+	else
+		bodegaGrupo7 = Bodega.iniciarBodega
+		cantDisponible = bodegaGrupo7.productos.where(sku: skuAsked).count
+		render json: {total: cantDisponible}
+	end
+end
 
-  def prueba
-  	render json: {Muestra: "Hli"}
-  end
+#Metodo para retornar Json
+def self.respond_to(*mimes)
+include ActionController::RespondWith::ClassMethods
+end
 
 end

@@ -1,0 +1,2 @@
+class AlmacenesController < ApplicationController
+end
