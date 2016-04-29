@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
 
 #Metodo de prueba
 def index
-  render 'layouts/application_controller'
+  render 'layouts/application'
  #render json: RequestsOc.new.obtenerOc('571280108358ec0300a8360c')
 end
 
