@@ -66,8 +66,10 @@ end
 def generateAuthToken(typeOfRequest, *paramsRequest)
 	data = typeOfRequest
 	paramsRequest.each do |param|
- 	 data= data << param.value.to_s
+  if(param.name.to_s != 'oc' && param.name.to_s != 'precio')#Modificar si es necesario
+   data= data << param.value.to_s
   end
+end
   #Clave única Grupo7
   authToken= 'INTEGRACION grupo7:' << hmac_sha1(data, 'Z2ngwOHM%Jb.oMx')
   return authToken

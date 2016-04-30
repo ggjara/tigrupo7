@@ -74,9 +74,10 @@ def moverStock(producto_id, almacen_id) #CHECK
 end
 
 # Recibe un productoId y un almacen_id (recepcion) y mueve el producto a otra bodega
-def moverStockBodega(producto_id, almacen_id) #CHECK
+def moverStockBodega(producto_id, almacen_id, oc_id, precio) #CHECK
   jsonMoverStockBodega = requestWeb('POST', 'http://integracion-2016-dev.herokuapp.com/bodega/moveStockBodega', 
-    generateParam('productoId', producto_id), generateParam('almacenId', almacen_id)) 
+    generateParam('productoId', producto_id), generateParam('almacenId', almacen_id),
+    generateParam('oc', oc_id), generateParam('precio', precio)) 
       if(jsonMoverStockBodega['almacen']!=nil)
       productoParams = {
       _id: jsonMoverStockBodega['_id'],
