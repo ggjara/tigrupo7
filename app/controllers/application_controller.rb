@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
 
 #Metodo de prueba
 def index
-  render json: RequestsBanco.new.obtenerCartola('1420070400', '1483228800', '571262c3a980ba030058ab60', 100)
+  render json: RequestsFactura.new.rechazarFactura('57253545979f8b0300af0a3f', "sin motivo")
 end
 
 #Retorna todas las OC luego de revisar FTP
