@@ -14,14 +14,14 @@ end
 #Consulta por SKU y retorna cantidad en bodega
 #Si la Bodega no está iniciada, se inicia
 def consultar
-	skuAsked= params[:id]
+	skuAsked= params[:id].to_s
 	bodegaGrupo7 = Bodega.find_by name: 'grupo7'
 	if (bodegaGrupo7!=nil)
-		cantDisponible = bodegaGrupo7.productos.where(sku: skuAsked).count
+		cantDisponible = Bodega.checkStock(skuAsked)
 		render json: {total: cantDisponible}
 	else
 		bodegaGrupo7 = Bodega.iniciarBodega
-		cantDisponible = bodegaGrupo7.productos.where(sku: skuAsked).count
+		cantDisponible = Bodega.checkStock(skuAsked)
 		render json: {total: cantDisponible}
 	end
 end

@@ -1,6 +1,11 @@
 class ConsultarPedidosFtp < ApplicationController
-def initialize
-	
+
+
+
+
+
+
+def initialize	
 end
 
 #Genera (Si no existe) una OC

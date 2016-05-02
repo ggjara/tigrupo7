@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160427001943) do
+ActiveRecord::Schema.define(version: 20160430190902) do
 
   create_table "almacenes", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -27,11 +27,15 @@ ActiveRecord::Schema.define(version: 20160427001943) do
   end
 
   create_table "bodegas", force: :cascade do |t|
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.string   "name"
     t.integer  "cantAlmacenes"
     t.integer  "cantProductos"
+    t.integer  "stockGuardadoSku1",  default: 0
+    t.integer  "stockGuardadoSku10", default: 0
+    t.integer  "stockGuardadoSku23", default: 0
+    t.integer  "stockGuardadoSku39", default: 0
   end
 
   create_table "ocs", force: :cascade do |t|
@@ -48,8 +52,14 @@ ActiveRecord::Schema.define(version: 20160427001943) do
     t.datetime "fechaEntrega"
     t.string   "fechaCreacion"
     t.string   "notas"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.string   "trxDB"
+    t.string   "facturaDB"
+    t.boolean  "facturaRealizadaDB",  default: false
+    t.boolean  "trxRealizadaDB",      default: false
+    t.boolean  "despachoRealizadoDB", default: false
+    t.string   "estadoDB",            default: ""
   end
 
   create_table "params", force: :cascade do |t|
