@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
 
 #Metodo de prueba
 def index
-  render json: 'Index Aplicación'
+  render 'layouts/application'
 end
 
 #Retorna todas las OC luego de revisar FTP
