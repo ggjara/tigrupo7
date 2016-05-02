@@ -1,15 +1,24 @@
 Rails.application.routes.draw do
+  get 'metodos', to: 'documentos#metodos'
+
+  get 'flujos', to: 'documentos#flujos'
+
+  get 'productos', to: 'productos#show'
+
+  get 'almacenes', to: 'almacenes#show'
+
   get 'layouts/index'
 
-  get 'ocs/despachos'
+  get 'oc_enviadas', to: 'ocs#oc_enviadas'
 
-  get 'ocs/facturas'
+  get 'oc_recibidas', to:'ocs#oc_recibidas'
 
   get 'ocs/pagosAsociados'
 
   get 'ocs/show'
 
   get 'bodegaG7', to: 'bodegas#show'
+
   get 'bodegas/consultar/:id' => 'bodegas#consultarProducto'
 
   resources :pizzas
