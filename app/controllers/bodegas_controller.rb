@@ -10,10 +10,12 @@ end
     render json: Bodega.first
   end
 
-  def show
-   @Bodega = Bodega.find_by name: 'grupo7'
-  end
+def show
+   @Productos= Bodega.first.productos
+end
 
+
+end
 #Consulta por SKU y retorna cantidad en bodega
 #Si la Bodega no está iniciada, se inicia
   def consultarProducto
@@ -27,9 +29,7 @@ end
     end
   end
 
-def self.iniciarBodega
+def iniciarBodega
 	ib = Bodega.iniciarBodega
 	render json: ib
-end
-
 end

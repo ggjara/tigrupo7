@@ -1,0 +1,172 @@
+<% content_for :header do %>
+<h1>DOCUMENTACIÓN: MÉTODOS</h1>
+<%end%>
+
+<% content_for :content do %>
+    <br>
+    <div class="box box-primary collapsed-box">
+      <div class="box-header with-border">
+        <h3 class="box-title">CONSULTAR STOCK</h3>
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+            <i class="fa fa-plus"></i></button>
+        </div>
+      </div>
+      <!-- /.box-header -->
+      <div class="box-body">
+        <strong><i class="fa fa-link margin-r-5"></i> URI</strong>
+
+        <p class="text-muted">
+          integra7.ing.puc.cl/api/consultar/:sku
+        </p>
+
+        <hr>
+
+        <strong><i class="fa fa-cogs margin-r-5"></i> MÉTODO</strong>
+
+        <p class="text-muted">GET</p>
+
+        <hr>
+
+        <strong><i class="fa fa-pencil margin-r-5"></i> DESCRIPCIÓN</strong>
+
+        <p class="text-muted">
+          Método que retorna la cantidad de ese sku en nuestra bodega
+        </p>
+
+        <hr>
+
+        <strong><i class="fa fa-reply margin-r-5"></i> RETORNO</strong>
+
+        <p class="text-muted">"stock": int (Cantidad del sku en bodega)</p>
+        <p class="text-muted">"sku": int (Sku consultado)</p>
+      </div>
+      <!-- /.box-body -->
+    </div>
+
+    <div class="box box-primary collapsed-box">
+      <div class="box-header with-border">
+        <h3 class="box-title">RECIBIR OC B2B</h3>
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+            <i class="fa fa-plus"></i></button>
+        </div>
+      </div>
+      <!-- /.box-header -->
+      <div class="box-body">
+        <strong><i class="fa fa-link margin-r-5"></i> URI</strong>
+
+        <p class="text-muted">
+          integra7.ing.puc.cl/api/oc/recibir/:idOc
+        </p>
+
+        <hr>
+
+        <strong><i class="fa fa-cogs margin-r-5"></i> MÉTODO</strong>
+
+        <p class="text-muted">POST</p>
+
+        <hr>
+
+        <strong><i class="fa fa-pencil margin-r-5"></i> DESCRIPCIÓN</strong>
+
+        <p class="text-muted">Método recibe una ID de Orden de compra y retorna la respuesta de nuestra empresa. Podemos aceptarla o rechazarla.</p>
+        <p class="text-muted">Condiciones para aceptar:</p>
+        <p class="text-muted">a. Solicita productos que producimos</p>
+        <p class="text-muted">b. Tenemos stock</p>
+        <p class="text-muted">c. El precio de compra es mayor al de la base de datos</p>
+
+        <hr>
+
+        <strong><i class="fa fa-reply margin-r-5"></i> RETORNO</strong>
+
+        <p class="text-muted">"aceptado": boolean (true si se acepta, false si se rechaza)</p>
+      </div>
+      <!-- /.box-body -->
+    </div>
+
+    <div class="box box-primary collapsed-box">
+      <div class="box-header with-border">
+        <h3 class="box-title">RECIBIR FACTURA B2B</h3>
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+            <i class="fa fa-plus"></i></button>
+        </div>
+      </div>
+      <!-- /.box-header -->
+      <div class="box-body">
+        <strong><i class="fa fa-link margin-r-5"></i> URI</strong>
+
+        <p class="text-muted">
+          integra7.ing.puc.cl/api/facturas/recibir/:idFactura
+        </p>
+
+        <hr>
+
+        <strong><i class="fa fa-cogs margin-r-5"></i> MÉTODO</strong>
+
+        <p class="text-muted">POST</p>
+
+        <hr>
+
+        <strong><i class="fa fa-pencil margin-r-5"></i> DESCRIPCIÓN</strong>
+
+        <p class="text-muted">Método recibe una ID de Factura y como parametro recibe los datos de la factura. Como empresa la podemos aceptar o rechazar.</p>
+        <p class="text-muted">Condiciones para aceptar:</p>
+        <p class="text-muted">a. La factura está asociada a una Orden de Compra aceptada</p>
+        <p class="text-muted">b. El monto de la factura corresponde al de la Orden de Compra</p>
+
+        <hr>
+
+        <strong><i class="fa fa-reply margin-r-5"></i> RETORNO</strong>
+
+        <p class="text-muted">"validado": boolean (true si se acepta, false si se rechaza)</p>
+        <p class="text-muted">"factura": string, id de la Factura</p>
+      </div>
+      <!-- /.box-body -->
+    </div>
+
+    <div class="box box-primary collapsed-box">
+      <div class="box-header with-border">
+        <h3 class="box-title">RECIBIR TRANSACCIÓN B2B</h3>
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+            <i class="fa fa-plus"></i></button>
+        </div>
+      </div>
+      <!-- /.box-header -->
+      <div class="box-body">
+        <strong><i class="fa fa-link margin-r-5"></i> URI</strong>
+
+        <p class="text-muted">
+          integra7.ing.puc.cl/api/pagos/recibir/:idTrx
+        </p>
+
+        <hr>
+
+        <strong><i class="fa fa-cogs margin-r-5"></i> MÉTODO</strong>
+
+        <p class="text-muted">POST</p>
+
+        <hr>
+
+        <strong><i class="fa fa-pencil margin-r-5"></i> DESCRIPCIÓN</strong>
+
+        <p class="text-muted">Método que recibe una ID de Transacción en la URI y como parametros de Json los datos de la Transacción. Como empresa podemos aceptar o rechazar la transacción.</p>
+        <p class="text-muted">Condiciones para aceptar:</p>
+        <p class="text-muted">a. La transacción está asociada a una OC/Factura que ya han sido validadas</p>
+        <p class="text-muted">b. El monto corresponde al pactado en OC y Factura</p>
+
+        <hr>
+
+        <strong><i class="fa fa-reply margin-r-5"></i> RETORNO</strong>
+
+        <p class="text-muted">"validado": boolean (true si se acepta, false si se rechaza)</p>
+        <p class="text-muted">"trx": string (idTrx)</p>
+      </div>
+      <!-- /.box-body -->
+    </div>
+
+
+
+<%end%>

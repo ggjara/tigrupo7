@@ -1,0 +1,177 @@
+<% content_for :header do %>
+    <h1>OCs Recibidas</h1>
+<%end%>
+
+<% content_for :content do %>
+    <!-- Default box -->
+    <div class="box collapsed-box">
+      <div class="box-header with-border">
+        <h3 class="box-title">Creadas</h3>
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+            <i class="fa fa-plus"></i></button>
+        </div>
+      </div>
+      <div class="box-body">
+        <table class="table table-hover search-table">
+          <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>SKU</th>
+            <th>Cantidad</th>
+            <th>Documentos Asociados</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @oc_recibidas.where(:estado => "creada").each do |oc| %>
+              <tr>
+                <td><%= oc.cliente %></td>
+                <td><%= oc.sku %></td>
+                <td><%= oc.cantidad %></td>
+                <td></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div><!-- /.box-body -->
+      <div class="box-footer">
+      </div><!-- /.box-footer-->
+    </div><!-- /.box -->
+
+    <div class="box collapsed-box">
+      <div class="box-header with-border">
+        <h3 class="box-title">Aceptadas</h3>
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+            <i class="fa fa-plus"></i></button>
+        </div>
+      </div>
+      <div class="box-body">
+        <table class="table table-hover search-table">
+          <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>SKU</th>
+            <th>Cantidad</th>
+            <th>Documentos Asociados</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @oc_recibidas.where(:estado => "aceptada").each do |oc| %>
+              <tr>
+                <td><%= oc.cliente %></td>
+                <td><%= oc.sku %></td>
+                <td><%= oc.cantidad %></td>
+                <td></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div><!-- /.box-body -->
+      <div class="box-footer">
+      </div><!-- /.box-footer-->
+    </div><!-- /.box -->
+
+    <div class="box collapsed-box">
+      <div class="box-header with-border">
+        <h3 class="box-title">Rechazadas</h3>
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+            <i class="fa fa-plus"></i></button>
+        </div>
+      </div>
+      <div class="box-body">
+        <table class="table table-hover search-table">
+          <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>SKU</th>
+            <th>Cantidad</th>
+            <th>Documentos Asociados</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @oc_recibidas.where(:estado => "rechazada").each do |oc| %>
+              <tr>
+                <td><%= oc.cliente %></td>
+                <td><%= oc.sku %></td>
+                <td><%= oc.cantidad %></td>
+                <td></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div><!-- /.box-body -->
+      <div class="box-footer">
+      </div><!-- /.box-footer-->
+    </div><!-- /.box -->
+
+    <div class="box collapsed-box">
+      <div class="box-header with-border">
+        <h3 class="box-title">Finalizadas</h3>
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+            <i class="fa fa-plus"></i></button>
+        </div>
+      </div>
+      <div class="box-body">
+        <table class="table table-hover search-table">
+          <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>SKU</th>
+            <th>Cantidad</th>
+            <th>Documentos Asociados</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @oc_recibidas.where(:estado => "finalizada").each do |oc| %>
+              <tr>
+                <td><%= oc.cliente %></td>
+                <td><%= oc.sku %></td>
+                <td><%= oc.cantidad %></td>
+                <td></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div><!-- /.box-body -->
+      <div class="box-footer">
+      </div><!-- /.box-footer-->
+    </div><!-- /.box -->
+
+    <div class="box collapsed-box">
+      <div class="box-header with-border">
+        <h3 class="box-title">Anuladas</h3>
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+            <i class="fa fa-plus"></i></button>
+        </div>
+      </div>
+      <div class="box-body">
+        <table class="table table-hover search-table">
+          <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>SKU</th>
+            <th>Cantidad</th>
+            <th>Documentos Asociados</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @oc_recibidas.where(:estado => "anulada").each do |oc| %>
+              <tr>
+                <td><%= oc.cliente %></td>
+                <td><%= oc.sku %></td>
+                <td><%= oc.cantidad %></td>
+                <td></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div><!-- /.box-body -->
+      <div class="box-footer">
+      </div><!-- /.box-footer-->
+    </div><!-- /.box -->
+
+<%end%>

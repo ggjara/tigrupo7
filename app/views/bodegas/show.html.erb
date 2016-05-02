@@ -1,12 +1,10 @@
 <% content_for :header do %>
-  <h1>
-    <h1>Bodega <%= @Bodega.name %></h1>
-  </h1>
-  <ol class="breadcrumb">
-    <li><a href="#"><i class="fa fa-files-o"></i> Home</a></li>
-    <li><a href="#">Bodegas</a></li>
-    <li class="active">Bodega G7</li>
-  </ol>
+    <h1>Bodega G7 %></h1>
+    <ol class="breadcrumb">
+      <li><a href="#"><i class="fa fa-files-o"></i> Home</a></li>
+      <li><a href="#">Bodegas</a></li>
+      <li class="active">Bodega G7</li>
+    </ol>
 <%end%>
 
 <% content_for :content do %>
@@ -24,10 +22,10 @@
         </tr>
         </thead>
         <tbody>
-        <% @Bodega.productos.each do |producto| %>
+        <% @Productos.each do |producto| %>
             <tr>
               <td><%= producto.sku %></td>
-              <td><%= producto.where(sku: @skuAsked).count %></td>
+              <td><%= Bodega.checkStock(producto.sku) %></td>
             </tr>
         <% end %>
         </tbody>

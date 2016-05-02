@@ -64,7 +64,7 @@ end
 #Revisa si existe la OC. Si no existe, la obtiene de otro metodo y después la crea.
 def actualizarOc(id)
 	if noExisteOc(id)
-		paramsOc = RequestsBodega.new.obtenerOc(id)
+		paramsOc = RequestsOc.new.obtenerOc(id)
 		ocNueva = Oc.new(paramsOc)
 		ocNueva.save
 	end
