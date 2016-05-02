@@ -27,9 +27,14 @@ Rails.application.routes.draw do
   match '/iniciar' => 'bodegas#iniciarBodega', via: :get
   match '/consultar' => 'bodegas#consultarInfo', via: :get
   match '/consultarFtp' => 'application#consultarFtp', via: :get
+
+
   namespace :api, defaults: {format: :json} do
     root  'application#index'
     match '/consultar/:id'=> 'application#consultar', via: :get
+    match '/oc/recibir/:id'=> 'application#recibirOc', via: :post
+    match '/facturas/recibir/:id'=> 'application#recibirFactura', via: :post
+    match '/pagos/recibir/:id'=> 'application#recibirTrx', via: :post
 
   end
 

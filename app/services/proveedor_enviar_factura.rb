@@ -17,7 +17,8 @@ end
 
 #Luego de que le mandamos la respuesta al cliente, creamos la factura y se la enviamos
 def enviarFacturaPorOc(oc_id)
-
+	oc = Oc.find_by(_id: id)
+end
 
 def hacerFacturaServerDB(oc_id)
 	
