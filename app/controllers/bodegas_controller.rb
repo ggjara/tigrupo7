@@ -2,6 +2,10 @@ class BodegasController < ApplicationController
   #requestWeb(typeOfRequest, uri, *paramsRequest)
   #generateParam(name, value)
 
+def initialize
+  cantAlmacenes=0
+end
+
   def consultarInfo
     render json: Bodega.first
   end
@@ -9,7 +13,6 @@ class BodegasController < ApplicationController
   def show
    @Bodega = Bodega.find_by name: 'grupo7'
   end
-
 
 #Consulta por SKU y retorna cantidad en bodega
 #Si la Bodega no está iniciada, se inicia
@@ -23,5 +26,10 @@ class BodegasController < ApplicationController
       @cantDisponible = @bodegaGrupo7.productos.where(sku: @skuAsked).count
     end
   end
+
+def self.iniciarBodega
+	ib = Bodega.iniciarBodega
+	render json: ib
+end
 
 end

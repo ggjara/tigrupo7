@@ -1,13 +1,20 @@
 class ConsultarPedidosFtp < ApplicationController
-def initialize(params)
-	
+
+
+
+
+
+
+def initialize	
 end
 
 #Genera (Si no existe) una OC
 def consultarOcsFTP
 	idsOcsEnFtp = consultarPedidos
-	idsOcsEnFtp.each do |id|
-		actualizarOc(id)
+	if idsOcsEnFtp.count>=1
+		idsOcsEnFtp.each do |id|
+			actualizarOc(id)
+		end
 	end
 	return Oc.all
 end
@@ -34,10 +41,11 @@ def consultarPedidos
 	  Timeout.timeout(400) do
 	    sftp.connect! # Establish connection
 	    sftp.dir.foreach("/pedidos") do |namePedido|
-	    	if (namePedido.name!= '.' && namePedido.name != '..')
+	    	if (namePedido.name!= '.' && namePedido.name != '..' && namePedido.name != 'leidos')
 			file = sftp.download!('/pedidos/'<<namePedido.name)
 		   	doc = Nokogiri::XML(file)
 		   	pedidos.append(doc.css("id").map.first.children.text)
+		   	sftp.rename('/pedidos/'<<namePedido.name, '/pedidos/leidos/'<<namePedido.name)
 		   end
 		end
 	  end
@@ -56,28 +64,10 @@ end
 #Revisa si existe la OC. Si no existe, la obtiene de otro metodo y después la crea.
 def actualizarOc(id)
 	if noExisteOc(id)
-		paramsOc = obtenerOc(id)
+		paramsOc = RequestsBodega.new.obtenerOc(id)
 		ocNueva = Oc.new(paramsOc)
 		ocNueva.save
 	end
-end
-
-#Retorna hash con los parametros de la Oc
-def obtenerOc(id)
-	jsonResponse = requestWebWithoutParams('GET', ('http://mare.ing.puc.cl/oc/obtener/'<<id)).first
-	paramsOc = { _id: jsonResponse['_id'],
-				cliente: jsonResponse['cliente'],
-				proveedor: jsonResponse['proveedor'],
-				sku: jsonResponse['39'],
-				#fechaDespachos: jsonResponse['fechaDespachos'],
-				fechaEntrega: jsonResponse['fechaEntrega'],
-				precioUnitario: jsonResponse['precioUnitario'],
-				cantidadDespachada: jsonResponse['cantidadDespachada'],
-				cantidad: jsonResponse['cantidad'],
-				canal: jsonResponse['canal'],
-				fechaCreacion: jsonResponse['created_at'],
-				estado: jsonResponse['estado']}
-	return paramsOc
 end
 
 #Revisa si existe una OC con el _id consultado
