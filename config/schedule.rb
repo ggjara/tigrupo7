@@ -2,6 +2,7 @@
 #ENV['RAILS_ENV'] = "development"
 #set :environment, 'development'
 
+env :PATH, ENV['PATH']
 env :GEM_PATH, ENV['GEM_PATH']
 
 set :bundle_command, "/bin/bundle"
