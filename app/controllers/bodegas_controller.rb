@@ -6,7 +6,7 @@ def initialize
 	cantAlmacenes=0
 end
 
-def self.iniciarBodega
+def iniciarBodega
 	ib = Bodega.iniciarBodega
 	render json: ib
 end
