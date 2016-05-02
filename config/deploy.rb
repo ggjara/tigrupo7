@@ -3,7 +3,7 @@ lock '3.4.1'
 
 require "whenever/capistrano"
 
-:bundle_binstubs, nil
+set :bundle_binstubs, nil
 
 set :application, 'tigrupo7'
 #set :repo_url, 'git@github.com:ggjara/tigrupo7.git'
