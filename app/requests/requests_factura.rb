@@ -21,6 +21,25 @@ def obtenerFactura(id)#checked
 return paramsFactura
 end
 
+def emitirFactura(id)#Checked
+  jsonResponse = requestWeb('PUT', 'http://mare.ing.puc.cl/facturas/',
+    generateParam('id',id)).first
+    paramsFactura = { _id: jsonResponse['_id'],
+      fechaCreacion: jsonResponse['created_at'],
+      proveedor: jsonResponse['proveedor'],
+      cliente: jsonResponse['cliente'],
+      valorBruto: jsonResponse['bruto'],
+      iva: jsonResponse['iva'],
+      valorTotal: jsonResponse['total'],
+      estadoPago: jsonResponse['estado'],
+      fechaUpdate: jsonResponse['updated_at'],
+      id_Oc: jsonResponse['oc'],
+      motivoRechazo: jsonResponse['rechazo'],
+      motivoAnulacion: jsonResponse['anulacion']
+    }
+  return paramsFactura
+end
+
 def pagarFactura(id)#Checked
   jsonResponse = requestWeb('POST', 'http://mare.ing.puc.cl/facturas/pay/',
     generateParam('id',id)).first
