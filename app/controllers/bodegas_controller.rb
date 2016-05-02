@@ -2,8 +2,13 @@ class BodegasController < ApplicationController
 #requestWeb(typeOfRequest, uri, *paramsRequest)
 #generateParam(name, value)
 
-def consultarInfo
-	render json: Bodega.first
+def initialize
+	cantAlmacenes=0
+end
+
+def self.iniciarBodega
+	ib = Bodega.iniciarBodega
+	render json: ib
 end
 
 end

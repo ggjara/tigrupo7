@@ -6,8 +6,15 @@ class ApplicationController < ActionController::Base
 
 #Metodo de prueba
 def index
-  render json: RequestsBanco.new.obtenerCuenta('571262c3a980ba030058ab60')
+  render json: 'Index Aplicación'
 end
+
+#Retorna todas las OC luego de revisar FTP
+def consultarFtp
+  cp= ConsultarPedidosFtp.new
+  render json: cp.consultarOcsFTP
+end
+
 
 #Metodo que Realiza una request y retorna el body de la respuesta Parseado
 def requestWeb(typeOfRequest, uri, *paramsRequest)
@@ -18,13 +25,20 @@ def requestWeb(typeOfRequest, uri, *paramsRequest)
   paramsRequest.each do |param|
    query.store(param.name, param.value)
   end
-  if typeOfRequest=='GET'
+
+  if typeOfRequest.start_with?('GET')
     response =HTTParty.get(uri, :query => query, :headers => headers)
+  elsif typeOfRequest.start_with? ('POST')
+    response =HTTParty.post(uri, :body => query.to_json, :headers => headers)
+  elsif typeOfRequest.start_with?('PUT')
+    response=HTTParty.put(uri, :body => query.to_json, :headers => headers)
+  elsif typeOfRequest.start_with?('DELETE')
+    response=HTTParty.delete(uri, :body => query.to_json, :headers => headers)
   else
-    response =HTTParty.get(uri, :query => query, :headers => headers)
+    response ='Blank'
   end
 
-  return JSON.parse(response.body)
+  return JSON.parse(response.body)   
 end
 
 #Metodo que Realiza una request (sin params) y retorna el body de la respuesta Parseado
@@ -32,20 +46,31 @@ def requestWebWithoutParams(typeOfRequest, uri)
   headers = { "Content-Type"=> "application/json"}
   response
   query = Hash.new
-  if typeOfRequest=='GET'
+
+  if typeOfRequest.start_with?('GET')
     response =HTTParty.get(uri, :query => query, :headers => headers)
+  elsif typeOfRequest.start_with?('POST')
+    response =HTTParty.post(uri, :body => query.to_json, :headers => headers)
+  elsif typeOfRequest.start_with?('PUT')
+    response =HTTParty.put(uri, :body => query.to_json, :headers => headers)
+  elsif typeOfRequest.start_with?('DELETE')
+    response =HTTParty.delete(uri, :body => query.to_json, :headers => headers)
   else
-    response =HTTParty.get(uri, :query => query, :headers => headers)
+    response = "Blank"   
   end
+
   return JSON.parse(response.body)
+
 end
 
 #Recibe el tipo de request y el valor de los params y entrega la authToken
 def generateAuthToken(typeOfRequest, *paramsRequest)
 	data = typeOfRequest
 	paramsRequest.each do |param|
- 	 data= data << param.value.to_s
+  if(param.name.to_s != 'oc' && param.name.to_s != 'precio')#Modificar si es necesario
+   data= data << param.value.to_s
   end
+end
   #Clave única Grupo7
   authToken= 'INTEGRACION grupo7:' << hmac_sha1(data, 'Z2ngwOHM%Jb.oMx')
   return authToken
