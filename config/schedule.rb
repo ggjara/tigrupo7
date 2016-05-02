@@ -1,7 +1,7 @@
 #Para probar en ambiente de desarrollo 
 #ENV['RAILS_ENV'] = "development"
 #set :environment, 'development'
-env :PATH, ENV['PATH']
+# env :PATH, ENV['PATH']
 env :GEM_PATH, ENV['GEM_PATH']
 set :bundle_command, "/usr/local/bin/bundle exec"
 
