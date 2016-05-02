@@ -2,7 +2,6 @@
 lock '3.4.1'
 
 require "whenever/capistrano"
-set :whenever_command, "bundle exec whenever"
 
 
 set :application, 'tigrupo7'
