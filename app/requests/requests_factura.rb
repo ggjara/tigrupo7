@@ -2,112 +2,118 @@ class RequestsFactura < ApplicationController
 def initialize
 end
 
-#Falta chequear nombre parametros
-def obtenerFactura(id)
+#Busca en el servidor una factura por su id, retorna la factura
+def obtenerFactura(id)#checked
   jsonResponse = requestWebWithoutParams('GET', ('http://mare.ing.puc.cl/facturas/'<<id)).first
-	paramsFactura = { _id: jsonResponse['_id'],
-				fechaCreacion: jsonResponse['created_at'],
-				proveedor: jsonResponse['proveedor'],
-				cliente: jsonResponse['cliente'],
-				valorBruto: jsonResponse['valorBruto'],
-				iva: jsonResponse['iva'],
-				valorTotal: jsonResponse['valorTotal'],
-				estadoPago: jsonResponse['estadoPago'],
-				fechaPago: jsonResponse['fechaPago'],
-				id_Oc: jsonResponse['id_oc'],
-				motivoRechazo: jsonResponse['motivoRechazo'],
-				motivoAnulacion: jsonResponse['motivoAnulacion']}
-	return paramsFactura
+  paramsFactura = { _id: jsonResponse['_id'],
+    fechaCreacion: jsonResponse['created_at'],
+    proveedor: jsonResponse['proveedor'],
+    cliente: jsonResponse['cliente'],
+    valorBruto: jsonResponse['bruto'],
+    iva: jsonResponse['iva'],
+    valorTotal: jsonResponse['total'],
+    estadoPago: jsonResponse['estado'],
+    fechaUpdate: jsonResponse['updated_at'],
+    id_Oc: jsonResponse['oc'],
+    motivoRechazo: jsonResponse['rechazo'],
+    motivoAnulacion: jsonResponse['anulacion']
+  }
+return paramsFactura
 end
 
-
-def emitirFactura(id)
-  jasonResponse = requestWeb('PUT', 'http://mare.ing.puc.cl/facturas/',
+def emitirFactura(id)#Checked
+  jsonResponse = requestWeb('PUT', 'http://mare.ing.puc.cl/facturas/',
     generateParam('id',id)).first
-  paramsFactura = { _id: jsonResponse['_id'],
-				fechaCreacion: jsonResponse['created_at'],
-				proveedor: jsonResponse['proveedor'],
-				cliente: jsonResponse['cliente'],
-				valorBruto: jsonResponse['valorBruto'],
-				iva: jsonResponse['iva'],
-				valorTotal: jsonResponse['valorTotal'],
-				estadoPago: jsonResponse['estadoPago'],
-				fechaPago: jsonResponse['fechaPago'],
-				id_Oc: jsonResponse['id_oc'],
-				motivoRechazo: jsonResponse['motivoRechazo'],
-				motivoAnulacion: jsonResponse['motivoAnulacion']}
-	return paramsFactura
-end
-
-def pagarFactura(id)
-  jasonResponse = requestWeb('POST', 'http://mare.ing.puc.cl/facturas/pay',
-    generateParam('id',id)).first
-  paramsFactura = { _id: jsonResponse['_id'],
-  			fechaCreacion: jsonResponse['created_at'],
-  			proveedor: jsonResponse['proveedor'],
-  			cliente: jsonResponse['cliente'],
-  			valorBruto: jsonResponse['valorBruto'],
-  			iva: jsonResponse['iva'],
-  			valorTotal: jsonResponse['valorTotal'],
-  			estadoPago: jsonResponse['estadoPago'],
-  			fechaPago: jsonResponse['fechaPago'],
-  			id_Oc: jsonResponse['id_oc'],
-  			motivoRechazo: jsonResponse['motivoRechazo'],
-  			motivoAnulacion: jsonResponse['motivoAnulacion']}
+    paramsFactura = { _id: jsonResponse['_id'],
+      fechaCreacion: jsonResponse['created_at'],
+      proveedor: jsonResponse['proveedor'],
+      cliente: jsonResponse['cliente'],
+      valorBruto: jsonResponse['bruto'],
+      iva: jsonResponse['iva'],
+      valorTotal: jsonResponse['total'],
+      estadoPago: jsonResponse['estado'],
+      fechaUpdate: jsonResponse['updated_at'],
+      id_Oc: jsonResponse['oc'],
+      motivoRechazo: jsonResponse['rechazo'],
+      motivoAnulacion: jsonResponse['anulacion']
+    }
   return paramsFactura
 end
 
-def rechazarFactura(id, motivo)
-  jasonResponse = requestWeb('POST', 'http://mare.ing.puc.cl/facturas/reject',
-    generateParam('id',id), generateParam('motivoRechazo',motivo)).first
-  paramsFactura = { _id: jsonResponse['_id'],
-  			fechaCreacion: jsonResponse['created_at'],
-  			proveedor: jsonResponse['proveedor'],
-  			cliente: jsonResponse['cliente'],
-  			valorBruto: jsonResponse['valorBruto'],
-  			iva: jsonResponse['iva'],
-  			valorTotal: jsonResponse['valorTotal'],
-  			estadoPago: jsonResponse['estadoPago'],
-  			fechaPago: jsonResponse['fechaPago'],
-  			id_Oc: jsonResponse['id_oc'],
-  			motivoRechazo: jsonResponse['motivoRechazo'],
-  			motivoAnulacion: jsonResponse['motivoAnulacion']}
+def pagarFactura(id)#Checked
+  jsonResponse = requestWeb('POST', 'http://mare.ing.puc.cl/facturas/pay/',
+    generateParam('id',id)).first
+    paramsFactura = { _id: jsonResponse['_id'],
+      fechaCreacion: jsonResponse['created_at'],
+      proveedor: jsonResponse['proveedor'],
+      cliente: jsonResponse['cliente'],
+      valorBruto: jsonResponse['bruto'],
+      iva: jsonResponse['iva'],
+      valorTotal: jsonResponse['total'],
+      estadoPago: jsonResponse['estado'],
+      fechaUpdate: jsonResponse['updated_at'],
+      id_Oc: jsonResponse['oc'],
+      motivoRechazo: jsonResponse['rechazo'],
+      motivoAnulacion: jsonResponse['anulacion']
+    }
+  return paramsFactura
+end
+
+def rechazarFactura(id, motivo)#Checked
+  jsonResponse = requestWeb('POST', 'http://mare.ing.puc.cl/facturas/reject/',
+    generateParam('id',id), generateParam('motivo',motivo)).first
+    paramsFactura = { _id: jsonResponse['_id'],
+      fechaCreacion: jsonResponse['created_at'],
+      proveedor: jsonResponse['proveedor'],
+      cliente: jsonResponse['cliente'],
+      valorBruto: jsonResponse['bruto'],
+      iva: jsonResponse['iva'],
+      valorTotal: jsonResponse['total'],
+      estadoPago: jsonResponse['estado'],
+      fechaUpdate: jsonResponse['updated_at'],
+      id_Oc: jsonResponse['oc'],
+      motivoRechazo: jsonResponse['rechazo'],
+      motivoAnulacion: jsonResponse['anulacion']
+    }
   return paramsFactura
 end
 
 def anularFactura(id, motivo)
-  jasonResponse = requestWeb('POST', 'http://mare.ing.puc.cl/facturas/cancel',
-    generateParam('id',id), generateParam('motivoAnulacion',motivo)).first
-  paramsFactura = { _id: jsonResponse['_id'],
-  			fechaCreacion: jsonResponse['created_at'],
-  			proveedor: jsonResponse['proveedor'],
-  			cliente: jsonResponse['cliente'],
-  			valorBruto: jsonResponse['valorBruto'],
-  			iva: jsonResponse['iva'],
-  			valorTotal: jsonResponse['valorTotal'],
-  			estadoPago: jsonResponse['estadoPago'],
-  			fechaPago: jsonResponse['fechaPago'],
-  			id_Oc: jsonResponse['id_oc'],
-  			motivoRechazo: jsonResponse['motivoRechazo'],
-  			motivoAnulacion: jsonResponse['motivoAnulacion']}
+  jsonResponse = requestWeb('POST', 'http://mare.ing.puc.cl/facturas/cancel/',
+    generateParam('id',id), generateParam('motivo',motivo)).first
+    paramsFactura = { _id: jsonResponse['_id'],
+  		fechaCreacion: jsonResponse['created_at'],
+  		proveedor: jsonResponse['proveedor'],
+  		cliente: jsonResponse['cliente'],
+  		valorBruto: jsonResponse['bruto'],
+  		iva: jsonResponse['iva'],
+  		valorTotal: jsonResponse['total'],
+  		estadoPago: jsonResponse['estado'],
+  		fechaUpdate: jsonResponse['updated_at'],
+  		id_Oc: jsonResponse['oc'],
+  		motivoRechazo: jsonResponse['rechazo'],
+  		motivoAnulacion: jsonResponse['anulacion']
+    }
   return paramsFactura
 end
 
-def crearBoleta(id_proveedor, cliente, monto)
-  jasonResponse = requestWeb('PUT', 'http://mare.ing.puc.cl/facturas/boleta',
-    generateParam('id',id_proveedor), generateParam('cliente',client),
-    generateParam('total',monto)).first
-  paramsBoleta = { _id: jsonResponse['_id'],
-				fechaCreacion: jsonResponse['created_at'],
-				proveedor: jsonResponse['proveedor'],
-				cliente: jsonResponse['cliente'],
-				valorBruto: jsonResponse['valorBruto'],
-				iva: jsonResponse['iva'],
-				valorTotal: jsonResponse['valorTotal'],
-				estadoPago: jsonResponse['estadoPago'],
-				fechaPago: jsonResponse['fechaPago'],
-				id_Oc: jsonResponse['id_oc'],
-				motivoRechazo: jsonResponse['motivoRechazo'],
-				motivoAnulacion: jsonResponse['motivoAnulacion']}
-	return paramsBoleta
+def crearBoleta(proveedor, cliente, monto)#Checked
+  jsonResponse = requestWeb('PUT', 'http://mare.ing.puc.cl/facturas/boleta/',
+    generateParam('proveedor',proveedor), generateParam('cliente',cliente),
+    generateParam('total',monto))
+  paramsFactura = { _id: jsonResponse['_id'],
+    fechaCreacion: jsonResponse['created_at'],
+    proveedor: jsonResponse['proveedor'],
+    cliente: jsonResponse['cliente'],
+    valorBruto: jsonResponse['bruto'],
+    iva: jsonResponse['iva'],
+    valorTotal: jsonResponse['total'],
+    estadoPago: jsonResponse['estado'],
+    fechaUpdate: jsonResponse['updated_at'],
+    id_Oc: jsonResponse['oc'],
+    motivoRechazo: jsonResponse['rechazo'],
+    motivoAnulacion: jsonResponse['anulacion']
+  }
+    return paramsFactura
+end
 end
