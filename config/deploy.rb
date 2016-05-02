@@ -3,6 +3,7 @@ lock '3.4.1'
 
 require "whenever/capistrano"
 
+set :bundle_binstubs, nil
 
 set :application, 'tigrupo7'
 #set :repo_url, 'git@github.com:ggjara/tigrupo7.git'
@@ -40,7 +41,7 @@ set :deploy_to, '/home/deploy/tigrupo7'
 # set :keep_releases, 5
 
 set :linked_files, %w{config/database.yml config/secrets.yml}
-set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
+set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
 
 namespace :deploy do
