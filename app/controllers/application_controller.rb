@@ -19,7 +19,7 @@ end
 #Metodo que Realiza una request y retorna el body de la respuesta Parseado
 def requestWeb(typeOfRequest, uri, *paramsRequest)
   authKey = generateAuthToken(typeOfRequest, *paramsRequest)
-  headers = { "Content-Type"=> "application/json", "Authorization"=> authKey} 
+  headers = { "Content-Type"=> "application/json", "Authorization"=> authKey}
   response
   query = Hash.new
   paramsRequest.each do |param|
@@ -43,7 +43,7 @@ end
 
 #Metodo que Realiza una request (sin params) y retorna el body de la respuesta Parseado
 def requestWebWithoutParams(typeOfRequest, uri)
-  headers = { "Content-Type"=> "application/json"} 
+  headers = { "Content-Type"=> "application/json"}
   response
   query = Hash.new
 
@@ -59,7 +59,8 @@ def requestWebWithoutParams(typeOfRequest, uri)
     response = "Blank"   
   end
 
-  return JSON.parse(response.body)   
+  return JSON.parse(response.body)
+
 end
 
 #Recibe el tipo de request y el valor de los params y entrega la authToken
