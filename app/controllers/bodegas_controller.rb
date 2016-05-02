@@ -27,7 +27,7 @@ end
     end
   end
 
-def self.iniciarBodega
+def  iniciarBodega
 	ib = Bodega.iniciarBodega
 	render json: ib
 end

@@ -26,6 +26,28 @@ def consultar
 	end
 end
 
+#Recibe una OC con una id y la aceptamos o rechazamos
+
+def recibirOc
+	render json: {
+		"aceptado":false
+	}
+end
+
+def recibirFactura
+	render json: {
+		"validado": false,
+		"factura": params[:id]
+	}
+end
+
+def recibirTrx
+	render json: {
+		"validado": false,
+		"trx": params[:id]
+	}
+end
+
 #Metodo para retornar Json
 def self.respond_to(*mimes)
 include ActionController::RespondWith::ClassMethods
