@@ -3,7 +3,7 @@
 #set :environment, 'development'
 env :PATH, ENV['PATH']
 env :GEM_PATH, ENV['GEM_PATH']
-#set :bundle_command, "/usr/local/bin/bundle exec"
+set :bundle_command, "/usr/local/bin/bundle exec"
 
 #env :BUNDLE_GEMFILE, ENV["/#{path}/Gemfile"]
 
