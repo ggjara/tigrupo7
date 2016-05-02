@@ -5,6 +5,7 @@
 env :PATH, ENV['PATH']
 env :GEM_PATH, ENV['GEM_PATH']
 
+env :BUNDLE_GEMFILE, ENV["/#{path}/Gemfile"]
 
 set :output, "#{path}/log/cron_log.log"
 
