@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   resources :pizzas
 
   root 'application#index'
-  match '/iniciar' => 'bodegas#crearInfo', via: :get
+  match '/iniciar' => 'bodegas#iniciarBodega', via: :get
   match '/consultar' => 'bodegas#consultarInfo', via: :get
   match '/consultarFtp' => 'application#consultarFtp', via: :get
   namespace :api, defaults: {format: :json} do
