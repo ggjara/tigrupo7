@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
 
 #Metodo de prueba
 def index
-  render 'layouts/application'
+  render json: RequestsBanco.new.obtenerCartola(1430600760,1464901560,'571262fc3a980ba030058ab60',10)
 end
 
 #Retorna todas las OC luego de revisar FTP
@@ -38,7 +38,11 @@ def requestWeb(typeOfRequest, uri, *paramsRequest)
     response ='Blank'
   end
 
-  return JSON.parse(response.body)   
+  if(response.code < 300)
+      return JSON.parse(response.body)
+  else
+      return false
+  end
 end
 
 #Metodo que Realiza una request (sin params) y retorna el body de la respuesta Parseado
@@ -56,11 +60,14 @@ def requestWebWithoutParams(typeOfRequest, uri)
   elsif typeOfRequest.start_with?('DELETE')
     response =HTTParty.delete(uri, :body => query.to_json, :headers => headers)
   else
-    response = "Blank"   
+    response = "Blank"
   end
 
-  return JSON.parse(response.body)
-
+  if(response.code < 300)
+      return JSON.parse(response.body)
+  else
+      return false
+  end
 end
 
 #Recibe el tipo de request y el valor de los params y entrega la authToken
