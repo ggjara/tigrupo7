@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160430190902) do
+ActiveRecord::Schema.define(version: 20160502211815) do
 
   create_table "almacenes", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -36,6 +36,21 @@ ActiveRecord::Schema.define(version: 20160430190902) do
     t.integer  "stockGuardadoSku10", default: 0
     t.integer  "stockGuardadoSku23", default: 0
     t.integer  "stockGuardadoSku39", default: 0
+  end
+
+  create_table "facturas", force: :cascade do |t|
+    t.string   "_id"
+    t.string   "proveedor"
+    t.string   "cliente"
+    t.integer  "valorBruto"
+    t.integer  "iva"
+    t.integer  "valorTotal"
+    t.string   "estadoPago"
+    t.string   "id_Oc"
+    t.string   "motivoRechazo"
+    t.string   "motivoAnulacion"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
   end
 
   create_table "ocs", force: :cascade do |t|
@@ -86,6 +101,15 @@ ActiveRecord::Schema.define(version: 20160430190902) do
     t.datetime "updated_at", null: false
     t.integer  "almacen_id"
     t.boolean  "despachado"
+  end
+
+  create_table "trxes", force: :cascade do |t|
+    t.string   "_id"
+    t.string   "cuentaOrigen"
+    t.string   "cuentaDestino"
+    t.float    "monto"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
 end
