@@ -1,0 +1,68 @@
+Documentacion
+
+1. TITULO: Consultar Stock
+
+URI
+integra7.ing.puc.cl/api/consultar/:sku
+
+MÉTODO
+GET
+
+DESCRIPCIÓN
+Método que retorna la cantidad de ese sku en nuestra bodega
+
+RETORNO
+"stock": int (Cantidad del sku en bodega)
+"sku": int (Sku consultado)
+
+
+
+2. TITULO: Recibir OC B2B
+URI
+integra7.ing.puc.cl/api/oc/recibir/:idOc
+
+MÉTODO
+POST
+
+DESCRIPCIÓN
+Método recibe una ID de Orden de compra y retorna la respuesta de nuestra empresa. Podemos aceptarla o rechazarla.
+Condiciones para aceptar:
+a. Solicita productos que producimos
+b. Tenemos stock
+c. El precio de compra es mayor al de la base de dato
+
+RETORNO
+"aceptado": boolean (true si se acepta, false si se rechaza)
+
+3. TITULO: Recibir Factura B2B
+URI
+integra7.ing.puc.cl/api/facturas/recibir/:idFactura
+
+MÉTODO
+POST
+
+DESCRIPCIÓN
+Método recibe una ID de Factura y como parametro recibe los datos de la factura. Como empresa la podemos aceptar o rechazar.
+Condiciones para aceptar:
+a. La factura está asociada a una Orden de Compra aceptada
+b. El monto de la factura corresponde al de la Orden de Compra
+
+RETORNO
+"validado": boolean (true si se acepta, false si se rechaza)
+"factura": string, id de la Factura
+
+4. TITULO: Recibir Transacción B2B
+URI
+integra7.ing.puc.cl/api/pagos/recibir/:idTrx
+
+MÉTODO
+POST
+
+DESCRIPCIÓN
+Método que recibe una ID de Transacción en la URI y como parametros de Json los datos de la Transacción. Como empresa podemos aceptar o rechazar la transacción.
+Condiciones para aceptar:
+a. La transacción está asociada a una OC/Factura que ya han sido validadas
+b. El monto corresponde al pactado en OC y Factura
+RETORNO
+"validado": boolean (true si se acepta, false si se rechaza)
+"trx": string (idTrx)
