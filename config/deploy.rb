@@ -13,6 +13,8 @@ set :rvm_ruby_string, :local
 set :rvm_type, :user
 set :rvm_ruby_version, '2.3.0'
 
+before 'deploy', 'rvm:install_rvm'  # install/update RVM
+before 'deploy', 'rvm:install_ruby' # install Ruby and create gemset (both if missing)
 
 set :bundle_binstubs, nil
 
