@@ -30,14 +30,14 @@ def validarOC(cantidad, precioUnitario)
 end
 
 def generarParametros(cantidad, sku, proveedor, precioUnitario,notas,fechaEntrega)
-  paramsOc = { canal: "b2b",
-    cantidad: cantidad,
-    sku: sku,
-    proveedor: proveedor,
-    precioUnitario: precioUnitario,
-    notas: notas,
-    fechaEntrega: fechaEntrega,
-    cliente: "571262b8a980ba030058ab55"}
+  paramsOc = { "canal": "b2b",
+    "cantidad": cantidad,
+    "sku": sku,
+    "proveedor": proveedor,
+    "precioUnitario": precioUnitario,
+    "notas": notas,
+    "fechaEntrega": fechaEntrega,
+    "cliente": "571262b8a980ba030058ab55"}
   return paramsOc
 end
 
