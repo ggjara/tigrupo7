@@ -5,16 +5,9 @@ require "whenever/capistrano"
 require "rvm/capistrano"
 set :rvm_ruby_string, :local
               # use the same ruby as used locally for deployment
-# set :rvm_autolibs_flag, "read-only"       # more info: rvm help autolibs
-
-# before 'deploy:setup', 'rvm:install_rvm'  # install/update RVM
-# before 'deploy:setup', 'rvm:install_ruby'
-
 set :rvm_type, :user
 set :rvm_ruby_version, '2.3.0'
 
-before 'deploy', 'rvm:install_rvm'  # install/update RVM
-before 'deploy', 'rvm:install_ruby' # install Ruby and create gemset (both if missing)
 
 set :bundle_binstubs, nil
 
