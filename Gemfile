@@ -45,6 +45,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'active_model_serializers'
 
+gem 'rvm-capistrano'
+
 gem 'responders'
 
 gem 'httparty'
