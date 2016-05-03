@@ -3,6 +3,10 @@ lock '3.4.1'
 
 require "whenever/capistrano"
 require "rvm/capistrano"
+require "capistrano/rvm"
+
+set :rvm_type, :user
+set :rvm_ruby_version, '2.3.0' 
 set :rvm_ruby_string, :local              # use the same ruby as used locally for deployment
 # set :rvm_autolibs_flag, "read-only"       # more info: rvm help autolibs
 
