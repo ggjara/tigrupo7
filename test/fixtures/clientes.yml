@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  _idGrupo: MyString
+  _idBanco: MyString
+  _idAlmacenDespacho: MyString
+
+two:
+  _idGrupo: MyString
+  _idBanco: MyString
+  _idAlmacenDespacho: MyString

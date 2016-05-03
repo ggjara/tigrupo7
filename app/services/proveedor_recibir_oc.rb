@@ -58,7 +58,7 @@ end
 #Verifica Precio (Corresponde al precio que está fijado?)
 #Verifica duplicados
 def verificarAceptarOc(oc)
-	if(oc.proveedor!='571262b8a980ba030058ab55')
+	if(oc.proveedor!=Cliente.find_by(grupo: 7)._idGrupo)
 		return false
 	end
 	if ( (oc.sku !='1') && (oc.sku !='10') && (oc.sku. != '23') && (oc.sku.!= '39'))
@@ -78,7 +78,7 @@ end
 
 def aceptarOcServerDB(oc)
 	estadoServidor = RequestsOc.new.recepcionarOc(oc._id)
-	if(estadoServidor!=nil)
+	if(estadoServidor!=false)
 		oc.estado= estadoServidor[:estado]
 		oc.estadoDB= 'aceptada'
 		oc.save
@@ -91,7 +91,7 @@ end
 
 def rechazarOcServerDB(oc,rechazo)
 	estadoServidor = RequestsOc.new.rechazarOc(oc._id,rechazo)
-	if(estadoServidor!=nil)
+	if(estadoServidor!=false)
 		oc.estado= estadoServidor[:estado]
 		oc.estadoDB= 'rechazada'
 		oc.save
@@ -104,7 +104,7 @@ end
 def rechazarOcServerDBById(oc_id,rechazo)
 	oc = Oc.find_by(_id: oc_id)
 	estadoServidor = RequestsOc.new.rechazarOc(oc._id,rechazo)
-	if(estadoServidor!=nil)
+	if(estadoServidor!=false)
 		oc.estado= estadoServidor[:estado]
 		oc.estadoDB= 'rechazada'
 		oc.save

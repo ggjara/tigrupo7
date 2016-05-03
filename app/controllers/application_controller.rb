@@ -72,16 +72,31 @@ end
 
 #Recibe el tipo de request y el valor de los params y entrega la authToken
 def generateAuthToken(typeOfRequest, *paramsRequest)
-	data = typeOfRequest
-	paramsRequest.each do |param|
-  if(param.name.to_s != 'oc' && param.name.to_s != 'precio')#Modificar si es necesario
-   data= data << param.value.to_s
+  if(typeOfRequest=='POST' && paramsRequest.count == 4)
+    return generateAuthTokenEspecialBodega
+  else
+  	data = typeOfRequest
+  	paramsRequest.each do |param|
+       data= data << param.value.to_s
+    end
+    #Clave única Grupo7
+    authToken= 'INTEGRACION grupo7:' << hmac_sha1(data, 'Z2ngwOHM%Jb.oMx')
+    return authToken
   end
 end
+
+#Para metodo MoverStockBodega
+def generateAuthTokenEspecialBodega(typeOfRequest, *paramsRequest)
+  data = typeOfRequest
+  paramsRequest.each do |param|
+    if(param.name.to_s != 'oc' && param.name.to_s != 'precio')
+     data= data << param.value.to_s
+    end
+  end
   #Clave única Grupo7
   authToken= 'INTEGRACION grupo7:' << hmac_sha1(data, 'Z2ngwOHM%Jb.oMx')
   return authToken
-  end
+end
 
 #Retorna una Instancia de Param con los params 'name' y 'value'
 def generateParam(name, value)

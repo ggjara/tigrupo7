@@ -65,8 +65,10 @@ end
 def actualizarOc(id)
 	if noExisteOc(id)
 		paramsOc = RequestsOc.new.obtenerOc(id)
-		ocNueva = Oc.new(paramsOc)
-		ocNueva.save
+		if paramsOc!=false
+			ocNueva = Oc.new(paramsOc)
+			ocNueva.save
+		end
 	end
 end
 
