@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160502211815) do
+ActiveRecord::Schema.define(version: 20160502222020) do
 
   create_table "almacenes", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -38,6 +38,15 @@ ActiveRecord::Schema.define(version: 20160502211815) do
     t.integer  "stockGuardadoSku39", default: 0
   end
 
+  create_table "clientes", force: :cascade do |t|
+    t.string   "_idGrupo"
+    t.string   "_idBanco"
+    t.string   "_idAlmacenRecepcion"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.integer  "grupo"
+  end
+
   create_table "facturas", force: :cascade do |t|
     t.string   "_id"
     t.string   "proveedor"
@@ -51,6 +60,7 @@ ActiveRecord::Schema.define(version: 20160502211815) do
     t.string   "motivoAnulacion"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+    t.string   "estadoDB"
   end
 
   create_table "ocs", force: :cascade do |t|
