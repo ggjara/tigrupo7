@@ -45,7 +45,7 @@ def hacerFacturaServerDB(oc)
 end
 
 def enviarFacturaACliente(facturaCreada)
-	response = requestWeb('POST', uriCliente(facturaCreada.cliente, facturaCreada._id))
+	response = requestWeb('GET', uriCliente(facturaCreada.cliente, facturaCreada._id))
 	if response!=false
 		return intrepretarRespuestaCliente(response, facturaCreada)
 	else

@@ -76,13 +76,20 @@ def despachoDeProductos(oc)
 					enviarProductosDesdeAlmacenADespacho(oc, sku, cantidad, almacen)
 					#Envia de Despacho a Cliente
 					cantidad = enviarProductosDesdeDespacho(oc, sku, cantidad, almacenDestino)
-					return true if cantidad<=0
+					break if cantidad<=0
+					oc.despachadoRealizadoDB=true
+					oc.save
+					return true
 				end
 			end
 		else
+			oc.despachadoRealizadoDB=true
+			oc.save
 			return true
 		end
 	else
+		oc.despachadoRealizadoDB=true
+		oc.save
 		return true
 	end		
 end
