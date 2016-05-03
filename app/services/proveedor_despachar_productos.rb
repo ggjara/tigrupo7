@@ -59,12 +59,13 @@ def despachoDeProductos(oc)
 	if(almacenDestino==false)
 		return false
 	end
+
 	#1. Envía todos los que están en almacenDespacho
 	cantidad = enviarProductosDesdeDespacho(oc, sku, cantidad, almacenDestino)
 	if(cantidad>0)
 		#Enviar todos los que están en pulmon a Despacho
 		enviarProductosDesdePulmonADespacho(oc, sku, cantidad)
-		#envia todos los de Despacho a Pulmon
+		#envia todos los de Despacho al cliente
 		cantidad = enviarProductosDesdeDespacho(oc, sku, cantidad, almacenDestino)
 		if(cantidad>0)
 			almacenesARevisar = Almacen.where(pulmon: false, recepcion: false, despacho: false)
