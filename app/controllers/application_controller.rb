@@ -6,8 +6,7 @@ class ApplicationController < ActionController::Base
 
 #Metodo de prueba
 def index
-  #render json: RequestsBodega.new.getStock('571262aaa980ba030058a2f8', 10)
-  render json: RequestsBodega.new.moverStockBodega('571262aaa980ba030058a30e','571262aaa980ba030058a31c')
+  render 'layouts/application'
 end
 
 #Retorna todas las OC luego de revisar FTP

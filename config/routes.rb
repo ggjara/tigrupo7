@@ -13,7 +13,7 @@ Rails.application.routes.draw do
 
   get 'oc_recibidas', to:'ocs#oc_recibidas'
 
-  get 'ocs/pagosAsociados'
+  get 'ocs/:oc/factura', to: 'ocs#factura'
 
   get 'ocs/show'
 

@@ -16,6 +16,7 @@
         <table class="table table-hover search-table">
           <thead>
           <tr>
+            <th>ID</th>
             <th>Cliente</th>
             <th>SKU</th>
             <th>Cantidad</th>
@@ -25,9 +26,17 @@
           <tbody>
           <% @oc_recibidas.where(:estado => "creada").each do |oc| %>
               <tr>
+                <td><%=oc._id %></td>
                 <td><%= oc.cliente %></td>
                 <td><%= oc.sku %></td>
                 <td><%= oc.cantidad %></td>
+                <td>
+                  <% if oc.facturaRealizadaDB == true %>
+                      <%= link_to raw('<i class="fa fa-pencil-square-o"></i>'), "/ocs/"+ oc._id.to_s + "/factura",
+                                  method: :put, class: 'btn btn-xs btn-warning',
+                                  data: { toggle: 'tooltip', placement: 'top' }, title: 'Ver Factura' %>
+                  <% end %>
+                </td>
                 <td></td>
               </tr>
           <% end %>
@@ -62,6 +71,13 @@
                 <td><%= oc.cliente %></td>
                 <td><%= oc.sku %></td>
                 <td><%= oc.cantidad %></td>
+                <td>
+                  <% if oc.facturaRealizadaDB == true %>
+                      <%= link_to raw('<i class="fa fa-pencil-square-o"></i>'), "/ocs/"+ oc._id.to_s + "/factura",
+                                  method: :put, class: 'btn btn-xs btn-warning',
+                                  data: { toggle: 'tooltip', placement: 'top' }, title: 'Ver Factura' %>
+                  <% end %>
+                </td>
                 <td></td>
               </tr>
           <% end %>
@@ -96,6 +112,13 @@
                 <td><%= oc.cliente %></td>
                 <td><%= oc.sku %></td>
                 <td><%= oc.cantidad %></td>
+                <td>
+                  <% if oc.facturaRealizadaDB == true %>
+                      <%= link_to raw('<i class="fa fa-pencil-square-o"></i>'), "/ocs/"+ oc._id.to_s + "/factura",
+                                  method: :put, class: 'btn btn-xs btn-warning',
+                                  data: { toggle: 'tooltip', placement: 'top' }, title: 'Ver Factura' %>
+                  <% end %>
+                </td>
                 <td></td>
               </tr>
           <% end %>
@@ -130,6 +153,13 @@
                 <td><%= oc.cliente %></td>
                 <td><%= oc.sku %></td>
                 <td><%= oc.cantidad %></td>
+                <td>
+                  <% if oc.facturaRealizadaDB == true %>
+                      <%= link_to raw('<i class="fa fa-pencil-square-o"></i>'), "/ocs/"+ oc._id.to_s + "/factura",
+                                  method: :put, class: 'btn btn-xs btn-warning',
+                                  data: { toggle: 'tooltip', placement: 'top' }, title: 'Ver Factura' %>
+                  <% end %>
+                </td>
                 <td></td>
               </tr>
           <% end %>
@@ -164,6 +194,13 @@
                 <td><%= oc.cliente %></td>
                 <td><%= oc.sku %></td>
                 <td><%= oc.cantidad %></td>
+                <td>
+                  <% if oc.facturaRealizadaDB == true %>
+                      <%= link_to raw('<i class="fa fa-pencil-square-o"></i>'), "/ocs/"+ oc._id.to_s + "/factura",
+                                  method: :put, class: 'btn btn-xs btn-warning',
+                                  data: { toggle: 'tooltip', placement: 'top' }, title: 'Ver Factura' %>
+                  <% end %>
+                </td>
                 <td></td>
               </tr>
           <% end %>
