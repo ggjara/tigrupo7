@@ -23,7 +23,7 @@ Rails.application.routes.draw do
 
   resources :pizzas
 
-  root 'application#index'
+  root 'almacenes#show'
   match '/iniciar' => 'bodegas#iniciarBodega', via: :get
   match '/consultar' => 'bodegas#consultarInfo', via: :get
   match '/consultarFtp' => 'application#consultarFtp', via: :get
