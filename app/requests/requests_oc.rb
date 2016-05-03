@@ -41,6 +41,7 @@ def crearOc(paramsOc) #FALTA ENTREGAR ID
 	if(jsonResponse==false)
 		return jsonResponse
 	else
+		jsonResponse = jsonResponse.first
 		paramsResponse = { _id: jsonResponse['_id'],
 				cliente: jsonResponse['cliente'],
 				proveedor: jsonResponse['proveedor'],

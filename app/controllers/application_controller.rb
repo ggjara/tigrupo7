@@ -6,7 +6,15 @@ class ApplicationController < ActionController::Base
 
 #Metodo de prueba
 def index
-  render json: RequestsBanco.new.obtenerCuenta("571262c3a980ba030058ab60")
+  paramsOc = { canal: "b2b",
+    cantidad: 10,
+    sku: 23,
+    proveedor: '571262b8a980ba030058ab55',
+    precioUnitario: 100,
+    notas: "notas aqui",
+    fechaEntrega: 1464540770000,
+    cliente: '571262b8a980ba030058ab4f'}
+  render json: RequestsOc.new.crearOc(paramsOc)
 end
 
 #Retorna todas las OC luego de revisar FTP

@@ -9,7 +9,7 @@ def enviarOc(cantidad, sku, proveedor, precioUnitario,notas,fechaEntrega)
   if(validarOC(cantidad, precioUnitario))
     paramsOc = generarParametros(cantidad, sku, proveedor, precioUnitario,notas,fechaEntrega)
     ocSistema = RequestsOc.new.crearOc(paramsOc)
-    ocDB = OC.new(ocSistema)
+    ocDB = Oc.new(ocSistema)
     ocDB.save
     #Reservar plata para evita comprar mas de lo que tenemos?
     return true
@@ -19,8 +19,8 @@ def enviarOc(cantidad, sku, proveedor, precioUnitario,notas,fechaEntrega)
 end
 
 def validarOC(cantidad, precioUnitario)
-  montoCuenta = RequestsBanco.new.obtenerCuenta("571262c3a980ba030058ab60")['saldo']
-  montoDisponible = montoCuenta-montoReservado
+  montoCuenta = RequestsBanco.new.obtenerCuenta("571262c3a980ba030058ab60")[:saldo]
+  #montoDisponible = montoCuenta-montoReservado
   monotRequerido = cantidad * precioUnitario
   if(monotRequerido>montoCuenta)
     return false
