@@ -1,11 +1,17 @@
 # config valid only for Capistrano 3.1
 lock '3.4.1'
 
-set :whenever_command, "bundle exec whenever"
 require "whenever/capistrano"
+require 'capistrano/rvm'
+set :rvm_ruby_string, :local
+set :rvm_type, :user
+set :rvm_ruby_version, '2.3.0'
+
+
+set :bundle_binstubs, nil
 
 set :application, 'tigrupo7'
-set :repo_url, 'git@github.com:ggjara/tigrupo7.git'
+set :repo_url, 'https://ggjara:tigrupo7@github.com/ggjara/tigrupo7'
 
 set :passenger_restart_with_touch, true
 # Default branch is :master
@@ -39,7 +45,22 @@ set :deploy_to, '/home/deploy/tigrupo7'
 # set :keep_releases, 5
 
 set :linked_files, %w{config/database.yml config/secrets.yml}
-set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
+#set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
+set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
+
+#AGREGADO PARA VER COMO FUNCIONA CON CAPISTRANO
+namespace :deploy do
+  desc "Update crontab with whenever"
+  task :update_cron do
+    on roles(:app) do
+      within current_path do
+        execute :bundle, :exec, "whenever --update-crontab #{fetch(:application)}"
+      end
+    end
+  end
+
+  after :finishing, 'deploy:update_cron'
+end
 
 
 namespace :deploy do

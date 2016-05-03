@@ -27,6 +27,7 @@ end
     end
   end
 
+
 def iniciarBodega
 	ib = Bodega.iniciarBodega
 	render json: ib
