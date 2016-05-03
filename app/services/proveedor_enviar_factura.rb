@@ -28,7 +28,6 @@ def enviarFactura(oc_id)
 			return false
 		end
 	end
-
 end
 
 def hacerFacturaServerDB(oc)
@@ -61,7 +60,7 @@ def intrepretarRespuestaCliente(response, facturaCreada)
 		return true
 	else
 		return false
-	
+	end			
 end
 
 def uriCliente(id_cliente, id_factura)
