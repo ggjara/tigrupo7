@@ -7,7 +7,7 @@ require 'capistrano/deploy'
 require 'capistrano/bundler'
 require 'capistrano/rails'
 require 'capistrano/passenger'
-require "whenever/capistrano"
+#require "whenever/capistrano"
 
 require 'capistrano/rvm'
 set :rvm_type, :user
