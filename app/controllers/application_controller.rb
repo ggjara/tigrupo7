@@ -6,8 +6,7 @@ class ApplicationController < ActionController::Base
 
 #Metodo de prueba
 def index
-  #render json: RequestsBodega.new.getStock('571262aaa980ba030058a2f8', 10)
-  render json: RequestsBodega.new.moverStockBodega('571262aaa980ba030058a30e','571262aaa980ba030058a31c')
+  render json: RequestsBanco.new.obtenerCuenta("571262c3a980ba030058ab60")
 end
 
 #Retorna todas las OC luego de revisar FTP

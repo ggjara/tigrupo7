@@ -38,7 +38,24 @@ def crearOc(paramsOc) #FALTA ENTREGAR ID
 		generateParam('cliente', paramsOc[:cliente]),
 		generateParam('fechaEntrega', paramsOc[:fechaEntrega]),
 		generateParam('notas', paramsOc[:notas]))
-	return jsonResponse
+	if(jsonResponse==false)
+		return jsonResponse
+	else
+		paramsResponse = { _id: jsonResponse['_id'],
+				cliente: jsonResponse['cliente'],
+				proveedor: jsonResponse['proveedor'],
+				sku: jsonResponse['sku'],
+				#fechaDespachos: jsonResponse['fechaDespachos'],
+				fechaEntrega: jsonResponse['fechaEntrega'],
+				precioUnitario: jsonResponse['precioUnitario'],
+				cantidadDespachada: jsonResponse['cantidadDespachada'],
+				cantidad: jsonResponse['cantidad'],
+				canal: jsonResponse['canal'],
+				fechaCreacion: jsonResponse['created_at'],
+				estado: jsonResponse['estado']
+		}
+		return paramsResponse
+	end
 end
 
 #Acepta una OC en servidor y retorna los parámetros de la OC o error

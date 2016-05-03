@@ -4,7 +4,7 @@ def initialize
 end
 
 #Busca una cuenta bancaria segun su id y retora el id y el monto
-def obtenerCuenta(id)#Validates
+def obtenerCuenta(id)
   jsonResponse = requestWebWithoutParams('GET', ('http://mare.ing.puc.cl/banco/cuenta/'<<id))
   if(jsonResponse==false)
     return jsonResponse
@@ -16,7 +16,7 @@ def obtenerCuenta(id)#Validates
 end
 
 #Busca una transaccion segun su id y la retora
-def obtenerTransaccion(id)#Validates
+def obtenerTransaccion(id)
   jsonResponse = requestWebWithoutParams('GET', ('http://mare.ing.puc.cl/banco/trx/'<<id))
   if(jsonResponse==false)
     return jsonResponse
@@ -32,7 +32,7 @@ def obtenerTransaccion(id)#Validates
 end
 
 #Busca una lista de transacciones de largo limit (opcional), dado un id de cuenta bancaria entre fechas entregadas
-def obtenerCartola(fecha_inicio, fecha_fin, id, limit)#Validates
+def obtenerCartola(fecha_inicio, fecha_fin, id, limit)
 	transaccions = Array.new
   jsonTransaccions = requestWeb('POST', 'http://mare.ing.puc.cl/banco/cartola/',
     generateParam('fechaInicio',fecha_inicio), generateParam('fechaFin', fecha_fin),
@@ -55,7 +55,7 @@ end
 #DateTime.rfc3339('2015-05-27T07:39:59Z').to_time.to_i para pasar el time a unix
 
 #transfiere monto de origen a destino, retorna la transaccion
-def transferir(monto, origen, destino)#Validates
+def transferir(monto, origen, destino)
   jsonResponse = requestWeb('PUT', 'http://mare.ing.puc.cl/banco/trx/',
     generateParam('monto',monto), generateParam('origen',origen),
     generateParam('destino', destino))
