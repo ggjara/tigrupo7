@@ -33,7 +33,7 @@
                   <table>
                     <% almacen.productos.select("DISTINCT(SKU)").each do |prod| %>
                         <tr>
-                          <td><%= Bodega.checkStock(prod.sku)%></td>
+                          <td><%= almacen.productos.where(:sku => prod.sku).count%></td>
                         </tr>
                     <%end%>
                   </table>
@@ -76,7 +76,7 @@
                   <table>
                     <% almacen.productos.select("DISTINCT(SKU)").each do |prod| %>
                         <tr>
-                          <td><%= Bodega.checkStock(prod.sku)%></td>
+                          <td><%= almacen.productos.where(:sku => prod.sku).count%></td>
                         </tr>
                     <%end%>
                   </table>
@@ -119,7 +119,7 @@
                   <table>
                     <% almacen.productos.select("DISTINCT(SKU)").each do |prod| %>
                         <tr>
-                          <td><%= Bodega.checkStock(prod.sku)%></td>
+                          <td><%= almacen.productos.where(:sku => prod.sku).count%></td>
                         </tr>
                     <%end%>
                   </table>
@@ -162,7 +162,7 @@
                   <table>
                     <% almacen.productos.select("DISTINCT(SKU)").each do |prod| %>
                         <tr>
-                          <td><%= Bodega.checkStock(prod.sku)%></td>
+                          <td><%= almacen.productos.where(:sku => prod.sku).count%></td>
                         </tr>
                     <%end%>
                   </table>
