@@ -1,7 +1,7 @@
 # config valid only for Capistrano 3.1
 lock '3.4.1'
 
-require "whenever/capistrano"
+#require "whenever/capistrano"
 require "rvm/capistrano"
 require "capistrano/rvm"
 
