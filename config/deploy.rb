@@ -1,6 +1,9 @@
 # config valid only for Capistrano 3.1
 lock '3.4.1'
 
+
+# set :whenever_command, "bundle exec whenever"
+# require "whenever/capistrano"
 #require "whenever/capistrano"
 require "rvm/capistrano"
 require "capistrano/rvm"

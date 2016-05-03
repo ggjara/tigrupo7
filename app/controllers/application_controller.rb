@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
 
 #Metodo de prueba
 def index
-  render json: 'Index Aplicación'
+  render 'layouts/application'
 end
 
 #Retorna todas las OC luego de revisar FTP
@@ -19,7 +19,7 @@ end
 #Metodo que Realiza una request y retorna el body de la respuesta Parseado
 def requestWeb(typeOfRequest, uri, *paramsRequest)
   authKey = generateAuthToken(typeOfRequest, *paramsRequest)
-  headers = { "Content-Type"=> "application/json", "Authorization"=> authKey} 
+  headers = { "Content-Type"=> "application/json", "Authorization"=> authKey}
   response
   query = Hash.new
   paramsRequest.each do |param|
@@ -38,12 +38,16 @@ def requestWeb(typeOfRequest, uri, *paramsRequest)
     response ='Blank'
   end
 
-  return JSON.parse(response.body)   
+  if(response.code < 300)
+      return JSON.parse(response.body)
+  else
+      return false
+  end
 end
 
 #Metodo que Realiza una request (sin params) y retorna el body de la respuesta Parseado
 def requestWebWithoutParams(typeOfRequest, uri)
-  headers = { "Content-Type"=> "application/json"} 
+  headers = { "Content-Type"=> "application/json"}
   response
   query = Hash.new
 
@@ -56,22 +60,43 @@ def requestWebWithoutParams(typeOfRequest, uri)
   elsif typeOfRequest.start_with?('DELETE')
     response =HTTParty.delete(uri, :body => query.to_json, :headers => headers)
   else
-    response = "Blank"   
+    response = "Blank"
   end
 
-  return JSON.parse(response.body)   
+  if(response.code < 300)
+      return JSON.parse(response.body)
+  else
+      return false
+  end
 end
 
 #Recibe el tipo de request y el valor de los params y entrega la authToken
 def generateAuthToken(typeOfRequest, *paramsRequest)
-	data = typeOfRequest
-	paramsRequest.each do |param|
- 	 data= data << param.value.to_s
+  if(typeOfRequest=='POST' && paramsRequest.count == 4)
+    return generateAuthTokenEspecialBodega
+  else
+  	data = typeOfRequest
+  	paramsRequest.each do |param|
+       data= data << param.value.to_s
+    end
+    #Clave única Grupo7
+    authToken= 'INTEGRACION grupo7:' << hmac_sha1(data, 'Z2ngwOHM%Jb.oMx')
+    return authToken
+  end
+end
+
+#Para metodo MoverStockBodega
+def generateAuthTokenEspecialBodega(typeOfRequest, *paramsRequest)
+  data = typeOfRequest
+  paramsRequest.each do |param|
+    if(param.name.to_s != 'oc' && param.name.to_s != 'precio')
+     data= data << param.value.to_s
+    end
   end
   #Clave única Grupo7
   authToken= 'INTEGRACION grupo7:' << hmac_sha1(data, 'Z2ngwOHM%Jb.oMx')
   return authToken
-  end
+end
 
 #Retorna una Instancia de Param con los params 'name' y 'value'
 def generateParam(name, value)

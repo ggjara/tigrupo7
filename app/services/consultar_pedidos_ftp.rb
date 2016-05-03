@@ -1,6 +1,11 @@
 class ConsultarPedidosFtp < ApplicationController
-def initialize
-	
+
+
+
+
+
+
+def initialize	
 end
 
 #Genera (Si no existe) una OC
@@ -59,9 +64,11 @@ end
 #Revisa si existe la OC. Si no existe, la obtiene de otro metodo y después la crea.
 def actualizarOc(id)
 	if noExisteOc(id)
-		paramsOc = RequestsBodega.new.obtenerOc(id)
-		ocNueva = Oc.new(paramsOc)
-		ocNueva.save
+		paramsOc = RequestsOc.new.obtenerOc(id)
+		if paramsOc!=false
+			ocNueva = Oc.new(paramsOc)
+			ocNueva.save
+		end
 	end
 end
 
