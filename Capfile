@@ -7,11 +7,8 @@ require 'capistrano/deploy'
 require 'capistrano/bundler'
 require 'capistrano/rails'
 require 'capistrano/passenger'
-#require "whenever/capistrano"
-
 require 'capistrano/rvm'
-set :rvm_type, :user
-set :rvm_ruby_version, '2.3.0'
+#require "whenever/capistrano"
 
 # Includes tasks from other gems included in your Gemfile
 #

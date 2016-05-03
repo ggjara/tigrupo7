@@ -11,6 +11,7 @@ group :development do
 	# gem 'capistrano-rbenv', github: "capistrano/rbenv"	
 	# Add this if you're using rvm
 	gem 'capistrano-rvm', github: "capistrano/rvm"
+	gem 'rvm-capistrano'
 	gem 'sqlite3'
 end
 
