@@ -1,0 +1,70 @@
+<% content_for :header do %>
+    <h1>Factura </h1>
+<%end%>
+
+<% content_for :content do %>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="box box-info">
+          <div class="row">
+            <div class="box-body col-xs-12 col-sm-offset-3 col-sm-6">
+              <table class="table table-hover search-table">
+                <tbody>
+                <tr>
+                  <td>ID</td>
+                  <td><%= @factura._id %></td>
+                </tr>
+                <tr>
+                  <td>Proveedor</td>
+                  <td><%= @factura.proveedor %></td>
+                </tr>
+                <tr>
+                  <td>Cliente</td>
+                  <td><%= @factura.cliente %></td>
+                </tr>
+                <tr>
+                  <td>Valor Bruto</td>
+                  <td><%= @factura.valorBruto %></td>
+                </tr>
+                <tr>
+                  <td>IVA</td>
+                  <td><%= @factura.iva %></td>
+                </tr>
+                <tr>
+                  <td>Valor Total</td>
+                  <td><%= @factura.valorTotal %></td>
+                </tr>
+                <tr>
+                  <td>Estado Pago</td>
+                  <td><%= @factura.estadoPago %></td>
+                </tr>
+                <tr>
+                  <td>ID OC</td>
+                  <td><%= @factura.id_Oc %></td>
+                </tr>
+                <tr>
+                  <td>Motivo Rechazo</td>
+                  <td><%= @factura.motivoRechazo %></td>
+                </tr>
+                <tr>
+                  <td>Motivo Anulación</td>
+                  <td><%= @factura.motivoAnulacion %></td>
+                </tr>
+                <tr>
+                  <td>Fecha creación</td>
+                  <td><%= @factura.created_at %></td>
+                </tr>
+                <tr>
+                  <td>Fecha actualización</td>
+                  <td><%= @factura.updated_at %></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+<%end%>

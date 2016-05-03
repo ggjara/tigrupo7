@@ -30,22 +30,30 @@ end
 
 def recibirOc
 	render json: {
-		"aceptado":false
+		"aceptado":false,
+		"idoc": params[:id]
 	}
 end
 
 def recibirFactura
 	render json: {
 		"validado": false,
-		"factura": params[:id]
+		"idfactura": params[:id]
 	}
 end
 
 def recibirTrx
 	render json: {
 		"validado": false,
-		"trx": params[:id]
+		"idtrx": params[:id]
 	}
+end
+
+def recibirDespacho
+	render json:{
+		"validado": false
+	}
+	
 end
 
 #Metodo para retornar Json

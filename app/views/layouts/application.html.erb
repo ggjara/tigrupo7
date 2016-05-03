@@ -32,7 +32,7 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <!-- Messages: style can be found in dropdown.less-->
-          <li class="dropdown notifications-menu">
+          <!--<li class="dropdown notifications-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-files-o"></i>
               <span class="label label-success">4</span>
@@ -40,9 +40,9 @@
             <ul class="dropdown-menu">
               <li class="header">Tienes 4 nuevas OCs</li>
               <li>
-                <!-- inner menu: contains the actual data -->
+                &lt;!&ndash; inner menu: contains the actual data &ndash;&gt;
                 <ul class="menu">
-                  <li><!-- start message -->
+                  <li>&lt;!&ndash; start message &ndash;&gt;
                     <a href="#">
                       <div class="pull-left">
                         <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
@@ -53,13 +53,13 @@
                       </h4>
                       <p>Why not buy a new awesome theme?</p>
                     </a>
-                  </li><!-- end message -->
+                  </li>&lt;!&ndash; end message &ndash;&gt;
                 </ul>
               </li>
               <li class="footer"><a href="#">See All Messages</a></li>
             </ul>
-          </li>
-          <!-- Tasks: style can be found in dropdown.less -->
+          </li>-->
+          <!-- Tasks: style can be found in dropdown.less
           <li class="dropdown tasks-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-flag-o"></i>
@@ -68,9 +68,9 @@
             <ul class="dropdown-menu">
               <li class="header">You have 9 tasks</li>
               <li>
-                <!-- inner menu: contains the actual data -->
+                &lt;!&ndash; inner menu: contains the actual data &ndash;&gt;
                 <ul class="menu">
-                  <li><!-- Task item -->
+                  <li>&lt;!&ndash; Task item &ndash;&gt;
                     <a href="#">
                       <h3>
                         Design some buttons
@@ -82,51 +82,15 @@
                         </div>
                       </div>
                     </a>
-                  </li><!-- end task item -->
+                  </li>&lt;!&ndash; end task item &ndash;&gt;
                 </ul>
               </li>
               <li class="footer">
                 <a href="#">View all tasks</a>
               </li>
             </ul>
-          </li>
-          <!-- User Account: style can be found in dropdown.less -->
-          <li class="dropdown user user-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <span class="hidden-xs">Alexander Pierce</span>
-            </a>
-            <ul class="dropdown-menu">
-              <!-- User image -->
-              <li class="user-header">
-                <%= image_tag 'person-flat.png', class: 'img-responsive' %>
-                <p>
-                  Alexander Pierce - Web Developer
-                  <small>Member since Nov. 2012</small>
-                </p>
-              </li>
-              <!-- Menu Body -->
-              <li class="user-body">
-                <div class="col-xs-4 text-center">
-                  <a href="#">Followers</a>
-                </div>
-                <div class="col-xs-4 text-center">
-                  <a href="#">Sales</a>
-                </div>
-                <div class="col-xs-4 text-center">
-                  <a href="#">Friends</a>
-                </div>
-              </li>
-              <!-- Menu Footer-->
-              <li class="user-footer">
-                <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
-                </div>
-                <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
-                </div>
-              </li>
-            </ul>
-          </li>
+          </li>-->
+
         </ul>
       </div>
     </nav>
@@ -147,7 +111,7 @@
           <p>Alexander Pierce</p>
         </div>
       </div>
-      <!-- search form -->
+<!--      &lt;!&ndash; search form &ndash;&gt;
       <form action="#" method="get" class="sidebar-form">
         <div class="input-group">
           <input type="text" name="q" class="form-control" placeholder="Search...">
@@ -155,35 +119,45 @@
                 <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
               </span>
         </div>
-      </form>
+      </form>-->
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
         <li class="header">OPCIONES</li>
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-archive"></i> <span>Bodegas</span> <i class="fa fa-angle-left pull-right"></i>
+            <i class="fa fa-archive"></i> <span>Bodega</span> <i class="fa fa-angle-left pull-right"></i>
           </a>
           <ul class="treeview-menu">
-            <li><a href="/bodegaG7" ><i class="fa fa-circle-o"></i> Bodega G7</a></li>
-            <li><a href="/"><i class="fa fa-circle-o"></i> Bodega pulmón</a></li>
+            <li><a href="/productos" ><i class="fa fa-circle-o"></i> Productos</a></li>
+            <li><a href="/almacenes"><i class="fa fa-circle-o"></i> Almacenes</a></li>
           </ul>
         </li>
         <li class="treeview " >
           <a href="/">
             <i class="fa fa-files-o"></i>
             <span>Ordenes de Compra</span>
-            <span class="label label-primary pull-right">4</span>
+            <i class="fa fa-angle-left pull-right"></i>
           </a>
           <ul class="treeview-menu">
-            <li><a href="/"><i class="fa fa-circle-o"></i> Despachos</a></li>
-            <li><a href="/"><i class="fa fa-circle-o"></i> Facturas</a></li>
-            <li><a href="/"><i class="fa fa-circle-o"></i> Pagos Asociados</a></li>
+            <li><a href="/oc_enviadas"><i class="fa fa-circle-o"></i> OCs Enviadas
+              <span class="label label-primary pull-right"><%=Oc.all.where(:cliente => '571262b8a980ba030058ab55').size %></span></a></li>
+            <li><a href="/oc_recibidas"><i class="fa fa-circle-o"></i> OCs Recibidas
+            <span class="label label-primary pull-right"><%=Oc.all.where(:proveedor => '571262b8a980ba030058ab55').size %></span></a></li>
+          </ul>
+        </li>
+        <li class="treeview " >
+          <a href="/">
+            <i class="fa fa-book"></i>
+            <span>Documentación</span>
+            <i class="fa fa-angle-left pull-right"></i>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="/api/documentacion"><i class="fa fa-circle-o"></i> Métodos</a></li>
+            <li><a href="/flujos"><i class="fa fa-circle-o"></i> Flujos de Procesos</a></li>
           </ul>
         </li>
 
-
-        <li><a href="/"><i class="fa fa-book"></i> <span>Documentación</span></a></li>
 
       </ul>
     </section>
@@ -226,7 +200,7 @@
         <h3 class="control-sidebar-heading">Recent Activity</h3>
         <ul class="control-sidebar-menu">
           <li>
-            <a href="javascript::;">
+            <a href="javascript:;">
               <i class="menu-icon fa fa-birthday-cake bg-red"></i>
               <div class="menu-info">
                 <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
@@ -235,7 +209,7 @@
             </a>
           </li>
           <li>
-            <a href="javascript::;">
+            <a href="javascript:;">
               <i class="menu-icon fa fa-user bg-yellow"></i>
               <div class="menu-info">
                 <h4 class="control-sidebar-subheading">Frodo Updated His Profile</h4>
@@ -244,7 +218,7 @@
             </a>
           </li>
           <li>
-            <a href="javascript::;">
+            <a href="javascript:;">
               <i class="menu-icon fa fa-envelope-o bg-light-blue"></i>
               <div class="menu-info">
                 <h4 class="control-sidebar-subheading">Nora Joined Mailing List</h4>
@@ -253,7 +227,7 @@
             </a>
           </li>
           <li>
-            <a href="javascript::;">
+            <a href="javascript:;">
               <i class="menu-icon fa fa-file-code-o bg-green"></i>
               <div class="menu-info">
                 <h4 class="control-sidebar-subheading">Cron Job 254 Executed</h4>
@@ -266,7 +240,7 @@
         <h3 class="control-sidebar-heading">Tasks Progress</h3>
         <ul class="control-sidebar-menu">
           <li>
-            <a href="javascript::;">
+            <a href="javascript:;">
               <h4 class="control-sidebar-subheading">
                 Custom Template Design
                 <span class="label label-danger pull-right">70%</span>
@@ -277,7 +251,7 @@
             </a>
           </li>
           <li>
-            <a href="javascript::;">
+            <a href="javascript:;">
               <h4 class="control-sidebar-subheading">
                 Update Resume
                 <span class="label label-success pull-right">95%</span>
@@ -288,7 +262,7 @@
             </a>
           </li>
           <li>
-            <a href="javascript::;">
+            <a href="javascript:;">
               <h4 class="control-sidebar-subheading">
                 Laravel Integration
                 <span class="label label-warning pull-right">50%</span>
@@ -299,7 +273,7 @@
             </a>
           </li>
           <li>
-            <a href="javascript::;">
+            <a href="javascript:;">
               <h4 class="control-sidebar-subheading">
                 Back End Framework
                 <span class="label label-primary pull-right">68%</span>
@@ -367,7 +341,7 @@
           <div class="form-group">
             <label class="control-sidebar-subheading">
               Delete chat history
-              <a href="javascript::;" class="text-red pull-right"><i class="fa fa-trash-o"></i></a>
+              <a href="javascript:;" class="text-red pull-right"><i class="fa fa-trash-o"></i></a>
             </label>
           </div><!-- /.form-group -->
         </form>
