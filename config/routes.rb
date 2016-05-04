@@ -40,7 +40,8 @@ Rails.application.routes.draw do
     root  'application#index'
     match '/iniciar' => 'application#iniciar', via: :get
     match '/consultarFtp' => 'application#consultarFtp', via: :get
-    match '/producirPrimas/:id' => 'application#producirPrimas', via: :get
+    match '/producirPrimas/:id/:cantidad' => 'application#producirPrimasSkuYCantidad', via: :get
+    match '/producirPrimas/:id' => 'application#producirPrimasSku', via: :get
     match '/prueba' => 'application#prueba', via: :get
 
   end

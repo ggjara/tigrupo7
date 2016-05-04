@@ -17,10 +17,24 @@ def iniciar
   render json: ib
 end
 
-def producirPrimas
-  sku = params[:id]
-  ProducirMateriasPrimas.new(sku)
+#Controlador que recibe id prima y cantidad a producir
+def producirPrimasSkuYCantidad
+  sku = params[:id].to_s
+  cantidad = params[:cantidad].to_i
+  render json: ProducirMateriasPrimas.new(sku).producirCantidad(cantidad)
 end
+
+#Controlador que recibe id prima y manda a producir un lote
+def producirPrimasSku
+  sku = params[:id].to_s
+  pm = ProducirMateriasPrimas.new(sku)
+  cantidad = pm.cantidadLoteProducto(sku)
+  render json: pm.producirCantidad(cantidad.to_i)
+end
+
+
+
+
 
 def prueba
   render json: Bodega.first.saldo if not nil
