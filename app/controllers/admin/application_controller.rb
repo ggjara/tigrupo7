@@ -20,8 +20,8 @@ end
 #Controlador que recibe id prima y cantidad a producir
 def producirPrimasSkuYCantidad
   sku = params[:id].to_s
-  cantidad = params[:cantidad].to_i
-  render json: ProducirMateriasPrimas.new(sku).producirCantidad(cantidad)
+  cantidad_lotes = params[:cantidad].to_i
+  render json: ProducirMateriasPrimas.new(sku).producirCantidad(cantidad_lotes)
 end
 
 #Controlador que recibe id prima y manda a producir un lote

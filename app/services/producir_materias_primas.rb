@@ -8,12 +8,12 @@ end
 #3. Se envía a producir con la info de la TRX
 
 
-def producirCantidad(cantidad)
-  if(hayPlataProducirCantidad(cantidad))
+def producirCantidad(cantidad_lotes)
+  if(hayPlataProducirCantidad(cantidad_lotes))
   	#Si hay Plata, Realizamos la TRX
-  	transaccionRealizada = realizarTrx(cantidad)
+  	transaccionRealizada = realizarTrx(cantidad_lotes)
   	#Luego de realizar la TRX, envíamos a producir
-  	respuesta = enviarAProducir(@sku, cantidad.to_i, transaccionRealizada)
+  	respuesta = enviarAProducir(@sku, cantidad_lotes.to_i, transaccionRealizada)
   	return respuesta
   else
   	return false
@@ -21,20 +21,21 @@ def producirCantidad(cantidad)
 end
 
 
-def enviarAProducir(sku, cantidad, trx)
+def enviarAProducir(sku, cantidad_lotes, trx)
 	puts 'Enviando a producir'
 	puts sku.to_s
-	puts cantidad.to_i
+	puts 'Lotes' << cantidad_lotes.to_s
 	puts trx._id.to_s
-	return RequestsBodega.new.producirStock(sku.to_s, cantidad.to_i, trx._id.to_s)
+	cantidadAproducir =cantidad_lotes * cantidadLoteProducto(@sku)
+	return RequestsBodega.new.producirStock(sku.to_s, cantidadAproducir.to_i, trx._id.to_s)
 end
 
 
 
-def realizarTrx(cantidad)
+def realizarTrx(cantidad_lotes)
 	puts 'Haciendo Transacción'
-	cantidadATransferir =cantidad*precioProduccionProducto(@sku)
-	paramsTrx = RequestsBanco.new.transferir(cantidadATransferir, Cliente.find_by(grupo: 7)._idBanco, cuentaFabrica)
+	cantidadATransferir =cantidad_lotes*cantidadLoteProducto(@sku)*precioProduccionProducto(@sku)
+	paramsTrx = RequestsBanco.new.transferir(cantidadATransferir.to_i, Cliente.find_by(grupo: 7)._idBanco, cuentaFabrica)
 	
 	transaccionRealizada = Trx.new(paramsTrx)
 	puts transaccionRealizada
@@ -49,12 +50,12 @@ def cuentaFabrica
 	return RequestsBodega.new.getCuentaFabrica.to_s
 end
 
-def hayPlataProducirCantidad(cantidad)
+def hayPlataProducirCantidad(cantidad_lotes)
 	if Bodega.first == nil
 		return false
 	end
 
-	if(cantidad*precioProduccionProducto(@sku)>Bodega.first.saldo)
+	if(cantidad_lotes*cantidadLoteProducto(@sku)*precioProduccionProducto(@sku)>Bodega.first.saldo)
 		return false
 	else
 		return true
