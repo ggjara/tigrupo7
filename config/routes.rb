@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  get 'metodos', to: 'documentos#metodos'
 
+  match '/api/documentacion'=> 'documentos#metodos', via: :get
   get 'flujos', to: 'documentos#flujos'
 
   get 'productos', to: 'productos#index'
@@ -23,7 +23,7 @@ Rails.application.routes.draw do
 
   resources :pizzas
 
-  root 'application#index'
+  root 'almacenes#show'
   match '/iniciar' => 'bodegas#iniciarBodega', via: :get
   match '/consultar' => 'bodegas#consultarInfo', via: :get
   match '/consultarFtp' => 'application#consultarFtp', via: :get
@@ -32,9 +32,10 @@ Rails.application.routes.draw do
   namespace :api, defaults: {format: :json} do
     root  'application#index'
     match '/consultar/:id'=> 'application#consultar', via: :get
-    match '/oc/recibir/:id'=> 'application#recibirOc', via: :post
-    match '/facturas/recibir/:id'=> 'application#recibirFactura', via: :post
-    match '/pagos/recibir/:id'=> 'application#recibirTrx', via: :post
+    match '/oc/recibir/:id'=> 'application#recibirOc', via: :get
+    match '/facturas/recibir/:id'=> 'application#recibirFactura', via: :get
+    match '/despachos/recibir/:id'=> 'application#recibirDespacho', via: :get
+    match '/pagos/recibir/:id'=> 'application#recibirTrx', via: :get
 
   end
 

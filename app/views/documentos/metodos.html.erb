@@ -64,7 +64,7 @@
 
         <strong><i class="fa fa-cogs margin-r-5"></i> MÉTODO</strong>
 
-        <p class="text-muted">POST</p>
+        <p class="text-muted">GET</p>
 
         <hr>
 
@@ -81,6 +81,7 @@
         <strong><i class="fa fa-reply margin-r-5"></i> RETORNO</strong>
 
         <p class="text-muted">"aceptado": boolean (true si se acepta, false si se rechaza)</p>
+         <p class="text-muted">"idoc":string (id de la OC solicitada) </p>
       </div>
       <!-- /.box-body -->
     </div>
@@ -105,7 +106,7 @@
 
         <strong><i class="fa fa-cogs margin-r-5"></i> MÉTODO</strong>
 
-        <p class="text-muted">POST</p>
+        <p class="text-muted">GET</p>
 
         <hr>
 
@@ -121,7 +122,7 @@
         <strong><i class="fa fa-reply margin-r-5"></i> RETORNO</strong>
 
         <p class="text-muted">"validado": boolean (true si se acepta, false si se rechaza)</p>
-        <p class="text-muted">"factura": string, id de la Factura</p>
+        <p class="text-muted">"idfactura": string, id de la Factura</p>
       </div>
       <!-- /.box-body -->
     </div>
@@ -146,7 +147,7 @@
 
         <strong><i class="fa fa-cogs margin-r-5"></i> MÉTODO</strong>
 
-        <p class="text-muted">POST</p>
+        <p class="text-muted">GET</p>
 
         <hr>
 
@@ -162,7 +163,46 @@
         <strong><i class="fa fa-reply margin-r-5"></i> RETORNO</strong>
 
         <p class="text-muted">"validado": boolean (true si se acepta, false si se rechaza)</p>
-        <p class="text-muted">"trx": string (idTrx)</p>
+        <p class="text-muted">"idtrx": string (id de la transacción enviada)</p>
+      </div>
+      <!-- /.box-body -->
+    </div>
+
+
+
+   <div class="box box-primary collapsed-box">
+      <div class="box-header with-border">
+        <h3 class="box-title">RECIBIR DESPACHO B2B</h3>
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+            <i class="fa fa-plus"></i></button>
+        </div>
+      </div>
+      <!-- /.box-header -->
+      <div class="box-body">
+        <strong><i class="fa fa-link margin-r-5"></i> URI</strong>
+
+        <p class="text-muted">
+          integra7.ing.puc.cl/api/despachos/recibir/.:idfactura
+        </p>
+
+        <hr>
+
+        <strong><i class="fa fa-cogs margin-r-5"></i> MÉTODO</strong>
+
+        <p class="text-muted">GET</p>
+
+        <hr>
+
+        <strong><i class="fa fa-pencil margin-r-5"></i> DESCRIPCIÓN</strong>
+
+        <p class="text-muted">Método que recibe una ID de Factura para saber que la OC fue entregada</p>
+
+        <hr>
+
+        <strong><i class="fa fa-reply margin-r-5"></i> RETORNO</strong>
+
+        <p class="text-muted">"validado": boolean (true si se acepta, false si se rechaza)</p>
       </div>
       <!-- /.box-body -->
     </div>
