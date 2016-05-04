@@ -11,10 +11,10 @@ def initialize
 end
 
 
-def despacharProductos(oc_id)
+def despacharProductos(oc_id, esFtp)
 	if(validarOcListaParaEnvio(oc_id))
 		ordenCompra = Oc.find_by(_id: oc_id)
-		return despachoDeProductos(ordenCompra)
+		return despachoDeProductos(ordenCompra, esFtp)
 	else
 		return false
 	end
@@ -51,7 +51,7 @@ def validarOcListaParaEnvio(oc_id)
 end
 
 #Despacha los productos
-def despachoDeProductos(oc)
+def despachoDeProductos(oc, esFtp)
 	sku = oc.sku
 	cantidad= oc.cantidad.to_i
 	clienteId = oc.cliente
@@ -61,7 +61,7 @@ def despachoDeProductos(oc)
 	end
 
 	#1. Envía todos los que están en almacenDespacho
-	cantidad = enviarProductosDesdeDespacho(oc, sku, cantidad, almacenDestino)
+	cantidad = enviarProductosDesdeDespacho(oc, sku, cantidad, almacenDestino, esFtp)
 	if(cantidad>0)
 		#Enviar todos los que están en pulmon a Despacho
 		enviarProductosDesdePulmonADespacho(oc, sku, cantidad)
@@ -128,11 +128,15 @@ def enviarProductosDesdePulmonADespacho(oc, sku, cantidad)
 	end	
 end
 
-def enviarProductosDesdeDespacho(oc, sku, cantidad, almacenDestino)
+def enviarProductosDesdeDespacho(oc, sku, cantidad, almacenDestino, esFtp)
 	almacenDespacho = Almacen.find_by(despacho: true)
 	while (cantidad>0 && almacenDespacho.tieneProducto(sku)) do
 		productoAEnviar= almacenDespacho.productos.find_by(sku: sku)
-		RequestsBodega.new.moverStockBodega(productoAEnviar._id, almacenDestino, oc._id, oc.precioUnitario)
+		if(esFtp)
+			RequestsBodega.new.despacharStock(productoAEnviar._id, oc.direccion, oc.precioUnitario, oc._id)
+		else
+			RequestsBodega.new.moverStockBodega(productoAEnviar._id, almacenDestino, oc._id, oc.precioUnitario)
+		end
 		almacenDespacho.eliminarEspacio
 		productoAEnviar.destroy
 		cantidad = cantidad - 1

@@ -11,8 +11,8 @@ end
 
 #Retorna todas las OC luego de revisar FTP
 def consultarFtp
-  cp= ConsultarPedidosFtp.new
-  render json: cp.consultarOcsFTP
+  ordenesConsultadas= ConsultarPedidosFtp.new.consultarOcsFTP
+  render json: ordenesConsultadas
 end
 
 

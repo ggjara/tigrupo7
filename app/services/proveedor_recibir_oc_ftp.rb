@@ -1,12 +1,9 @@
-class ProveedorRecibirOc < ApplicationController
+class ProveedorRecibirOcFtp < ApplicationController
 
 # Orden:
-# 1: Se crea la OC en la db
-# 2: Se verifica si se acepta o no
-# 3.1: Si se acepta, se acepta en server y db (Estado de la OC propio y también el que viene)
-# 3.2: Si no se acepta, se rechaza en server y db (Estado de la OC que viene)
-# 4.1: Si se acepta, se envía respueta de aceptación al cliente
-# 4.2 Si no se acepta, se envía respuesta de cancelación al cliente  
+# 1: Se verifica si se acepta o no
+# 2.1: Si se acepta, se acepta en server y db (Estado de la OC propio y también el que viene)
+# 2.2: Si no se acepta, se rechaza en server y db (Estado de la OC que viene)
 
 
 def initialize
@@ -14,29 +11,37 @@ end
 
 #Retorna arreglo con respuesta
 #respuesta: true/false si se aceptó o no la OC y oc_id: id de la orden de compra consultada
-def responderOc(oc_id)
+def responderOc(oc)
 	respuesta = false
-	ocGenerada = hacerOcDB(oc_id) #Creamos una OC o verificamos si ya existe
-	if(ocGenerada!=false) # Si ya existe, entonces no la aceptamos
-		if verificarAceptarOc(ocGenerada) #Verificamos si la podemos aceptar
-			if(aceptarOcServerDB(ocGenerada)) #Si la podemos aceptar. La aceptamos en server y DB
-				respuesta= true
-			else
-				rechazarOcServerDB(ocGenerada,'NoSePudoAceptarProblemaServidor')
-				respuesta= false
-			end
+	if verificarAceptarOc(oc) #Verificamos si la podemos aceptar
+		if(aceptarOcServerDB(oc)) #Si la podemos aceptar. La aceptamos en server y DB
+			respuesta = true
 		else
-			rechazarOcServerDB(ocGenerada, 'NoCumpleRequisitos')
-			respuesta= false
+			rechazarOcServerDB(oc,'NoSePudoAceptarProblemaServidor')
+			respuesta = false
 		end
 	else
-		rechazarOcServerDBById(oc_id,'YaFueCreadaEstaSolicitud')
-		respuesta= false
+		rechazarOcServerDB(oc, 'NoCumpleRequisitos')
+		respuesta = false
 	end
 
 	return respuesta
 end
 
+#Returna una instancia del modelo OC creado
+#Retorna False si ya recibimos OC anteriormente
+def hacerOcDB(oc_id)
+	if (Oc.find_by(_id: oc_id) != nil)
+		return false
+	else
+		request= RequestsOc.new
+		paramsOc = request.obtenerOc(oc_id)
+		ocGenerada = Oc.new(paramsOc)
+		ocGenerada.save
+		return ocGenerada
+	end
+	
+end
 
 #Retorna true or false si pasa los filtros para saber si aceptamos o no la OC
 #Verifica Pertinencia de la OC (Son productos de nosotros?)

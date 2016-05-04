@@ -10,13 +10,27 @@ end
 
 #Genera (Si no existe) una OC
 def consultarOcsFTP
+	ordenesCompraFtpPorRecepcionar =Array.new
+
 	idsOcsEnFtp = consultarPedidos
 	if idsOcsEnFtp.count>=1
 		idsOcsEnFtp.each do |id|
-			actualizarOc(id)
+			ocCreada = actualizarOc(id)
+			if ocCreada!=false
+				ordenesCompraFtpPorRecepcionar.append(ocCreada)
+			end
 		end
 	end
-	return Oc.all
+
+	#Por cada Orden de Compra va viendo si la Recibe. Si la Recibe, genera Factura y Despacha	
+
+	ordenesCompraFtpPorRecepcionar.each do |ordenCompra|
+		if(ProveedorRecibirOcFtp.new.responderOc(ordenCompra)) #Si la aceptamos, debemos ir a generar Factura
+			ProveedorEnviarFacturaFtp.new.enviarFactura(ordenCompra._id)
+		end
+	end
+
+
 end
 
 private
@@ -68,8 +82,10 @@ def actualizarOc(id)
 		if paramsOc!=false
 			ocNueva = Oc.new(paramsOc)
 			ocNueva.save
+			return ocNueva
 		end
 	end
+	return false
 end
 
 #Revisa si existe una OC con el _id consultado
