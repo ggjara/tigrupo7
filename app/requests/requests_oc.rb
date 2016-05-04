@@ -13,6 +13,7 @@ def obtenerOc(id) #CHECK
 				cliente: jsonResponse['cliente'],
 				proveedor: jsonResponse['proveedor'],
 				sku: jsonResponse['sku'],
+				direccion: jsonResponse['direccion'],
 				#fechaDespachos: jsonResponse['fechaDespachos'],
 				fechaEntrega: jsonResponse['fechaEntrega'],
 				precioUnitario: jsonResponse['precioUnitario'],

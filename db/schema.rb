@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160502222020) do
+ActiveRecord::Schema.define(version: 20160504001828) do
 
   create_table "almacenes", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -85,6 +85,7 @@ ActiveRecord::Schema.define(version: 20160502222020) do
     t.boolean  "trxRealizadaDB",      default: false
     t.boolean  "despachoRealizadoDB", default: false
     t.string   "estadoDB",            default: ""
+    t.string   "direccion"
   end
 
   create_table "params", force: :cascade do |t|

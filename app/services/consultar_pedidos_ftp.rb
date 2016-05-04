@@ -26,11 +26,11 @@ def consultarOcsFTP
 
 	ordenesCompraFtpPorRecepcionar.each do |ordenCompra|
 		if(ProveedorRecibirOcFtp.new.responderOc(ordenCompra)) #Si la aceptamos, debemos ir a generar Factura
-			ProveedorEnviarFacturaFtp.new.enviarFactura(ordenCompra._id)
+			if(ProveedorEnviarFacturaFtp.new.enviarFactura(ordenCompra._id)) #Si se genera la Factura, debemos despachar producto
+				ProveedorDespacharProductos.new.despacharProductos(ordenCompra, true)
+			end
 		end
 	end
-
-
 end
 
 private
