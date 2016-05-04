@@ -40,8 +40,8 @@ def realizarTrx(cantidad)
 	puts transaccionRealizada
 	transaccionRealizada.save
 	#Restar saldo de la Bodega
-
 	Bodega.restarSaldo(cantidadATransferir)
+
 	return transaccionRealizada	
 end
 
