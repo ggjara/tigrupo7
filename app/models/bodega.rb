@@ -88,4 +88,20 @@ def self.eliminarStockGuardado(sku,cantidad)
 	end
 end
 
+def self.restarSaldo(cantidad)
+	bodegaGrupo7 = Bodega.first
+	if(bodegaGrupo7!=nil)
+		bodegaGrupo7.saldo = bodegaGrupo7.saldo - cantidad
+		bodegaGrupo7.save
+	end
+end
+
+def self.sumarSaldo(cantidad)
+	bodegaGrupo7 = Bodega.first
+	if(bodegaGrupo7!=nil)
+		bodegaGrupo7.saldo = bodegaGrupo7.saldo + cantidad
+		bodegaGrupo7.save
+	end
+end
+
 end
