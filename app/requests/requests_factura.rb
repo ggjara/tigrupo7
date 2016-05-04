@@ -3,7 +3,7 @@ def initialize
 end
 
 #Busca en el servidor una factura por su id, retorna la factura
-def obtenerFactura(id)#Validates
+def obtenerFactura(id)
   jsonResponse = requestWebWithoutParams('GET', ('http://mare.ing.puc.cl/facturas/'<<id))
 
   if(jsonResponse==false)
@@ -27,7 +27,7 @@ def obtenerFactura(id)#Validates
   end
 end
 
-def emitirFactura(id)#Validates
+def emitirFactura(id)
   jsonResponse = requestWeb('PUT', 'http://mare.ing.puc.cl/facturas/',
     generateParam('oc',id))
 
@@ -51,7 +51,7 @@ def emitirFactura(id)#Validates
   end
 end
 
-def pagarFactura(id)#Validates
+def pagarFactura(id)
   jsonResponse = requestWeb('POST', 'http://mare.ing.puc.cl/facturas/pay/',
     generateParam('id',id))
 
@@ -76,7 +76,7 @@ def pagarFactura(id)#Validates
   end
 end
 
-def rechazarFactura(id, motivo)#Validates
+def rechazarFactura(id, motivo)
   jsonResponse = requestWeb('POST', 'http://mare.ing.puc.cl/facturas/reject/',
     generateParam('id',id), generateParam('motivo',motivo))
   if(jsonResponse==false)
@@ -100,7 +100,7 @@ def rechazarFactura(id, motivo)#Validates
   end
 end
 
-def anularFactura(id, motivo)#Validates
+def anularFactura(id, motivo)
   jsonResponse = requestWeb('POST', 'http://mare.ing.puc.cl/facturas/cancel/',
     generateParam('id',id), generateParam('motivo',motivo))
   if(jsonResponse==false)
@@ -124,7 +124,7 @@ def anularFactura(id, motivo)#Validates
   end
 end
 
-def crearBoleta(proveedor, cliente, monto)#Validates
+def crearBoleta(proveedor, cliente, monto)
   jsonResponse = requestWeb('PUT', 'http://mare.ing.puc.cl/facturas/boleta/',
     generateParam('proveedor',proveedor), generateParam('cliente',cliente),
     generateParam('total',monto))
