@@ -11,6 +11,8 @@
           <thead>
           <tr>
             <th>ID</th>
+            <th>Espacio Usado</th>
+            <th>Espacio Total</th>
             <th>SKU</th>
             <th>Stock</th>
           </tr>
@@ -19,7 +21,8 @@
           <% @Almacenes.where(:despacho => true).each do |almacen| %>
               <tr>
                 <td><%= almacen._id %></td>
-
+                <td><%= almacen.usedSpace %></td>
+                <td><%= almacen.totalSpace %></td>
                 <td>
                   <table>
                     <% almacen.productos.select("DISTINCT(SKU)").each do |prod| %>
@@ -55,6 +58,8 @@
           <thead>
           <tr>
             <th>ID</th>
+            <th>Espacio Usado</th>
+            <th>Espacio Total</th>
             <th>SKU</th>
             <th>Stock</th>
           </tr>
@@ -63,6 +68,8 @@
           <% @Almacenes.where(:recepcion => true).each do |almacen| %>
               <tr>
                 <td><%= almacen._id %></td>
+                <td><%= almacen.usedSpace %></td>
+                <td><%= almacen.totalSpace %></td>
                 <td>
                   <table>
                     <% almacen.productos.select("DISTINCT(SKU)").each do |prod| %>
@@ -98,6 +105,8 @@
           <thead>
           <tr>
             <th>ID</th>
+            <th>Espacio Usado</th>
+            <th>Espacio Total</th>
             <th>SKU</th>
             <th>Stock</th>
           </tr>
@@ -106,6 +115,8 @@
           <% @Almacenes.where(:pulmon => true).each do |almacen| %>
               <tr>
                 <td><%= almacen._id %></td>
+                <td><%= almacen.usedSpace %></td>
+                <td><%= almacen.totalSpace %></td>
                 <td>
                   <table>
                     <% almacen.productos.select("DISTINCT(SKU)").each do |prod| %>
@@ -141,6 +152,8 @@
           <thead>
           <tr>
             <th>ID</th>
+            <th>Espacio Usado</th>
+            <th>Espacio Total</th>
             <th>SKU</th>
             <th>Stock</th>
           </tr>
@@ -149,6 +162,8 @@
           <% @Almacenes.where(:pulmon => false, :despacho => false, :recepcion => false).each do |almacen| %>
               <tr>
                 <td><%= almacen._id %></td>
+                <td><%= almacen.usedSpace %></td>
+                <td><%= almacen.totalSpace %></td>
                 <td>
                   <table>
                     <% almacen.productos.select("DISTINCT(SKU)").each do |prod| %>

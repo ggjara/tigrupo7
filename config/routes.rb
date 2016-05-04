@@ -3,9 +3,9 @@ Rails.application.routes.draw do
 
   get 'flujos', to: 'documentos#flujos'
 
-  get 'productos', to: 'productos#show'
+  get 'productos', to: 'productos#index'
 
-  get 'almacenes', to: 'almacenes#show'
+  get 'almacenes', to: 'almacenes#index'
 
   get 'layouts/index'
 
