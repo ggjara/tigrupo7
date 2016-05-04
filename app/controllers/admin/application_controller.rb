@@ -20,8 +20,10 @@ end
 def producirPrimas
   sku = params[:id]
   ProducirMateriasPrimas.new(sku)
-  render json: 
+end
 
+def prueba
+  render json: Bodega.first.saldo if not nil
 end
 
 end
