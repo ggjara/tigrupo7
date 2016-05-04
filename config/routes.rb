@@ -21,12 +21,9 @@ Rails.application.routes.draw do
 
   get 'bodegas/consultar/:id' => 'bodegas#consultarProducto'
 
-  resources :pizzas
-
-  root 'almacenes#show'
-  match '/iniciar' => 'bodegas#iniciarBodega', via: :get
-  match '/consultar' => 'bodegas#consultarInfo', via: :get
-  match '/consultarFtp' => 'application#consultarFtp', via: :get
+  root 'almacenes#index'
+  
+  
 
 
   namespace :api, defaults: {format: :json} do
@@ -36,6 +33,14 @@ Rails.application.routes.draw do
     match '/facturas/recibir/:id'=> 'application#recibirFactura', via: :get
     match '/despachos/recibir/:id'=> 'application#recibirDespacho', via: :get
     match '/pagos/recibir/:id'=> 'application#recibirTrx', via: :get
+
+  end
+
+   namespace :admin do
+    root  'application#index'
+    match '/iniciar' => 'application#iniciar', via: :get
+    match '/consultarFtp' => 'application#consultarFtp', via: :get
+    match '/producirPrimas/:id' => 'application#producirPrimas', via: :get
 
   end
 
