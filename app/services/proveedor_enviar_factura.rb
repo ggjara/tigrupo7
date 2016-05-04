@@ -19,12 +19,14 @@ end
 def enviarFactura(oc_id)
 	oc = Oc.find_by(_id: oc_id)
 	if(oc==nil)
+		puts "xxxOC NO EXISTExxx"
 		return false
 	else
 		facturaCreada=hacerFacturaServerDB(oc)
+		puts "---FACTURA CREADA---"
 		if(facturaCreada!=false)
-			return true
-			return enviarFacturaACliente(facturaCreada)
+		puts "---FACTURA 'ENVIADA'---"
+			return true#enviarFacturaACliente(facturaCreada)
 		else
 			return false
 		end
@@ -42,6 +44,7 @@ def hacerFacturaServerDB(oc)
 		return facturaCreada
 	else
 		return false
+		puts "xxxNO SE PUDO EMITIR FACTURAxxx"
 	end
 end
 
@@ -50,6 +53,7 @@ def enviarFacturaACliente(facturaCreada)
 	if response!=false
 		return intrepretarRespuestaCliente(response, facturaCreada)
 	else
+			puts "xxxNO SE PUDO AVISAR CLIENTExxx"
 		return false
 	end
 end

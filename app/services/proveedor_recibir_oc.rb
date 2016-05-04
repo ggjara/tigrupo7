@@ -18,8 +18,22 @@ def responderOc(oc_id)
 	respuesta = false
 	ocGenerada = hacerOcDB(oc_id) #Creamos una OC o verificamos si ya existe
 	if(ocGenerada!=false) # Si ya existe, entonces no la aceptamos
+		puts "---OC GENERADA---"
 		if verificarAceptarOc(ocGenerada) #Verificamos si la podemos aceptar
+			puts "---PARAMS OC CORRECTOS---"
 			if(aceptarOcServerDB(ocGenerada)) #Si la podemos aceptar. La aceptamos en server y DB
+				puts "---OC GUARDADA EN SERVIDOR---"
+
+				puts "++++++++++++++++++"
+				puts ocGenerada._id
+				puts ocGenerada.proveedor
+				puts ocGenerada.cliente
+				puts ocGenerada.sku
+				puts ocGenerada.cantidad
+				puts ocGenerada.precioUnitario
+				puts ocGenerada.estadoDB
+				puts ocGenerada.estado
+				puts "++++++++++++++++++"
 				respuesta= true
 			else
 				rechazarOcServerDB(ocGenerada,'NoSePudoAceptarProblemaServidor')
@@ -41,6 +55,7 @@ end
 #Retorna False si ya recibimos OC anteriormente
 def hacerOcDB(oc_id)
 	if (Oc.find_by(_id: oc_id) != nil)
+		puts "xxxYA EXIXTExxx"
 		return false
 	else
 		request= RequestsOc.new
@@ -59,22 +74,24 @@ end
 #Verifica Precio (Corresponde al precio que está fijado?)
 #Verifica duplicados
 def verificarAceptarOc(oc)
-	if(oc.proveedor!='571262b8a980ba030058ab55')
+	if(oc.proveedor!=Cliente.find_by(grupo: 7)[:_idGrupo])
+		puts "xxxPROVEEDOR INCORRECTOxxx"
 		return false
 	end
 	if ( (oc.sku !='1') && (oc.sku !='10') && (oc.sku. != '23') && (oc.sku.!= '39'))
+		puts "xxxSKU INCORRECTOxxx"
 		return false
 	end
 
 	if (oc.precioUnitario < precioDeSku(oc.sku))
-	 	return false
+		puts "xxxPRECIO INCORRECTOxxx"
+		return false
 	end
 
 	if(!verificarStock(oc.sku, oc.cantidad))
-		puts "stock incorrecto"
-	   	return false
+		puts "xxxSTOCK INCORRECTOxxx"
+			return false
  end
-
 	return true
 end
 
@@ -83,9 +100,20 @@ def aceptarOcServerDB(oc)
 	if(estadoServidor!=false)
 		oc.estado= estadoServidor[:estado]
 		oc.save
+		#no actualiza estadoDB???
 		Bodega.guardarStock(oc.sku, oc.cantidad.to_i)
+		puts "++++++++++++++++++"
+		puts estadoServidor[:_id]
+		puts estadoServidor[:proveedor]
+		puts estadoServidor[:cliente]
+		puts estadoServidor[:sku]
+		puts estadoServidor[:cantidad]
+		puts estadoServidor[:precioUnitario]
+		puts estadoServidor[:estado]
+		puts "++++++++++++++++++"
 		return true
 	else
+		puts "xxxNO SE PUEDE RECEPCIONARxxx"
 		return false
 	end
 end
@@ -96,6 +124,7 @@ def rechazarOcServerDB(oc,rechazo)
 		oc.estado= estadoServidor[:estado]
 		oc.estadoDB= 'rechazada'
 		oc.save
+		puts "xxxRECHAZADAxxx"
 		return true
 	else
 		return false
@@ -109,6 +138,7 @@ def rechazarOcServerDBById(oc_id,rechazo)
 		oc.estado= estadoServidor[:estado]
 		oc.estadoDB= 'rechazada'
 		oc.save
+		puts "xxxRECHAZADAxxx"
 		return true
 	else
 		return false

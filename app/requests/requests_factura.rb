@@ -11,14 +11,14 @@ def obtenerFactura(id)#Validates
   else
     jsonResponse = jsonResponse.first
     paramsFactura = { _id: jsonResponse['_id'],
-      fechaCreacion: jsonResponse['created_at'],
+      created_at: jsonResponse['created_at'],#fechaCreacion
       proveedor: jsonResponse['proveedor'],
       cliente: jsonResponse['cliente'],
       valorBruto: jsonResponse['bruto'],
       iva: jsonResponse['iva'],
       valorTotal: jsonResponse['total'],
       estadoPago: jsonResponse['estado'],
-      fechaUpdate: jsonResponse['updated_at'],
+      updated_at: jsonResponse['updated_at'],#fechaUpdate
       id_Oc: jsonResponse['oc'],
       motivoRechazo: jsonResponse['rechazo'],
       motivoAnulacion: jsonResponse['anulacion']

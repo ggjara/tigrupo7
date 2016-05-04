@@ -4,7 +4,7 @@ def initialize
 end
 
 def iniciarVenta
-  idOC = params[:idoc].to_s
+  idOC = params[:id].to_s
   if (ProveedorRecibirOc.new.responderOc(idOC))
     render json: ProveedorEnviarFactura.new.enviarFactura(idOC)
   else
@@ -13,13 +13,13 @@ def iniciarVenta
 end
 
 def finalizarVenta
-  idTrx = '57297ed19fda6e0300481489'
-  idFactura = '57297d629fda6e0300481483'
-  factura = RequestsFactura.new.obtenerFactura(idFactura)#Factura.find_by(_id: idfactura)
-  if(ProveedorRecibirTrx.new.recibirTrx(idTrx, factura))
-    render json:ProveedorDespacharProductos.new.despacharProductos(factura[:id_Oc],false)
+  idTrx = '572a5e42e3648d030036a5ff'
+  idFactura = '572a5dc2e3648d030036a5e1'
+  if(ProveedorRecibirTrx.new.recibirTrx(idTrx, idFactura))
+    puts "Pago OK!"
+    render json:ProveedorDespacharProductos.new.despacharProductos(idFactura,false)
   else
-    render false
+    render json: false
   end
 
 end
