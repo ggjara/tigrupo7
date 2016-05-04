@@ -3,8 +3,8 @@ class Almacen < ActiveRecord::Base
 	has_many :productos, dependent: :destroy
 
 
-def tieneEspacio(sku)
-	if (self.totalSpace - self.usedSpace)> espacio(sku)
+def tieneEspacio(cantidad)
+	if (self.totalSpace - self.usedSpace)> cantidad
 		return true
 	else
 		return false
@@ -18,8 +18,13 @@ def tieneProducto(sku)
 	return false
 end
 
-def eliminarEspacio
-	self.usedSpace = self.usedSpace - 1
+def eliminarEspacio(cantidad)
+	self.usedSpace = self.usedSpace - cantidad
+	self.save
+end
+
+def agregarEspacio(cantidad)
+	self.usedSpace = self.usedSpace - cantidad
 	self.save
 end
 
