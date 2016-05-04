@@ -12,8 +12,32 @@ def iniciarBodega
   Producto.destroy_all
   @bodegaGrupo7 = Bodega.new(name: @nameBodega, cantAlmacenes: @cantAlmacenes)
   @bodegaGrupo7.save
+  agregarSaldo
   iniciarAlmacenes(true)
   return @bodegaGrupo7
+end
+
+#Actualiza Bodega. Retorna Bodega con 'name': 'grupo7'.
+def actualizarBodega
+  if (Bodega.first!=nil)
+    @bodegaGrupo7= Bodega.first
+    Bodega.first.almacenes.destroy_all
+    @bodegaGrupo7.save
+    puts 'Almacenes: '
+    puts Bodega.first.almacenes
+    puts 'Productos'
+    puts Bodega.first.productos
+    agregarSaldo
+    iniciarAlmacenes(true)
+    return @bodegaGrupo7
+  else
+    return false
+  end
+end
+
+def agregarSaldo
+  @bodegaGrupo7.saldo = RequestsBanco.new.obtenerCuenta(Cliente.find_by(grupo: 7)._idBanco)[:saldo].to_i
+  @bodegaGrupo7.save
 end
 
 def iniciarAlmacenes(conCreacion)

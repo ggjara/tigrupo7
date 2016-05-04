@@ -19,6 +19,7 @@ end
 #Metodo que Realiza una request y retorna el body de la respuesta Parseado
 def requestWeb(typeOfRequest, uri, *paramsRequest)
   authKey = generateAuthToken(typeOfRequest, *paramsRequest)
+  puts authKey
   headers = { "Content-Type"=> "application/json", "Authorization"=> authKey}
   response
   query = Hash.new
@@ -72,9 +73,9 @@ end
 
 #Recibe el tipo de request y el valor de los params y entrega la authToken
 def generateAuthToken(typeOfRequest, *paramsRequest)
-  #if(typeOfRequest=='POST' && paramsRequest.count == 4)
-  #return generateAuthTokenEspecialBodega
-  #else
+  if(typeOfRequest=='POST' && paramsRequest.count == 4)
+    return generateAuthTokenEspecialBodega
+  else
   	data = typeOfRequest
   	paramsRequest.each do |param|
        data= data << param.value.to_s

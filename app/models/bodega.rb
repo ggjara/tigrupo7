@@ -3,9 +3,13 @@ class Bodega < ActiveRecord::Base
 	has_many :productos, through: :almacenes
 
 
-def self.iniciarBodega
+def self.iniciarBodega(desdeCero)
 	ib = IniciarBodega.new('grupo7')
-	return ib.iniciarBodega
+	if(desdeCero)
+		return ib.iniciarBodega
+	else
+		return ib.actualizarBodega
+	end
 end
 
 def self.cambiar
@@ -14,6 +18,10 @@ def self.cambiar
 		b.cantAlmacenes= b.cantAlmacenes+1
 		b.save
 	end
+end
+
+def self.checkStockTotal(sku)
+	return checkStock(sku) - checkStockGuardado(sku)
 end
 
 def self.checkStock(sku)
@@ -84,6 +92,22 @@ def self.eliminarStockGuardado(sku,cantidad)
 				bodegaGrupo7.stockGuardadoSku39=0
 			end
 		end
+		bodegaGrupo7.save
+	end
+end
+
+def self.restarSaldo(cantidad)
+	bodegaGrupo7 = Bodega.first
+	if(bodegaGrupo7!=nil)
+		bodegaGrupo7.saldo = bodegaGrupo7.saldo - cantidad
+		bodegaGrupo7.save
+	end
+end
+
+def self.sumarSaldo(cantidad)
+	bodegaGrupo7 = Bodega.first
+	if(bodegaGrupo7!=nil)
+		bodegaGrupo7.saldo = bodegaGrupo7.saldo + cantidad
 		bodegaGrupo7.save
 	end
 end

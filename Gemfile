@@ -54,6 +54,10 @@ gem 'nokogiri'
 
 gem 'net-sftp'
 
+gem 'bootstrap-sass', '~> 3.2.0'
+gem 'autoprefixer-rails'
+gem 'font-awesome-sass'
+
 #gem 'whenever', :require => false
 
 # Use ActiveModel has_secure_password
@@ -78,6 +82,3 @@ group :development do
   gem 'spring'
 end
 
-gem 'bootstrap-sass', '~> 3.2.0'
-gem 'autoprefixer-rails'
-gem 'font-awesome-sass'
