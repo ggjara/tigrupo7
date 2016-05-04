@@ -1,5 +1,5 @@
 class AlmacenesController < ApplicationController
-  def show
+  def index
     @Almacenes = Bodega.first.almacenes
   end
 end

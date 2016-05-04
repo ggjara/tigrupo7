@@ -1,5 +1,5 @@
 class ProductosController < ApplicationController
-  def show
+  def index
     @Productos = Bodega.first.productos
   end
 end
