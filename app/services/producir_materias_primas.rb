@@ -13,27 +13,36 @@ def producirCantidad(cantidad)
   	#Si hay Plata, Realizamos la TRX
   	transaccionRealizada = realizarTrx(cantidad)
   	#Luego de realizar la TRX, envíamos a producir
-  	respuesta = enviarAProducir(cantidad, transaccionRealizada, cantidad.to_i)
-  	return true
+  	respuesta = enviarAProducir(@sku, cantidad.to_i, transaccionRealizada)
+  	puts 'Produccion'
+  	return respuesta
   else
   	return false
   end
 end
 
 
-def enviarAProducir(cantidad, trx, cantidad)
-	return RequestsBodega.new.producirStock(@sku.to_s, trx._id, cantidad.to_i)
+def enviarAProducir(sku, cantidad, trx)
+	puts 'Enviando a producir'
+	puts sku.to_s
+	puts cantidad.to_i
+	puts trx._id.to_s
+	return RequestsBodega.new.producirStock(sku.to_s, cantidad.to_i, trx._id.to_s)
 end
 
 
 
 def realizarTrx(cantidad)
+	puts 'Haciendo Transacción'
 	cantidadATransferir =cantidad*precioProduccionProducto(@sku)
 	paramsTrx = RequestsBanco.new.transferir(cantidadATransferir, Cliente.find_by(grupo: 7)._idBanco, cuentaFabrica)
 	
 	transaccionRealizada = Trx.new(paramsTrx)
+	puts 'Transaccion'
+	puts transaccionRealizada
 	transaccionRealizada.save
 	#Restar saldo de la Bodega
+
 	Bodega.restarSaldo(cantidadATransferir)
 	return transaccionRealizada	
 end
@@ -43,6 +52,7 @@ def cuentaFabrica
 end
 
 def hayPlataProducirCantidad(cantidad)
+	puts 'Verificando que Hay Plata'
 	if Bodega.first == nil
 		return false
 	end
@@ -50,6 +60,7 @@ def hayPlataProducirCantidad(cantidad)
 	if(cantidad*precioProduccionProducto(@sku)>Bodega.first.saldo)
 		return false
 	else
+		puts 'Hay Plata'
 		return true
 	end
 end

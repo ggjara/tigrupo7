@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160504012013) do
+ActiveRecord::Schema.define(version: 20160504022809) do
 
   create_table "almacenes", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -122,6 +122,7 @@ ActiveRecord::Schema.define(version: 20160504012013) do
     t.float    "monto"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+    t.datetime "fechaCreacion"
   end
 
 end
