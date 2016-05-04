@@ -11,70 +11,98 @@ class ProveedorRecibirTrx < ApplicationController
 def initialize
 end
 
-#falta implentar el uso de la facutra como parametro, por ahora solo use: factura
-def recibirTrx(trx_id)
-	if(validarTrxRecibida(trx_id))
-		aceptarTrx(trx_id)
-		return true
-	else
-		rechazarTrx(trx_id)
+
+def recibirTrx(trx_id, factura_id)
+	trxDB = guardarTrx(trx_id)
+	facturaDB = encontrarFactura(factura_id)
+	if(trxDB!=false && facturaDB!=false) #si ambas estan OK
+	puts "---TRX Y FACTURA RECIBIDAS---"
+		if(validarTrxFactura(trxDB, facturaDB))#Checkeamos que esten relaciondas
+		puts "---TRX Y FACTURA VALIDADAS---"
+			aceptarTrx(trxDB, facturaDB)
+			puts "---TRX ACEPTADA---"
+			return true
+		else
+			rechazarTrx(trxDB, facturaDB)
+			return false
+		end
+	else # trx ya existia en DB || no se encontro factura en DB
 		return false
+		trxDB.destroy
+		facturaDB.destroy
 	end
 end
 
-
-#Valida si es para nosotros, la OC existe, el precio es el que corresponde
-def validarTrxRecibida(trx_id)
+def guardarTrx(trx_id)
 	#Recibimos la trx, si ya existe una con ese id rechazamos
-	trxRecibida
-	if (Trx.find_by(_id: trx_id) != nil)
+	if (false)#Trx.find_by(_id: trx_id) != nil)
+		puts "xxxTRX YA EXISTExxx-"
 		return false
 	#si no, la guardamos en la DB
 	else
 		paramsTrx= RequestsBanco.new.obtenerTransaccion(trx_id)
 		trxRecibida = Trx.new(paramsTrx)
 		trxRecibida.save
+		return trxRecibida
 	end
+end
 
-	#verificamos que sera para nosotros
-	if(trxRecibida.cuentaDestino != '571262c3a980ba030058ab60')
+def encontrarFactura(factura_id)
+	facturaRecibida = Factura.new(RequestsFactura.new.obtenerFactura(factura_id))#solo para prueba
+	#facturaRecibida = Factura.find_by(_id: factura_id)#Buscamos la factura en la DB
+	if (facturaRecibida == nil)#Si no existe, rechazamos
+		puts "xxxFACTURA NO EXISTE EN DBxxx-"
 		return false
-	end
-	#que el monto de la transaccion corresponda al de la facturas
-	if(trxRecibida.monto != factura.valorTotal)
-		return false
-	end
-	#todo ok: true
-	else
-		return true
+	else #si existe la entregamos y seguimos
+		return facturaRecibida
 	end
 end
 
 
+#Valida si es para nosotros, la OC existe, el precio es el que corresponde
+def validarTrxFactura(trx, factura)
+	#verificamos que la trx sera para nosotros
+	if(trx.cuentaDestino != Cliente.find_by(grupo: 7)[:_idBanco])
+		puts "xxxDESTINO FACTURA INCORRECTOxxx-"
+		return false
+	end
+
+	#que el monto de la transaccion corresponda al de la factura
+	if(trx.monto != factura.valorTotal)
+		puts "MONTOS DISTINTOSxxx-"
+		return false
+	end
+		return true
+
+end
 
 
-def rechazarTrx(trx_id)
+def rechazarTrx(trx,factura)
 	#eliminamos la trx de la DB
-	Trx.find_by(_id: trx_id).destroy
+	trx.destroy
+	puts "trx eliminada"
+	puts trx._id
 	#rechazar Factura (arriba y abajo)
-	RequestsFactura.anularFactura(factura.id, 'Error en la transaccion, Venta cancelada')
-	Factura.find_by(_id: factura.id).destroy
+	RequestsFactura.anularFactura(factura._id, 'Error en la transaccion, Venta cancelada')
+	factura.destroy
+	puts "factura eliminada"
+	puts factura._id
 	#rechazar OC (arriba y abajo)
 	RequestsOc.rechazarOc(Oc.find_by(_id: factura.id_Oc), 'Error en la transaccion, Venta cancelada')
 	Oc.find_by(_id: factura.id_Oc).destroy
+	puts "oc eliminada"
 	#devolver productos guardados
 
 end
 
 
-def aceptarTrx(trx_id)
+def aceptarTrx(trx,facutra)
 	#marcar OC con trx aceptada
-	Oc.find_by(_id: factura.id_Oc).estadoDB= 'pagada'
-	#gatillar despacho
-
+	#Oc.find_by(_id: facutra.id_Oc).estadoDB= 'pagada'
+	#trx.estadoDB = 'aceptada'#no existe parametro
+	#confirmar trx url mare.ing.puc.cl/banco/trx/.:id
+	return true
 end
-
-
 
 
 end
