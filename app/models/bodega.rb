@@ -20,6 +20,10 @@ def self.cambiar
 	end
 end
 
+def self.checkStockTotal(sku)
+	return checkStock(sku) - checkStockGuardado(sku)
+end
+
 def self.checkStock(sku)
 	cant=Producto.all.where(sku: sku).count 
 	if(cant!=nil)

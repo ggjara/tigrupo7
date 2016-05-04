@@ -17,11 +17,11 @@ def consultar
 	skuAsked= params[:id].to_s
 	bodegaGrupo7 = Bodega.find_by name: 'grupo7'
 	if (bodegaGrupo7!=nil)
-		cantDisponible = Bodega.checkStock(skuAsked)
+		cantDisponible = Bodega.checkStockTotal(skuAsked)
 		render json: {total: cantDisponible}
 	else
 		bodegaGrupo7 = Bodega.iniciarBodega
-		cantDisponible = Bodega.checkStock(skuAsked)
+		cantDisponible = Bodega.checkStockTotal(skuAsked)
 		render json: {total: cantDisponible}
 	end
 end
