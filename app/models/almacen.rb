@@ -24,7 +24,7 @@ def eliminarEspacio(cantidad)
 end
 
 def agregarEspacio(cantidad)
-	self.usedSpace = self.usedSpace - cantidad
+	self.usedSpace = self.usedSpace + cantidad
 	self.save
 end
 
