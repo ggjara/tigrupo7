@@ -12,8 +12,15 @@ def consultarFtp
 end
 
 #Inicia la bodega
-def iniciar
-  ib = Bodega.iniciarBodega
+def iniciarBodega
+  desdeCero = true
+  ib = Bodega.iniciarBodega(desdeCero)
+  render json: ib
+end
+
+def actualizarBodega
+  desdeCero = false
+  ib = Bodega.iniciarBodega(desdeCero)
   render json: ib
 end
 

@@ -3,9 +3,13 @@ class Bodega < ActiveRecord::Base
 	has_many :productos, through: :almacenes
 
 
-def self.iniciarBodega
+def self.iniciarBodega(desdeCero)
 	ib = IniciarBodega.new('grupo7')
-	return ib.iniciarBodega
+	if(desdeCero)
+		return ib.iniciarBodega
+	else
+		return ib.actualizarBodega
+	end
 end
 
 def self.cambiar
