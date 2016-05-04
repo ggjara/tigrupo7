@@ -31,6 +31,8 @@ def consultarOcsFTP
 			end
 		end
 	end
+
+	return ordenesCompraFtpPorRecepcionar
 end
 
 private
