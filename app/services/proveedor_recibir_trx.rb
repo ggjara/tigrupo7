@@ -11,22 +11,22 @@ class ProveedorRecibirTrx < ApplicationController
 def initialize
 end
 
-#falta implentar el uso de la facutra como parametro, por ahora solo use: factura
-def recibirTrx(trx_id)
-	if(validarTrxRecibida(trx_id))
-		aceptarTrx(trx_id)
+
+def recibirTrx(trx_id, facturaRecibida)
+	#facturaRecibida = Factura.find_by(_id: id_factura)
+	if(validarTrxRecibida(trx_id, facturaRecibida))
+		aceptarTrx(trx_id, facturaRecibida)
 		return true
 	else
-		rechazarTrx(trx_id)
+		rechazarTrx(trx_id, facturaRecibida)
 		return false
 	end
 end
 
 
 #Valida si es para nosotros, la OC existe, el precio es el que corresponde
-def validarTrxRecibida(trx_id)
+def validarTrxRecibida(trx_id, facturaRecibida)
 	#Recibimos la trx, si ya existe una con ese id rechazamos
-	trxRecibida
 	if (Trx.find_by(_id: trx_id) != nil)
 		return false
 	#si no, la guardamos en la DB
@@ -35,43 +35,39 @@ def validarTrxRecibida(trx_id)
 		trxRecibida = Trx.new(paramsTrx)
 		trxRecibida.save
 	end
-
 	#verificamos que sera para nosotros
 	if(trxRecibida.cuentaDestino != '571262c3a980ba030058ab60')
 		return false
 	end
 	#que el monto de la transaccion corresponda al de la facturas
-	if(trxRecibida.monto != factura.valorTotal)
+	if(trxRecibida.monto != facturaRecibida[:valorTotal])
 		return false
 	end
-	#todo ok: true
-	else
 		return true
-	end
+
 end
 
 
 
 
-def rechazarTrx(trx_id)
+def rechazarTrx(trx_id,facturaRecibida)
 	#eliminamos la trx de la DB
 	Trx.find_by(_id: trx_id).destroy
 	#rechazar Factura (arriba y abajo)
-	RequestsFactura.anularFactura(factura.id, 'Error en la transaccion, Venta cancelada')
+	RequestsFactura.anularFactura(facturaRecibida[:id], 'Error en la transaccion, Venta cancelada')
 	Factura.find_by(_id: factura.id).destroy
 	#rechazar OC (arriba y abajo)
-	RequestsOc.rechazarOc(Oc.find_by(_id: factura.id_Oc), 'Error en la transaccion, Venta cancelada')
+	RequestsOc.rechazarOc(Oc.find_by(_id: facturaRecibida[:id_Oc]), 'Error en la transaccion, Venta cancelada')
 	Oc.find_by(_id: factura.id_Oc).destroy
 	#devolver productos guardados
 
 end
 
 
-def aceptarTrx(trx_id)
+def aceptarTrx(trx_id,facturaRecibida)
 	#marcar OC con trx aceptada
-	Oc.find_by(_id: factura.id_Oc).estadoDB= 'pagada'
-	#gatillar despacho
-
+	#Oc.find_by(_id: facturaRecibida[:id_Oc]).estadoDB= 'pagada'
+	return true
 end
 
 

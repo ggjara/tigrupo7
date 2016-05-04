@@ -35,14 +35,14 @@ def emitirFactura(id)#Validates
     return jsonResponse
   else
     paramsFactura = { _id: jsonResponse['_id'],
-      fechaCreacion: jsonResponse['created_at'],
+      created_at: jsonResponse['created_at'],
       proveedor: jsonResponse['proveedor'],
       cliente: jsonResponse['cliente'],
       valorBruto: jsonResponse['bruto'],
       iva: jsonResponse['iva'],
       valorTotal: jsonResponse['total'],
       estadoPago: jsonResponse['estado'],
-      fechaUpdate: jsonResponse['updated_at'],
+      updated_at: jsonResponse['updated_at'],
       id_Oc: jsonResponse['oc'],
       motivoRechazo: jsonResponse['rechazo'],
       motivoAnulacion: jsonResponse['anulacion']

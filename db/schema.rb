@@ -119,7 +119,7 @@ ActiveRecord::Schema.define(version: 20160504001828) do
     t.string   "cuentaOrigen"
     t.string   "cuentaDestino"
     t.float    "monto"
-    t.datetime "created_at",    null: false
+    t.datetime "fechaCreacion",    null: false
     t.datetime "updated_at",    null: false
   end
 

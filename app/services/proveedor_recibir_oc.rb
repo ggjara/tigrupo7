@@ -6,7 +6,7 @@ class ProveedorRecibirOc < ApplicationController
 # 3.1: Si se acepta, se acepta en server y db (Estado de la OC propio y también el que viene)
 # 3.2: Si no se acepta, se rechaza en server y db (Estado de la OC que viene)
 # 4.1: Si se acepta, se envía respueta de aceptación al cliente
-# 4.2 Si no se acepta, se envía respuesta de cancelación al cliente  
+# 4.2 Si no se acepta, se envía respuesta de cancelación al cliente
 
 
 def initialize
@@ -37,6 +37,21 @@ def responderOc(oc_id)
 	return respuesta
 end
 
+#Returna una instancia del modelo OC creado
+#Retorna False si ya recibimos OC anteriormente
+def hacerOcDB(oc_id)
+	if (Oc.find_by(_id: oc_id) != nil)
+		return false
+	else
+		request= RequestsOc.new
+		paramsOc = request.obtenerOc(oc_id)
+		ocGenerada = Oc.new(paramsOc)
+		ocGenerada.save
+		return ocGenerada
+	end
+
+end
+
 
 #Retorna true or false si pasa los filtros para saber si aceptamos o no la OC
 #Verifica Pertinencia de la OC (Son productos de nosotros?)
@@ -44,7 +59,7 @@ end
 #Verifica Precio (Corresponde al precio que está fijado?)
 #Verifica duplicados
 def verificarAceptarOc(oc)
-	if(oc.proveedor!=Cliente.find_by(grupo: 7)._idGrupo)
+	if(oc.proveedor!='571262b8a980ba030058ab55')
 		return false
 	end
 	if ( (oc.sku !='1') && (oc.sku !='10') && (oc.sku. != '23') && (oc.sku.!= '39'))
@@ -56,8 +71,9 @@ def verificarAceptarOc(oc)
 	end
 
 	if(!verificarStock(oc.sku, oc.cantidad))
+		puts "stock incorrecto"
 	   	return false
-	end
+ end
 
 	return true
 end
@@ -66,7 +82,6 @@ def aceptarOcServerDB(oc)
 	estadoServidor = RequestsOc.new.recepcionarOc(oc._id)
 	if(estadoServidor!=false)
 		oc.estado= estadoServidor[:estado]
-		oc.estadoDB= 'aceptada'
 		oc.save
 		Bodega.guardarStock(oc.sku, oc.cantidad.to_i)
 		return true
@@ -86,7 +101,7 @@ def rechazarOcServerDB(oc,rechazo)
 		return false
 	end
 end
-	
+
 def rechazarOcServerDBById(oc_id,rechazo)
 	oc = Oc.find_by(_id: oc_id)
 	estadoServidor = RequestsOc.new.rechazarOc(oc._id,rechazo)
@@ -99,13 +114,13 @@ def rechazarOcServerDBById(oc_id,rechazo)
 		return false
 	end
 end
-	
+
 
 def precioDeSku(sku)
 	if sku=='1' || sku==1
 		return 1159
 	elsif sku=='10' || sku==10
-		return  15718 
+		return  15718
 	elsif sku=='23'|| sku==23
 		return 4294
 	elsif sku=='39'|| sku==39
@@ -128,5 +143,3 @@ end
 
 
 end
-
-

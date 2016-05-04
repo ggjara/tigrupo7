@@ -7,7 +7,7 @@ class ProveedorEnviarFactura < ApplicationController
 # 3: Se envía request a cliente
 # 4: Se analiza la respuesta del cliente
 # 5.1: Si l cliente acepta la factura. Se actualiza información de la factur en DB y Server.
-# 5.2: Si el cliente no acepta la factura. Se actualiza info DByServer. El cliente rechazar anular la OC 
+# 5.2: Si el cliente no acepta la factura. Se actualiza info DByServer. El cliente rechazar anular la OC
 # 5.3: Cambio variables de la OC
 
 
@@ -23,7 +23,8 @@ def enviarFactura(oc_id)
 	else
 		facturaCreada=hacerFacturaServerDB(oc)
 		if(facturaCreada!=false)
-			enviarFacturaACliente(facturaCreada)
+			return true
+			return enviarFacturaACliente(facturaCreada)
 		else
 			return false
 		end
@@ -62,17 +63,17 @@ def intrepretarRespuestaCliente(response, facturaCreada)
 	else
 		return false
 	end
-	
+
 end
 
 def uriCliente(id_cliente, id_factura)
-	cliente =Cliente.find_by(_idGrupo: id_cliente) 
+	cliente =Cliente.find_by(_idGrupo: id_cliente)
 	if(cliente!=nil)
 		uri= 'http://integra'<<cliente.grupo.to_s<<'.ing.puc.cl/facturas/recibir/'<<id_factura
 		return uri
 	else
 		return false
-	end	
+	end
 end
 
 end

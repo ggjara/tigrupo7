@@ -73,7 +73,7 @@ def rechazarOc(oc_id, rechazo) #CHECK
 	if(jsonResponse==false)
 		return jsonResponse
 	else
-		jsonResponse = jsonResponse.first
+		#jsonResponse = jsonResponse.first
 		paramsOc = { _id: jsonResponse['_id'],
 			cliente: jsonResponse['cliente'],
 			proveedor: jsonResponse['proveedor'],

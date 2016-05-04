@@ -23,7 +23,7 @@ def obtenerTransaccion(id)#Validates
   else
     jsonResponse = jsonResponse.first
     paramsBanco = { _id: jsonResponse['_id'],
-			fechaCreacion: jsonResponse['fechaCreacion'],
+			created_at: jsonResponse['fechaCreacion'],
       cuentaOrigen: jsonResponse['origen'],
       cuentaDestino: jsonResponse['destino'],
 			monto: jsonResponse['monto']}

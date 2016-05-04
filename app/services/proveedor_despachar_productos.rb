@@ -12,13 +12,13 @@ end
 
 
 def despacharProductos(oc_id, esFtp)
-	if(validarOcListaParaEnvio(oc_id))
-		ordenCompra = Oc.find_by(_id: oc_id)
+	if(true)#validarOcListaParaEnvio(oc_id))
+		ordenCompra = RequestsOc.new.obtenerOc(oc_id)#Oc.find_by(_id: oc_id)
 		return despachoDeProductos(ordenCompra, esFtp)
 	else
 		return false
 	end
-	
+
 end
 
 
@@ -52,9 +52,9 @@ end
 
 #Despacha los productos
 def despachoDeProductos(oc, esFtp)
-	sku = oc.sku
-	cantidad= oc.cantidad.to_i
-	clienteId = oc.cliente
+	sku = oc[:sku]#.sku
+	cantidad= oc[:cantidad]#.cantidad.to_i
+	clienteId = oc[:cliente]#.cliente
 	almacenDestino = getAlmacenCliente(clienteId)
 	if(almacenDestino==false)
 		return false
@@ -75,7 +75,7 @@ def despachoDeProductos(oc, esFtp)
 					#Envia de un almacen a Despacho
 					enviarProductosDesdeAlmacenADespacho(oc, sku, cantidad, almacen)
 					#Envia de Despacho a Cliente
-					cantidad = enviarProductosDesdeDespacho(oc, sku, cantidad, almacenDestino)
+					cantidad = enviarProductosDesdeDespacho(oc, sku, cantidad, almacenDestino, esFtp)
 					break if cantidad<=0
 				end
 				oc.despachadoRealizadoDB=true
@@ -88,22 +88,22 @@ def despachoDeProductos(oc, esFtp)
 			return true
 		end
 	else
-		oc.despachadoRealizadoDB=true
-		oc.save
+		#oc.despachadoRealizadoDB=true
+		#oc.save
 		return true
-	end		
+	end
 end
 
 def enviarProductosDesdeAlmacenADespacho(oc, sku, cantidad, almacen)
 	almacenDespacho = Almacen.find_by(despacho: true)
-	
+
 	while(almacen.tieneProducto(sku) && almacenDespacho.tieneEspacio(sku)) do
 		productoAEnviar = almacen.productos.find_by(sku: sku)
 		RequestsBodega.new.moverStock(productoAEnviar._id, almacenDespacho._id)
 		productoAEnviar.almacen= almacenDespacho
 		almacen.eliminarEspacio
-	end	
-	
+	end
+
 end
 
 def enviarProductosDesdePulmonADespacho(oc, sku, cantidad)
@@ -118,14 +118,14 @@ def enviarProductosDesdePulmonADespacho(oc, sku, cantidad)
 	end
 
 	almacenDespacho = Almacen.find_by(despacho: true)
-	
+
 	while(almacenRecepcion.tieneProducto(sku) && almacenDespacho.tieneEspacio(sku)) do
 		productoAEnviar = almacenRecepcion.productos.find_by(sku: sku)
 		RequestsBodega.new.moverStock(productoAEnviar._id, almacenDespacho._id)
 		productoAEnviar.almacen=almacenDespacho
 		productoAEnviar.save
 		almacenRecepcion.eliminarEspacio
-	end	
+	end
 end
 
 def enviarProductosDesdeDespacho(oc, sku, cantidad, almacenDestino, esFtp)
@@ -135,7 +135,7 @@ def enviarProductosDesdeDespacho(oc, sku, cantidad, almacenDestino, esFtp)
 		if(esFtp)
 			RequestsBodega.new.despacharStock(productoAEnviar._id, oc.direccion, oc.precioUnitario, oc._id)
 		else
-			RequestsBodega.new.moverStockBodega(productoAEnviar._id, almacenDestino, oc._id, oc.precioUnitario)
+			RequestsBodega.new.moverStockBodega(productoAEnviar._id, almacenDestino, oc[:_id], oc[:precioUnitario])
 		end
 		almacenDespacho.eliminarEspacio
 		productoAEnviar.destroy
@@ -148,12 +148,12 @@ end
 
 
 def getAlmacenCliente(cliente)
-	cliente =Cliente.find_by(_idGrupo: cliente) 
+	cliente =Cliente.find_by(_idGrupo: cliente)
 	if(cliente!=nil)
 		return cliente._idAlmacenRecepcion
 	else
 		return false
-	end	
+	end
 end
 
 
