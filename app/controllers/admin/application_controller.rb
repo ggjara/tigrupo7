@@ -35,8 +35,7 @@ end
 def producirPrimasSku
   sku = params[:id].to_s
   pm = ProducirMateriasPrimas.new(sku)
-  cantidad = pm.cantidadLoteProducto(sku)
-  render json: pm.producirCantidad(cantidad.to_i)
+  render json: pm.producirCantidad(1)
 end
 
 

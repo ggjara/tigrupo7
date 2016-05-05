@@ -1,4 +1,4 @@
-class ProducirMateriasPrimas < ApplicationController
+	class ProducirMateriasPrimas < ApplicationController
 def initialize(sku)
   @sku =sku 
 end
@@ -22,10 +22,10 @@ end
 
 
 def enviarAProducir(sku, cantidad_lotes, trx)
-	puts 'Enviando a producir'
-	puts sku.to_s
-	puts 'Lotes' << cantidad_lotes.to_s
-	puts trx._id.to_s
+	puts '---Enviando a producir--'
+	puts 'Sku: '<<sku.to_s
+	puts 'Lotes: ' << cantidad_lotes.to_s
+	puts 'TRX: '<<trx._id.to_s
 	cantidadAproducir =cantidad_lotes * cantidadLoteProducto(@sku)
 	return RequestsBodega.new.producirStock(sku.to_s, cantidadAproducir.to_i, trx._id.to_s)
 end
@@ -38,11 +38,10 @@ def realizarTrx(cantidad_lotes)
 	paramsTrx = RequestsBanco.new.transferir(cantidadATransferir.to_i, Cliente.find_by(grupo: 7)._idBanco, cuentaFabrica)
 	
 	transaccionRealizada = Trx.new(paramsTrx)
-	puts transaccionRealizada
+	puts "Trx: " << transaccionRealizada._id
 	transaccionRealizada.save
 	#Restar saldo de la Bodega
 	Bodega.restarSaldo(cantidadATransferir)
-
 	return transaccionRealizada	
 end
 

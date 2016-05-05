@@ -5,7 +5,6 @@ class ProveedorRecibirOcFtp < ApplicationController
 # 2.1: Si se acepta, se acepta en server y db (Estado de la OC propio y también el que viene)
 # 2.2: Si no se acepta, se rechaza en server y db (Estado de la OC que viene)
 
-
 def initialize
 end
 
@@ -28,20 +27,6 @@ def responderOc(oc)
 	return respuesta
 end
 
-#Returna una instancia del modelo OC creado
-#Retorna False si ya recibimos OC anteriormente
-def hacerOcDB(oc_id)
-	if (Oc.find_by(_id: oc_id) != nil)
-		return false
-	else
-		request= RequestsOc.new
-		paramsOc = request.obtenerOc(oc_id)
-		ocGenerada = Oc.new(paramsOc)
-		ocGenerada.save
-		return ocGenerada
-	end
-	
-end
 
 #Retorna true or false si pasa los filtros para saber si aceptamos o no la OC
 #Verifica Pertinencia de la OC (Son productos de nosotros?)
@@ -49,18 +34,23 @@ end
 #Verifica Precio (Corresponde al precio que está fijado?)
 #Verifica duplicados
 def verificarAceptarOc(oc)
+	puts'----VERIFICANDO-----'
 	if(oc.proveedor!=Cliente.find_by(grupo: 7)._idGrupo)
+		puts'XXXX Rechazo XXXX PERTENENCIA'
 		return false
 	end
 	if ( (oc.sku !='1') && (oc.sku !='10') && (oc.sku. != '23') && (oc.sku.!= '39'))
+		puts'XXXX Rechazo XXXX SKU'
 		return false
 	end
 
 	if (oc.precioUnitario < precioDeSku(oc.sku))
+		puts'XXXX Rechazo XXXX PRECIO'
 	 	return false
 	end
 
 	if(!verificarStock(oc.sku, oc.cantidad))
+		puts'XXXX Rechazo XXXX STOCK'
 	   	return false
 	end
 
@@ -68,19 +58,22 @@ def verificarAceptarOc(oc)
 end
 
 def aceptarOcServerDB(oc)
+	puts'----ACEPTAR EN SERVER-----'
 	estadoServidor = RequestsOc.new.recepcionarOc(oc._id)
 	if(estadoServidor!=false)
 		oc.estado= estadoServidor[:estado]
-		oc.estadoDB= 'aceptada'
+		oc.estadoDB = 'aceptada'
 		oc.save
 		Bodega.guardarStock(oc.sku, oc.cantidad.to_i)
 		return true
 	else
+		puts'----ERROR EN SERVER-----'
 		return false
 	end
 end
 
 def rechazarOcServerDB(oc,rechazo)
+	puts'----RECHAZAR EN SERVER-----'
 	estadoServidor = RequestsOc.new.rechazarOc(oc._id,rechazo)
 	if(estadoServidor!=false)
 		oc.estado= estadoServidor[:estado]
@@ -88,23 +81,11 @@ def rechazarOcServerDB(oc,rechazo)
 		oc.save
 		return true
 	else
+		puts'----ERROR EN SERVER-----'
 		return false
 	end
 end
-	
-def rechazarOcServerDBById(oc_id,rechazo)
-	oc = Oc.find_by(_id: oc_id)
-	estadoServidor = RequestsOc.new.rechazarOc(oc._id,rechazo)
-	if(estadoServidor!=false)
-		oc.estado= estadoServidor[:estado]
-		oc.estadoDB= 'rechazada'
-		oc.save
-		return true
-	else
-		return false
-	end
-end
-	
+		
 
 def precioDeSku(sku)
 	if sku=='1' || sku==1
@@ -125,10 +106,6 @@ def verificarStock(sku, cantidad)
 		return true
 	end
 end
-
-
-
-
 
 end
 

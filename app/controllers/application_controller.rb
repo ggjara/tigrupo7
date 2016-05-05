@@ -19,7 +19,6 @@ end
 #Metodo que Realiza una request y retorna el body de la respuesta Parseado
 def requestWeb(typeOfRequest, uri, *paramsRequest)
   authKey = generateAuthToken(typeOfRequest, *paramsRequest)
-  puts authKey
   headers = { "Content-Type"=> "application/json", "Authorization"=> authKey}
   response
   query = Hash.new
@@ -78,8 +77,11 @@ def generateAuthToken(typeOfRequest, *paramsRequest)
   else
   	data = typeOfRequest
   	paramsRequest.each do |param|
-       data= data << param.value.to_s
+      if param.name!='limit'
+        data= data << param.value.to_s
+      end
     end
+  end
     #Clave única Grupo7
     authToken= 'INTEGRACION grupo7:' << hmac_sha1(data, 'Z2ngwOHM%Jb.oMx')
     return authToken

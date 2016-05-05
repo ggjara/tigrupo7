@@ -24,9 +24,7 @@ Rails.application.routes.draw do
   resources :pizzas
 
   root 'almacenes#index'
-  match '/iniciar' => 'bodegas#iniciarBodega', via: :get
-  match '/consultar' => 'bodegas#consultarInfo', via: :get
-  match '/consultarFtp' => 'application#consultarFtp', via: :get
+
   match '/testb2b/' => 'testb2b#finalizarVenta', via: :get
 
 

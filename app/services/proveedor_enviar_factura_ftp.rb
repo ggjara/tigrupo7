@@ -28,14 +28,16 @@ def enviarFactura(oc_id)
 end
 
 def hacerFacturaServerDB(oc)
+	puts'----HACIENDO FACTURA-----'
 	paramsFactura = RequestsFactura.new.emitirFactura(oc._id)
 	if(paramsFactura!=nil)
 		facturaCreada= Factura.new(paramsFactura)
 		facturaCreada.save
-		oc.facturaRealizadaDB=true
+		oc.facturaRealizadaDB = true
 		oc.save
 		return facturaCreada
 	else
+		puts'----ERROR EN SERVER-----'
 		return false
 	end
 end
