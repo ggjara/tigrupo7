@@ -19,7 +19,6 @@ end
 #Metodo que Realiza una request y retorna el body de la respuesta Parseado
 def requestWeb(typeOfRequest, uri, *paramsRequest)
   authKey = generateAuthToken(typeOfRequest, *paramsRequest)
-  puts authKey
   headers = { "Content-Type"=> "application/json", "Authorization"=> authKey}
   response
   query = Hash.new

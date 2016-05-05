@@ -13,6 +13,7 @@ def despacharProductos(ordenCompra, esFtp)
 		return false
 	else
 		if(validarOcListaParaEnvio(ordenCompra, esFtp))
+			puts 'Va!!!'
 			return despachoDeProductos(ordenCompra, esFtp)
 		else
 			return false
@@ -23,17 +24,18 @@ end
 
 #Despacha los productos
 def despachoDeProductos(oc, esFtp)
-	sku = oc[:sku]#.sku
-	cantidad= oc[:cantidad]#.cantidad.to_i
-	clienteId = oc[:cliente]#.cliente
+	sku = oc.sku#.sku
+	cantidad= oc.cantidad#.cantidad.to_i
+	clienteId = oc.cliente#.cliente
 	almacenDestino = getAlmacenCliente(clienteId)
 	if(almacenDestino==false && !esFtp)
 		return false
 	end
 	#1. Envía todos los que están en almacenDespacho
+	puts '#1. Envía todos los que están en almacenDespacho'
 	cantidad = enviarProductosDesdeDespacho(oc, sku, cantidad, almacenDestino, esFtp)
 	if(cantidad>0)
-		#2. Envía todos los de los demás almacenes
+		puts '#2. Envía todos los de los demás almacenes'
 		otrosAlmacenes = Almacen.where(pulmon: false, despacho: false)
 		otrosAlmacenes.each do |otroAlmacen| 
 			enviarProductosDesdeAlmacenADespacho(sku, otroAlmacen, cantidad)
@@ -41,7 +43,7 @@ def despachoDeProductos(oc, esFtp)
 			break if cantidad <= 0
 		end
 		if(cantidad > 0)
-			#Envia desde Pulmon a Despacho y de Ahí para afuera
+			puts '#3. Envia desde Pulmon a Despacho y de Ahí para afuera'
 			enviarProductosDesdePulmonADespacho(sku, cantidad)
 			cantidad = enviarProductosDesdeDespacho(oc, sku, cantidad, almacenDestino, esFtp)
 			if(cantidad>0)
@@ -54,21 +56,25 @@ def despachoDeProductos(oc, esFtp)
 					return false
 				else
 					oc.despachoRealizadoDB =true
+					oc.estado = 'finalizada'
 					oc.save
 					return true
 				end
 			else
 				oc.despachoRealizadoDB =true
+				oc.estado = 'finalizada'
 				oc.save
 				return true
 			end
 		else
 			oc.despachoRealizadoDB=true
+			oc.estado = 'finalizada'
 			oc.save
 			return true
 		end
 	else
 		oc.despachoRealizadoDB=true
+		oc.estado = 'finalizada'
 		oc.save
 		return true
 	end	
@@ -149,11 +155,11 @@ def enviarProductosDesdeDespacho(oc, sku, cantidad, almacenDestino, esFtp)
 	productosGenerados = Array.new
 	while (cantidad>0 && almacenDespacho.tieneProducto(sku)) do
 		if(productosGenerados.count==0)
-			productosGenerados = cargarProductos(sku, almacenDespacho)
+			productosGenerados = cargarProductos(sku.to_s, almacenDespacho)
 		end
 		productoAEnviar = productosGenerados.first
 		if(esFtp)
-			RequestsBodega.new.despacharStock(productoAEnviar._id, oc.direccion, oc.precioUnitario, oc._id)
+			RequestsBodega.new.despacharStock(productoAEnviar._id, 'direccion', oc.precioUnitario, oc._id)
 		else
 			RequestsBodega.new.moverStockBodega(productoAEnviar._id, almacenDestino, oc._id, oc.precioUnitario)
 		end
@@ -239,7 +245,6 @@ def validarOcListaParaEnvio(ordenCompra, esFtp)
 
 	return true
 end
-
 
 
 def getAlmacenCliente(cliente)

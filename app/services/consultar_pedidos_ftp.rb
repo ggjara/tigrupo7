@@ -1,4 +1,4 @@
-class ConsultarPedidosFtp < ApplicationController
+class ConsultarPedidosFtp< ApplicationController
 
 def initialize	
 end
@@ -18,7 +18,7 @@ def consultarOcsFTP
 
 	#Cada OC nueva se procesa
 	ordenesCompraFtpPorRecepcionar.each do |ordenCompra|
-		#procesarOc(ordenCompra)
+		procesarOc(ordenCompra)
 	end
 	return ordenesCompraFtpPorRecepcionar
 end

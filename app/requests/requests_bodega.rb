@@ -115,15 +115,12 @@ end
 
 # Despacha un producto a una dirección de una OC #CHECK
 def despacharStock(producto_id, direccion, precio, oc_id)
-  puts 'A mandar: '
-  puts producto_id
-  puts direccion
-  puts precio
-  puts oc_id
+
   jsonDespacharStock = requestWeb('DELETE', 'http://integracion-2016-dev.herokuapp.com/bodega/stock',
     generateParam('productoId', producto_id.to_s), generateParam('direccion', direccion.to_s),
     generateParam('precio', precio.to_i), generateParam('oc', oc_id.to_s))
-
+  puts '---- Respuesta:'
+  puts jsonDespacharStock
 	return jsonDespacharStock
 end
 
@@ -142,4 +139,8 @@ def getCuentaFabrica #CHECK
     return jsonCuentaFabrica['cuentaId']
 end
 
+def hola
+return generateAuthToken('DELETE', generateParam('productoId', '5729a20eb8b57203000a8ae8'), generateParam('direccion', 'direccion'),
+    generateParam('precio', 2676), generateParam('oc', '5729925f6187030300aacf16') )
+end
 end
