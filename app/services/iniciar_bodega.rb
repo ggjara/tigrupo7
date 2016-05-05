@@ -65,7 +65,7 @@ end
 
 def iniciarStock(almacen_id, sku, conCreacion)
   if(conCreacion)
-    paramsProductos = RequestsBodega.new.getStock(almacen_id, sku)
+    paramsProductos = RequestsBodega.new.getStock(almacen_id, sku, 200)
     paramsProductos.each do |paramsProducto|
       productoCreado = Producto.new(paramsProducto)
       productoCreado.almacen = Almacen.where(_id: almacen_id).first

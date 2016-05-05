@@ -1,17 +1,11 @@
 class ConsultarPedidosFtp < ApplicationController
 
-
-
-
-
-
 def initialize	
 end
 
 #Genera (Si no existe) una OC
 def consultarOcsFTP
 	ordenesCompraFtpPorRecepcionar =Array.new
-
 	idsOcsEnFtp = consultarPedidos
 	if idsOcsEnFtp.count>=1
 		idsOcsEnFtp.each do |id|
@@ -22,20 +16,28 @@ def consultarOcsFTP
 		end
 	end
 
-	#Por cada Orden de Compra va viendo si la Recibe. Si la Recibe, genera Factura y Despacha	
-
+	#Cada OC nueva se procesa
 	ordenesCompraFtpPorRecepcionar.each do |ordenCompra|
-		if(ProveedorRecibirOcFtp.new.responderOc(ordenCompra)) #Si la aceptamos, debemos ir a generar Factura
-			if(ProveedorEnviarFacturaFtp.new.enviarFactura(ordenCompra._id)) #Si se genera la Factura, debemos despachar producto
-				ProveedorDespacharProductos.new.despacharProductos(ordenCompra, true)
-			end
-		end
+		#procesarOc(ordenCompra)
 	end
-
 	return ordenesCompraFtpPorRecepcionar
 end
 
+#Procesar OC: Verificar si la aceptamos. Generar Factura. Despachar productos
+def procesarOc(ordenCompra)
+	puts ':) Procesando OC: '<< ordenCompra._id.to_s
+	if(ProveedorRecibirOcFtp.new.responderOc(ordenCompra)) #Si la aceptamos, debemos ir a generar Factura
+		puts ':) Aceptamos OC'
+		if(ProveedorEnviarFacturaFtp.new.enviarFactura(ordenCompra._id)) #Si se genera la Factura, debemos despachar producto
+			puts ':) Enviamos Factura'
+			ProveedorDespacharProductos.new.despacharProductos(ordenCompra, true)
+			puts ':) Despachamos productos'
+		end
+	end
+end
+
 private
+
 #Revisa el FTP y retorna un arreglo con los _ids de las OCs que están
 def consultarPedidos
 	require 'net/ftp'
@@ -76,7 +78,6 @@ def consultarPedidos
 	end
 	return pedidos
 end
-
 #Revisa si existe la OC. Si no existe, la obtiene de otro metodo y después la crea.
 def actualizarOc(id)
 	if noExisteOc(id)
