@@ -89,7 +89,7 @@ def enviarProductosDesdeAlmacenADespacho(sku, almacen, cantidad)
 		productoAEnviar.save
 		almacen.eliminarEspacio(1)
 		almacenDespacho.agregarEspacio(1)
-		cantidadMovida = cantidadMovida+!
+		cantidadMovida = cantidadMovida+1
 		break if cantidadMovida > cantidad
 	end
 end
@@ -105,7 +105,7 @@ def enviarProductosDesdePulmonADespacho(sku, cantidad)
 		productoAEnviar.save
 		almacenPulmon.eliminarEspacio(1)
 		almacenRecepcion.agregarEspacio(1)
-		cantidadMovida = cantidadMovida+!
+		cantidadMovidaDesdePulmon = cantidadMovidaDesdePulmon +1
 		break if cantidadMovidaDesdePulmon > cantidad
 	end
 	enviarProductosDesdeAlmacenADespacho(sku, almacenRecepcion, cantidad)
