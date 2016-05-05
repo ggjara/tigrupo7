@@ -12,21 +12,10 @@ end
 
 
 def despacharProductos(ordenCompra, esFtp)
-	puts'----INICIANDO DESPACHO-----'
-	#solo en version prueba
-	# oc_id = RequestsFactura.new.obtenerFactura(factura_id)[:id_Oc]
-	# #ordenCompra= Oc.find_by(_id: oc_id)
-	# ordenCompra = Oc.new(RequestsOc.new.obtenerOc(oc_id))
-	# ordenCompra.estado='aceptada'
-	# ordenCompra.facturaRealizadaDB = true
-	# ordenCompra.trxRealizadaDB=true
-	# ordenCompra.despachoRealizadoDB = false
-	# ordenCompra.save
 	if ordenCompra==nil
 		return false
 	else
 		if(validarOcListaParaEnvio(ordenCompra, esFtp))
-			puts "---OC LISTA PARA ENVIO---"
 			return despachoDeProductos(ordenCompra, esFtp)
 		else
 			return false
@@ -44,11 +33,9 @@ def despachoDeProductos(oc, esFtp)
 	if(almacenDestino==false && !esFtp)
 		return false
 	end
-	puts '#1. Envía todos los que están en almacenDespacho'
 	#1. Envía todos los que están en almacenDespacho
 	cantidad = enviarProductosDesdeDespacho(oc, sku, cantidad, almacenDestino, esFtp)
 	if(cantidad>0)
-		puts '#2. Envía todos los de los demás almacenes'
 		#2. Envía todos los de los demás almacenes
 		otrosAlmacenes = Almacen.where(pulmon: false, despacho: false)
 		otrosAlmacenes.each do |otroAlmacen| 
@@ -57,12 +44,10 @@ def despachoDeProductos(oc, esFtp)
 			break if cantidad <= 0
 		end
 		if(cantidad > 0)
-			puts '#Envia desde Pulmon a Despacho y de Ahí para afuera'
 			#Envia desde Pulmon a Despacho y de Ahí para afuera
 			enviarProductosDesdePulmonADespacho(sku, cantidad)
 			cantidad = enviarProductosDesdeDespacho(oc, sku, cantidad, almacenDestino, esFtp)
 			if(cantidad>0)
-				puts '#Limpiar Recepcion'
 				#Limpiar Recepcion
 				vaciarRecepcion
 				#Vaciar Pulmon nuevamente
@@ -76,19 +61,16 @@ def despachoDeProductos(oc, esFtp)
 					return true
 				end
 			else
-				puts 'TRUE'
 				oc.despachoRealizadoDB =true
 				oc.save
 				return true
 			end
 		else
-			puts 'TRUE'
 			oc.despachoRealizadoDB=true
 			oc.save
 			return true
 		end
 	else
-		puts 'TRUE'
 		oc.despachoRealizadoDB=true
 		oc.save
 		return true
@@ -96,7 +78,6 @@ def despachoDeProductos(oc, esFtp)
 end
 
 def enviarProductosDesdeAlmacenADespacho(sku, almacen, cantidad)
-	puts 'enviarProductosDesdeAlmacenADespacho'
 	almacenDespacho = Almacen.find_by(despacho: true)
 	cantidadMovida = 0 
 	while(almacen.tieneProducto(sku) && almacenDespacho.tieneEspacio(1)) do
@@ -112,7 +93,6 @@ def enviarProductosDesdeAlmacenADespacho(sku, almacen, cantidad)
 end
 
 def enviarProductosDesdePulmonADespacho(sku, cantidad)
-	puts 'enviarProductosDesdePulmonADespacho'
 	almacenPulmon = Almacen.find_by(pulmon: true)
 	almacenRecepcion = Almacen.find_by(recepcion: true)
 	cantidadMovidaDesdePulmon=0
@@ -126,11 +106,10 @@ def enviarProductosDesdePulmonADespacho(sku, cantidad)
 		cantidadMovidaDesdePulmon = cantidadMovidaDesdePulmon +1
 		break if cantidadMovidaDesdePulmon >= cantidad
 	end
-	#enviarProductosDesdeAlmacenADespacho(sku, almacenRecepcion, cantidad)
+	enviarProductosDesdeAlmacenADespacho(sku, almacenRecepcion, cantidad)
 end
 
 def enviarProductosDesdeDespacho(oc, sku, cantidad, almacenDestino, esFtp)
-	puts 'enviarProductosDesdeDespacho'
 	almacenDespacho = Almacen.find_by(despacho: true)
 	while (cantidad>0 && almacenDespacho.tieneProducto(sku)) do
 		productoAEnviar= almacenDespacho.productos.find_by(sku: sku)
@@ -148,7 +127,6 @@ def enviarProductosDesdeDespacho(oc, sku, cantidad, almacenDestino, esFtp)
 end
 
 def vaciarRecepcion
-	puts 'Vaciando Recepcion'
 	almacenRecepcion = Almacen.find_by(recepcion: true)
 	almacenesOtros = Almacen.where(pulmon: false, recepcion: false, despacho: false)
 
