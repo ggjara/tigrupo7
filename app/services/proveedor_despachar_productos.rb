@@ -178,7 +178,7 @@ def validarOcListaParaEnvio(ordenCompra, esFtp)
 		return false
 	end
 
-	if(ordenCompra.facturaRealizadaDB == false)
+	if(ordenCompra.facturaRealizadaDB == false && esFtp)
 		puts "xxxOC SIN FACTURALxxx"
 		return false
 	end
