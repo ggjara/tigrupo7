@@ -12,23 +12,23 @@ def self.iniciarBodega(desdeCero)
 	end
 end
 
-def self.cambiar
-	if Bodega.first!=nil
-		b = Bodega.first
-		b.cantAlmacenes= b.cantAlmacenes+1
-		b.save
-	end
-end
-
 def self.checkStockTotal(sku)
 	return checkStock(sku) - checkStockGuardado(sku)
 end
 
 def self.checkStock(sku)
-	cant=Producto.all.where(sku: sku).count 
-	if(cant!=nil)
-		return cant
-	else 
+	bodega= Bodega.first
+	if bodega!=nil
+		cantidad=0	
+		almacenes = Bodega.first.almacenes
+		almacenes.each do |almacen|
+			stockPreguntado =almacen.stocks.find_by(sku: sku.to_s)
+			if stockPreguntado!=nil
+				cantidad= cantidad + stockPreguntado.total			
+			end
+		end
+		return cantidad
+	else
 		return 0
 	end
 end

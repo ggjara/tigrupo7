@@ -5,11 +5,8 @@ class ProveedorDespacharProductos < ApplicationController
 # 1: Envía los productos
 # 2: Por cada producto enviado, se actualiza DB y servidor
 
-
-
 def initialize
 end
-
 
 def despacharProductos(ordenCompra, esFtp)
 	if ordenCompra==nil
@@ -77,17 +74,50 @@ def despachoDeProductos(oc, esFtp)
 	end	
 end
 
+def cargarProductos(sku, almacen)
+	productosGenerados = Array.new
+	paramsProductos = RequestsBodega.new.getStock(almacen._id, sku.to_s, 200)
+	paramsProductos.each do |paramsProducto|
+       productoCreado = Producto.new(paramsProducto)
+       productoCreado.save
+       productosGenerados.append(productoCreado)
+    end
+    return productosGenerados
+end
+
+def cargarProductosCualquiera(almacen)
+	productosGenerados = Array.new
+	stocksPillado = almacen.stocks.where('total > 0')
+	if stocksPillado.count > 0  
+		sku = stocksPillado.first.sku
+		paramsProductos = RequestsBodega.new.getStock(almacen._id, sku, 200)
+		paramsProductos.each do |paramsProducto|
+	       productoCreado = Producto.new(paramsProducto)
+	       productoCreado.save
+	       productosGenerados.append(productoCreado)
+	    end
+	    return productosGenerados	
+	else
+		return productosGenerados
+	end	
+end
+
 def enviarProductosDesdeAlmacenADespacho(sku, almacen, cantidad)
 	almacenDespacho = Almacen.find_by(despacho: true)
-	cantidadMovida = 0 
+	cantidadMovida = 0
+	productosGenerados = Array.new
 	while(almacen.tieneProducto(sku) && almacenDespacho.tieneEspacio(1)) do
-		productoAEnviar = almacen.productos.find_by(sku: sku)
+		if(productosGenerados.count==0)
+			productosGenerados = cargarProductos(sku, almacen)
+		end
+		productoAEnviar = productosGenerados.first
 		RequestsBodega.new.moverStock(productoAEnviar._id, almacenDespacho._id)
-		productoAEnviar.almacen= almacenDespacho
-		productoAEnviar.save
+		productosGenerados.delete(productoAEnviar)
+		almacen.eliminarStock(sku.to_s)
+		almacenDespacho.agregarStock(sku.to_s)
 		almacen.eliminarEspacio(1)
 		almacenDespacho.agregarEspacio(1)
-		cantidadMovida = cantidadMovida+1
+		cantidadMovida = cantidadMovida + 1 
 		break if cantidadMovida >= cantidad
 	end
 end
@@ -96,11 +126,16 @@ def enviarProductosDesdePulmonADespacho(sku, cantidad)
 	almacenPulmon = Almacen.find_by(pulmon: true)
 	almacenRecepcion = Almacen.find_by(recepcion: true)
 	cantidadMovidaDesdePulmon=0
-	while(almacenPulmon.tieneProducto(sku) && almacenRecepcion.tieneEspacio(2)) do
-		productoAEnviar = almacenPulmon.productos.find_by(sku: sku)
+	productosGenerados = Array.new
+	while(almacenPulmon.tieneProducto(sku) && almacenRecepcion.tieneEspacio(1)) do
+		if(productosGenerados.count==0)
+			productosGenerados = cargarProductos(sku, almacenPulmon)
+		end
+		productoAEnviar = productosGenerados.first
 		RequestsBodega.new.moverStock(productoAEnviar._id, almacenRecepcion._id)
-		productoAEnviar.almacen = almacenRecepcion
-		productoAEnviar.save
+		productosGenerados.delete(productoAEnviar)
+		almacenPulmon.eliminarStock(sku.to_s)
+		almacenRecepcion.agregarStock(sku.to_s)
 		almacenPulmon.eliminarEspacio(1)
 		almacenRecepcion.agregarEspacio(1)
 		cantidadMovidaDesdePulmon = cantidadMovidaDesdePulmon +1
@@ -111,14 +146,19 @@ end
 
 def enviarProductosDesdeDespacho(oc, sku, cantidad, almacenDestino, esFtp)
 	almacenDespacho = Almacen.find_by(despacho: true)
+	productosGenerados = Array.new
 	while (cantidad>0 && almacenDespacho.tieneProducto(sku)) do
-		productoAEnviar= almacenDespacho.productos.find_by(sku: sku)
+		if(productosGenerados.count==0)
+			productosGenerados = cargarProductos(sku, almacenDespacho)
+		end
+		productoAEnviar = productosGenerados.first
 		if(esFtp)
 			RequestsBodega.new.despacharStock(productoAEnviar._id, oc.direccion, oc.precioUnitario, oc._id)
 		else
 			RequestsBodega.new.moverStockBodega(productoAEnviar._id, almacenDestino, oc._id, oc.precioUnitario)
 		end
-		productoAEnviar.destroy
+		productosGenerados.delete(productoAEnviar)
+		almacenDespacho.eliminarStock(sku.to_s)
 		almacenDespacho.eliminarEspacio(1)
 		Bodega.eliminarStockGuardado(sku,1)
 		cantidad = cantidad - 1
@@ -129,14 +169,40 @@ end
 def vaciarRecepcion
 	almacenRecepcion = Almacen.find_by(recepcion: true)
 	almacenesOtros = Almacen.where(pulmon: false, recepcion: false, despacho: false)
-
-	almacenesOtros.each do |almacenQueRecibe|
-		while (almacenRecepcion.productos.count >= 1 && almacenQueRecibe.tieneEspacio(2))
-			productoAEnviar = almacenRecepcion.productos.first
-			puts RequestsBodega.new.moverStock(productoAEnviar._id, almacenQueRecibe._id)
-			productoAEnviar.almacen = almacenQueRecibe
-			productoAEnviar.save
+	productosGenerados = Array.new
+	almacenesOtros.each do |almacenQueRecibe| 
+		while (almacenRecepcion.tieneProductos && almacenQueRecibe.tieneEspacio(1)) do
+			if(productosGenerados.count==0)
+				productosGenerados = cargarProductosCualquiera(almacenRecepcion)
+			end
+			break if productosGenerados.count==0
+			productoAEnviar = productosGenerados.first
+			RequestsBodega.new.moverStock(productoAEnviar._id, almacenQueRecibe._id)
+			productosGenerados.delete(productoAEnviar)
+			almacenRecepcion.eliminarStock(productoAEnviar.sku.to_s)
+			almacenQueRecibe.agregarStock(productoAEnviar.sku.to_s)
 			almacenRecepcion.eliminarEspacio(1)
+			almacenQueRecibe.agregarEspacio(1)
+		end
+	end
+end
+
+def vaciarDespacho
+	almacenDespacho = Almacen.find_by(despacho: true)
+	almacenesOtros = Almacen.where(pulmon: false, recepcion: false, despacho: false)
+	productosGenerados = Array.new
+	almacenesOtros.each do |almacenQueRecibe| 
+		while (almacenDespacho.tieneProductos && almacenQueRecibe.tieneEspacio(1)) do
+			if(productosGenerados.count==0)
+				productosGenerados = cargarProductosCualquiera(almacenDespacho)
+			end
+			break if productosGenerados.count==0
+			productoAEnviar = productosGenerados.first
+			RequestsBodega.new.moverStock(productoAEnviar._id, almacenQueRecibe._id)
+			productosGenerados.delete(productoAEnviar)
+			almacenDespacho.eliminarStock(productoAEnviar.sku.to_s)
+			almacenQueRecibe.agregarStock(productoAEnviar.sku.to_s)
+			almacenDespacho.eliminarEspacio(1)
 			almacenQueRecibe.agregarEspacio(1)
 		end
 	end
