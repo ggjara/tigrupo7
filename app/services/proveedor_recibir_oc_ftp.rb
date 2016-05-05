@@ -119,9 +119,7 @@ def precioDeSku(sku)
 end
 
 def verificarStock(sku, cantidad)
-	stockActual =   Bodega.checkStock(sku)
-	stockGuardado = Bodega.checkStockGuardado(sku)
-	if cantidad > (stockActual - stockGuardado)
+	if cantidad > Bodega.checkStockTotal(sku)
 		return false
 	else
 		return true

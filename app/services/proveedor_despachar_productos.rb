@@ -14,29 +14,123 @@ end
 def despacharProductos(factura_id, esFtp)
 	#solo en version prueba
 	oc_id = RequestsFactura.new.obtenerFactura(factura_id)[:id_Oc]
+	#ordenCompra= Oc.find_by(_id: oc_id)
 	ordenCompra = Oc.new(RequestsOc.new.obtenerOc(oc_id))
 	ordenCompra.estado='aceptada'
 	ordenCompra.facturaRealizadaDB = true
 	ordenCompra.trxRealizadaDB=true
 	ordenCompra.despachoRealizadoDB = false
 	ordenCompra.save
-	#oc_id = Factura.find_by(_id: factura_id)).id_Oc
-	if(validarOcListaParaEnvio(oc_id))
-		puts "---OC LISTA PARA ENVIO---"
-		#Oc.find_by(_id: oc_id)
-		return despachoDeProductos(ordenCompra, esFtp)
-	else
+	if ordenCompra==nil
 		return false
+	else
+		if(validarOcListaParaEnvio(ordenCompra))
+			puts "---OC LISTA PARA ENVIO---"
+			return despachoDeProductos(ordenCompra, esFtp)
+		else
+			return false
+		end
 	end
-
 end
 
 
+#Despacha los productos
+def despachoDeProductos(oc, esFtp)
+	sku = oc[:sku]#.sku
+	cantidad= oc[:cantidad]#.cantidad.to_i
+	clienteId = oc[:cliente]#.cliente
+	almacenDestino = getAlmacenCliente(clienteId)
+	if(almacenDestino==false)
+		return false
+	end
+
+	#1. Envía todos los que están en almacenDespacho
+	cantidad = enviarProductosDesdeDespacho(oc, sku, cantidad, almacenDestino, esFtp)
+	if(cantidad>0)
+		#2. Envía todos los de los demás almacenes
+		otrosAlmacenes = Almacen.where(pulmon: false, despacho: false)
+		otrosAlmacenes.each do |otroAlmacen| 
+			enviarProductosDesdeAlmacenADespacho(sku, otroAlmacen, cantidad)
+			cantidad = enviarProductosDesdeDespacho(oc, sku, cantidad, almacenDestino, esFtp)
+			break if cantidad <= 0
+		end
+		if(cantidad > 0)
+			#Envia desde Pulmon a Despacho y de Ahí para afuera
+			enviarProductosDesdePulmonADespacho(oc, sku, cantidad)
+			cantidad = enviarProductosDesdeDespacho(oc, sku, cantidad, almacenDestino, esFtp)
+			if(cantidad>0)
+				#Limpiar Recepcion
+				#Vaciar Pulmon nuevamente
+				return false
+			else
+				oc.despachoRealizadoDB =true
+				oc.save
+				return true
+			end
+		else
+			oc.despachoRealizadoDB=true
+			oc.save
+			return true
+		end
+	else
+		oc.despachoRealizadoDB=true
+		oc.save
+		return true
+	end	
+end
+
+def enviarProductosDesdeAlmacenADespacho(sku, almacen, cantidad)
+	almacenDespacho = Almacen.find_by(despacho: true)
+	cantidadMovida = 0 
+	while(almacen.tieneProducto(sku) && almacenDespacho.tieneEspacio(1)) do
+		productoAEnviar = almacen.productos.find_by(sku: sku)
+		RequestsBodega.new.moverStock(productoAEnviar._id, almacenDespacho._id)
+		productoAEnviar.almacen= almacenDespacho
+		productoAEnviar.save
+		almacen.eliminarEspacio(1)
+		almacenDespacho.agregarEspacio(1)
+		cantidadMovida = cantidadMovida+!
+		break if cantidadMovida > cantidad
+	end
+end
+
+def enviarProductosDesdePulmonADespacho(sku, cantidad)
+	almacenPulmon = Almacen.find_by(pulmon: true)
+	almacenRecepcion = Almacen.find_by(recepcion: true)
+	cantidadMovidaDesdePulmon=0
+	while(almacenPulmon.tieneProducto(sku) && almacenRecepcion.tieneEspacio(1)) do
+		productoAEnviar = almacenPulmon.productos.find_by(sku: sku)
+		RequestsBodega.new.moverStock(productoAEnviar._id, almacenRecepcion._id)
+		productoAEnviar.almacen = almacenRecepcion
+		productoAEnviar.save
+		almacenPulmon.eliminarEspacio(1)
+		almacenRecepcion.agregarEspacio(1)
+		cantidadMovida = cantidadMovida+!
+		break if cantidadMovidaDesdePulmon > cantidad
+	end
+	enviarProductosDesdeAlmacenADespacho(sku, almacenRecepcion, cantidad)
+end
+
+def enviarProductosDesdeDespacho(oc, sku, cantidad, almacenDestino, esFtp)
+	almacenDespacho = Almacen.find_by(despacho: true)
+	while (cantidad>0 && almacenDespacho.tieneProducto(sku)) do
+		productoAEnviar= almacenDespacho.productos.find_by(sku: sku)
+		if(esFtp)
+			RequestsBodega.new.despacharStock(productoAEnviar._id, oc.direccion, oc.precioUnitario, oc._id)
+		else
+			RequestsBodega.new.moverStockBodega(productoAEnviar._id, almacenDestino, oc._id, oc.precioUnitario)
+		end
+		productoAEnviar.destroy
+		almacenDespacho.eliminarEspacio(1)
+		Bodega.eliminarStockGuardado(sku,1)
+		cantidad = cantidad - 1
+	end
+	return cantidad
+end
+
 #Retorna true si la oc fue aceptada
 #Factura y TRX realizadas y aun no se despacha
-def validarOcListaParaEnvio(oc_id)
-
-	ordenCompra = Oc.find_by(_id: oc_id)
+def validarOcListaParaEnvio(ordenCompra)
 
 	if (ordenCompra==nil)
 		puts "xxxOC NULLxxx"
@@ -66,113 +160,6 @@ def validarOcListaParaEnvio(oc_id)
 	return true
 end
 
-#Despacha los productos
-def despachoDeProductos(oc, esFtp)
-	sku = oc[:sku]#.sku
-	cantidad= oc[:cantidad]#.cantidad.to_i
-	clienteId = oc[:cliente]#.cliente
-	almacenDestino = getAlmacenCliente(clienteId)
-	if(almacenDestino==false)
-		return false
-	end
-
-	#1. Envía todos los que están en almacenDespacho
-	cantidad = enviarProductosDesdeDespacho(oc, sku, cantidad, almacenDestino, esFtp)
-	puts "cantidad"
-	puts cantidad
-	if(cantidad>0)
-		#Enviar todos los que están en pulmon a Despacho
-		enviarProductosDesdePulmonADespacho(oc, sku, cantidad)
-		#envia todos los de Despacho al cliente
-		cantidad = enviarProductosDesdeDespacho(oc, sku, cantidad, almacenDestino, esFtp)
-		if(cantidad>0)
-			puts "cantidad"
-			puts cantidad
-			almacenesARevisar = Almacen.where(pulmon: false, recepcion: false, despacho: false)
-			while(cantidad>0)
-				puts "cantidad"
-				puts cantidad
-				#3. Envía todos los productos desde los demás almacenes a despacho
-				almacenesARevisar.each do |almacen|
-					puts "almacen"
-					puts almacen
-					#Envia de un almacen a Despacho
-					enviarProductosDesdeAlmacenADespacho(oc, sku, cantidad, almacen)
-					#Envia de Despacho a Cliente
-					cantidad = enviarProductosDesdeDespacho(oc, sku, cantidad, almacenDestino, esFtp)
-					break if cantidad<=0
-				end
-				oc.despachoRealizadoDB=true
-				oc.save
-				return true
-			end
-		else
-			oc.despachoRealizadoDB=true
-			oc.save
-			return true
-		end
-	else
-		oc.despachoRealizadoDB=true
-		oc.save
-		return true
-	end
-end
-
-def enviarProductosDesdeAlmacenADespacho(oc, sku, cantidad, almacen)
-	almacenDespacho = Almacen.find_by(despacho: true)
-
-	while(almacen.tieneProducto(sku) && almacenDespacho.tieneEspacio(sku)) do
-		productoAEnviar = almacen.productos.find_by(sku: sku)
-		RequestsBodega.new.moverStock(productoAEnviar._id, almacenDespacho._id)
-		productoAEnviar.almacen= almacenDespacho
-		almacen.eliminarEspacio
-		puts "producto movido desde almacen a despacho"
-	end
-
-end
-
-def enviarProductosDesdePulmonADespacho(oc, sku, cantidad)
-	almacenPulmon = Almacen.find_by(pulmon: true)
-	almacenRecepcion = Almacen.find_by(recepcion: true)
-	while(almacenPulmon.tieneProducto(sku) && almacenRecepcion.tieneEspacio(sku)) do
-		productoAEnviar = almacenPulmon.productos.find_by(sku: sku)
-		RequestsBodega.new.moverStock(productoAEnviar._id, almacenRecepcion._id)
-		productoAEnviar.almacen = almacenRecepcion
-		productoAEnviar.save
-		almacenPulmon.eliminarEspacio
-		puts "producto movido desde pulmon a recepcion"
-	end
-
-	almacenDespacho = Almacen.find_by(despacho: true)
-
-	while(almacenRecepcion.tieneProducto(sku) && almacenDespacho.tieneEspacio(sku)) do
-		productoAEnviar = almacenRecepcion.productos.find_by(sku: sku)
-		RequestsBodega.new.moverStock(productoAEnviar._id, almacenDespacho._id)
-		productoAEnviar.almacen=almacenDespacho
-		productoAEnviar.save
-		almacenRecepcion.eliminarEspacio
-		puts "producto movido desde recepcion a despacho"
-	end
-end
-
-def enviarProductosDesdeDespacho(oc, sku, cantidad, almacenDestino, esFtp)
-	almacenDespacho = Almacen.find_by(despacho: true)
-	while (cantidad>0 && almacenDespacho.tieneProducto(sku)) do
-		productoAEnviar= almacenDespacho.productos.find_by(sku: sku)
-		if(esFtp)
-			RequestsBodega.new.despacharStock(productoAEnviar._id, oc.direccion, oc.precioUnitario, oc._id)
-		else
-			RequestsBodega.new.moverStockBodega(productoAEnviar._id, almacenDestino, oc[:_id], oc[:precioUnitario])
-		end
-		almacenDespacho.eliminarEspacio
-		productoAEnviar.destroy
-		cantidad = cantidad - 1
-		Bodega.eliminarStockGuardado(sku,1)
-		puts "producto movido desde despacho a cliente"
-	end
-
-	return cantidad
-end
 
 
 def getAlmacenCliente(cliente)
