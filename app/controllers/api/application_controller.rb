@@ -64,8 +64,6 @@ end
 def recibirTrx
 	idTrx = params[:idtrx]
   	idFactura = params[:idfactura]
-  	render json: idFactura
-
 	if(ProveedorRecibirTrx.new.recibirTrx(idTrx, idFactura))
 		ocAsociada = Oc.find_by(_id: Factura.find_by(_id:idFactura).id_Oc)#RequestsFactura.new.obtenerFactura(idFactura)[:id_Oc])
 		Thread.new do
