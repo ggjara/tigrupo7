@@ -7,11 +7,14 @@ end
 
 #Retorna todas las OC luego de revisar FTP
 def consultarFtp
+  #Antes de procesar las ordenes, se actualiza la Bodega
+  IniciarBodega.new('grupo7').actualizarBodega
+  #Se consulta las ordenes
   ordenesConsultadas= ConsultarPedidosFtp.new.consultarOcsFTP
   render json: ordenesConsultadas
 end
 
-#Inicia la bodega
+#Inicializa la Bodega y Clientes.
 def iniciarBodega
   #1. Crear clientes
   if(Cliente.all.count==0)
@@ -37,7 +40,16 @@ def actualizarBodega
   ProducirMateriasPrimas.new.producirStockBajo
   #3. Revisar FTP
   ConsultarPedidosFtp.new.consultarOcsFTP
-  render json: Stock.all
+
+  #Si tenemos ordenes de Compra llegadas por FTP que no se han analizado
+  ocCreadasFtp = Oc.where(cliente: "internacional", estado: 'creada')
+  if(ocCreadasFtp.count>0)
+    ocCreadasFtp.each do |ocCreada|
+      ConsultarPedidosFtp.new.procesarOc(ocCreada)
+    end
+  end
+
+  render json: "Actualizada"
 end
 
 #Controlador que recibe id prima y cantidad de lotes a producir
