@@ -4,7 +4,7 @@ end
 
 #Pregunta a Servidor por una OC y retorna los params de esa orden en un hash
 def obtenerOc(id) #CHECK
-	jsonResponse = requestWebWithoutParams('GET', ('http://mare.ing.puc.cl/oc/obtener/'<<id))
+	jsonResponse = requestWebWithoutParams('GET', ('http://moto.ing.puc.cl/oc/obtener/'<<id))
 	if(jsonResponse==false)
 		return jsonResponse
 	else
@@ -29,7 +29,7 @@ end
 #Crea una OC en servidor y retorna los parámetros de la OC recién creada o error
 #Recibe: canal, cantidad, sku, proveedor, precioUnitario, cliente, fechaEntrega(epoch milisegundos), notas (string sin espacio)
 def crearOc(paramsOc) #FALTA ENTREGAR ID
-	jsonResponse = requestWeb('PUT', 'http://mare.ing.puc.cl/oc/crear',
+	jsonResponse = requestWeb('PUT', 'http://moto.ing.puc.cl/oc/crear',
 		generateParam('canal', paramsOc[:canal]),
 		generateParam('cantidad', paramsOc[:cantidad]),
 		generateParam('sku', paramsOc[:sku]),
@@ -43,7 +43,7 @@ end
 
 #Acepta una OC en servidor y retorna los parámetros de la OC o error
 def recepcionarOc(oc_id) #CHECK
-	jsonResponse = requestWeb('POST', 'http://mare.ing.puc.cl/oc/recepcionar/'<<oc_id,
+	jsonResponse = requestWeb('POST', 'http://moto.ing.puc.cl/oc/recepcionar/'<<oc_id,
 		generateParam('id', oc_id))
 	if(jsonResponse==false)
 		return jsonResponse
@@ -67,7 +67,7 @@ end
 
 #Rechaza una OC en servidor y retorna los parámetros de la OC o error
 def rechazarOc(oc_id, rechazo) #CHECK
-	jsonResponse = requestWeb('POST', 'http://mare.ing.puc.cl/oc/rechazar/'<<oc_id,
+	jsonResponse = requestWeb('POST', 'http://moto.ing.puc.cl/oc/rechazar/'<<oc_id,
 	generateParam('id', oc_id), generateParam('rechazo', rechazo))
 	if(jsonResponse==false)
 		return jsonResponse
@@ -91,7 +91,7 @@ end
 
 #Anula una OC en servidor y retorna los parámetros de la OC o error
 def anularOc(oc_id, anulacion) #CHECK
-	jsonResponse = requestWeb('DELETE', 'http://mare.ing.puc.cl/oc/anular/'<<oc_id,
+	jsonResponse = requestWeb('DELETE', 'http://moto.ing.puc.cl/oc/anular/'<<oc_id,
 	generateParam('id', oc_id), generateParam('anulacion', anulacion)).first
 	if(jsonResponse==false)
 		return jsonResponse

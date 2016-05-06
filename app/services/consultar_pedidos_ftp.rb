@@ -58,9 +58,9 @@ def consultarPedidos
 	require 'net/sftp'
 	require 'net/ssh'
 
-	@host = "mare.ing.puc.cl"
+	@host = "moto.ing.puc.cl"
 	@user = "integra7"
-	@password = "sFwhHaZE"
+	@password = "gAYCBfLR"
 	pedidos =Array.new
 
 	begin
