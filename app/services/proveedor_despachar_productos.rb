@@ -9,12 +9,10 @@ def initialize
 end
 
 def despacharProductos(ordenCompra, esFtp)
-puts "entro"
 	if (ordenCompra==nil)
 		puts "xxxORDEN DE COMPRA NULLxxx"
 		return false
 	else
-			puts "xxxORDEN DE COMPRA OKxxx"
 		if(validarOcListaParaEnvio(ordenCompra, esFtp))
 			puts 'Va!!!'
 			return despachoDeProductos(ordenCompra, esFtp)
@@ -221,7 +219,6 @@ end
 #Retorna true si la oc fue aceptada
 #Factura y TRX realizadas y aun no se despacha
 def validarOcListaParaEnvio(ordenCompra, esFtp)
-puts "validando"
 	if (ordenCompra==nil)
 		puts "xxxOC NULLxxx"
 		return false

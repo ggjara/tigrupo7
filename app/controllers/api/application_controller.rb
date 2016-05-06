@@ -33,9 +33,9 @@ def recibirOc
   if (ProveedorRecibirOc.new.responderOc(idOC))
 		Thread.new do
 			ProveedorEnviarFactura.new.enviarFactura(idOC)
-			#simular respuesta
-			requestWeb('GET','http://localhost:3000/api/pagos/recibir/572c2641acbda70300e289c6?idfactura=572c2a57acbda70300e289d3')
-			#end
+			##simular respuesta
+			#requestWeb('GET','http://localhost:3000/api/pagos/recibir/572c2641acbda70300e289c6?idfactura=572c2a57acbda70300e289d3')
+			##end
 			ActiveRecord::Base.connection.close
 		end
 
@@ -64,12 +64,10 @@ def recibirTrx
   idFactura = params[:idfactura]
 
 	if(ProveedorRecibirTrx.new.recibirTrx(idTrx, idFactura))
+		ocAsociada = Oc.find_by(_id: Factura.find_by(_id:idFactura).id_Oc)#RequestsFactura.new.obtenerFactura(idFactura)[:id_Oc])
     puts "Pago OK!"
-
 		Thread.new do
-			puts "hacia despacho"
-			ProveedorDespacharProductos.new.despacharProductos(idFactura,false)
-			puts "despachado"
+			ProveedorDespacharProductos.new.despacharProductos(ocAsociada,false)
 			ActiveRecord::Base.connection.close
 		end
 

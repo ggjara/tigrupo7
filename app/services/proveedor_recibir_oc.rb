@@ -98,7 +98,6 @@ def aceptarOcServerDB(oc)
 	if(estadoServidor!=false)
 		oc.estado= estadoServidor[:estado]
 		oc.save
-		#no actualiza estadoDB???
 		Bodega.guardarStock(oc.sku, oc.cantidad.to_i)
 		puts "++++++++++++++++++"
 		puts estadoServidor[:_id]

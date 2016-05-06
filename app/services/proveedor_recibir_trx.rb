@@ -48,8 +48,8 @@ def guardarTrx(trx_id)
 end
 
 def encontrarFactura(factura_id)
-	facturaRecibida = Factura.new(RequestsFactura.new.obtenerFactura(factura_id))#solo para prueba
-	#facturaRecibida = Factura.find_by(_id: factura_id)#Buscamos la factura en la DB
+	#facturaRecibida = Factura.new(RequestsFactura.new.obtenerFactura(factura_id))#solo para prueba
+	facturaRecibida = Factura.find_by(_id: factura_id)#Buscamos la factura en la DB
 	if (facturaRecibida == nil)#Si no existe, rechazamos
 		puts "xxxFACTURA NO EXISTE EN DBxxx-"
 		return false
@@ -98,9 +98,10 @@ end
 
 def aceptarTrx(trx,facutra)
 	#marcar OC con trx aceptada
-	Oc.find_by(_id: facutra.id_Oc).estadoDB= 'pagada'
-	#trx.estadoDB = 'aceptada'#no existe parametro
-	#confirmar trx url mare.ing.puc.cl/banco/trx/.:id
+	ocAsociada = Oc.find_by(_id: facutra.id_Oc)
+	ocAsociada.estadoDB= 'pagada'
+	ocAsociada.trxRealizadaDB = true
+	ocAsociada.save
 	return true
 end
 
