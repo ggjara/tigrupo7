@@ -32,7 +32,9 @@ Rails.application.routes.draw do
     match '/oc/recibir/:id'=> 'application#recibirOc', via: :get
     match '/facturas/recibir/:id'=> 'application#recibirFactura', via: :get
     match '/despachos/recibir/:id'=> 'application#recibirDespacho', via: :get
-    match '/pagos/recibir/:id'=> 'application#recibirTrx', via: :get
+    match '/pagos/recibir/:idtrx'=> 'application#recibirTrx', via: :get
+
+
 
   end
 

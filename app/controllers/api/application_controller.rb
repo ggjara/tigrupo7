@@ -18,11 +18,11 @@ def consultar
 	bodegaGrupo7 = Bodega.first
 	if (bodegaGrupo7!=nil)
 		cantDisponible = Bodega.checkStockTotal(skuAsked)
-		render json: {total: cantDisponible}
+		render json: {stock: cantDisponible, sku: skuAsked.to_i,}
 	else
 		bodegaGrupo7 = Bodega.iniciarBodega(true)
 		cantDisponible = Bodega.checkStockTotal(skuAsked)
-		render json: {total: cantDisponible}
+		render json: {stock: cantDisponible, sku: skuAsked.to_i,}
 	end
 end
 
@@ -62,12 +62,12 @@ def recibirFactura
 end
 
 def recibirTrx
-	idTrx = params[:id]
-  idFactura = params[:idfactura]
+	idTrx = params[:idtrx]
+  	idFactura = params[:idfactura]
+  	render json: idFactura
 
 	if(ProveedorRecibirTrx.new.recibirTrx(idTrx, idFactura))
 		ocAsociada = Oc.find_by(_id: Factura.find_by(_id:idFactura).id_Oc)#RequestsFactura.new.obtenerFactura(idFactura)[:id_Oc])
-    puts "Pago OK!"
 		Thread.new do
 			ProveedorDespacharProductos.new.despacharProductos(ocAsociada,false)
 			ActiveRecord::Base.connection.close
@@ -75,12 +75,12 @@ def recibirTrx
 
 		render json: {
 			"validado": true,
-			"idfactura": params[:id]
+			"idtrx": idTrx.to_s
 		}
   else
 		render json: {
 			"validado": false,
-			"idfactura": params[:id]
+			"idtrx": idTrx.to_s
 		}
   end
 end
