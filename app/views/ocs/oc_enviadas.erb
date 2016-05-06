@@ -4,9 +4,10 @@
 
 <% content_for :content do %>
     <!-- Default box -->
+    <% @grupo = Cliente.find_by(grupo: 7)._idGrupo %>
     <div class="box collapsed-box">
       <div class="box-header with-border">
-        <h3 class="box-title">Creadas</h3>
+        <h3 class="box-title">Creadas (<%= Oc.all.where(:cliente => @grupo, :estado => "creada").count %>)</h3>
         <div class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
             <i class="fa fa-plus"></i></button>
@@ -23,7 +24,7 @@
             <th>Cantidad</th>
             <th>Precio Unitario</th>
             <th>Estado</th>
-            <th>Documentos Asociados</th>
+            <th align="center">Documentos Asociados</th>
           </tr>
           </thead>
           <tbody>
@@ -36,14 +37,14 @@
                 <td><%= oc.cantidad %></td>
                 <td><%= oc.precioUnitario %></td>
                 <td><%= oc.estado %></td>
-                <td>
-
+                <td align="center">
                   <% if oc.facturaRealizadaDB == true %>
-                      <%= link_to raw('<i class="fa fa-pencil-square-o"></i>'), "/ocs/"+ oc._id.to_s + "/factura",
-                                  method: :put, class: 'btn btn-xs btn-warning',
-                                  data: { toggle: 'tooltip', placement: 'top' }, title: 'Ver Factura' %>
+                      <%= link_to raw('<i class="fa fa-pencil-square-o fa-fw" ></i>'), "/facturas/"+ Factura.find_by(:id_Oc => oc._id)._id.to_s,
+                                  method: :get, class: 'btn btn-xs btn-warning',
+                                  data: { toggle: 'tooltip', placement: 'top' }, title: 'Ver' %>
                   <% end %>
                 </td>
+                <td></td>
               </tr>
           <% end %>
           </tbody>
@@ -55,7 +56,7 @@
 
     <div class="box collapsed-box">
       <div class="box-header with-border">
-        <h3 class="box-title">Aceptadas</h3>
+        <h3 class="box-title">Aceptadas (<%= Oc.all.where(:cliente => @grupo, :estado => "aceptada").count %>)</h3>
         <div class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
             <i class="fa fa-plus"></i></button>
@@ -85,13 +86,14 @@
                 <td><%= oc.cantidad %></td>
                 <td><%= oc.precioUnitario %></td>
                 <td><%= oc.estado %></td>
-                <td>
+                <td align="center">
                   <% if oc.facturaRealizadaDB == true %>
-                      <%= link_to raw('<i class="fa fa-pencil-square-o"></i>'), "/ocs/"+ oc._id.to_s + "/factura",
-                                  method: :put, class: 'btn btn-xs btn-warning',
-                                  data: { toggle: 'tooltip', placement: 'top' }, title: 'Ver Factura' %>
+                      <%= link_to raw('<i class="fa fa-pencil-square-o fa-fw" ></i>'), "/facturas/"+ Factura.find_by(:id_Oc => oc._id)._id.to_s,
+                                  method: :get, class: 'btn btn-xs btn-warning',
+                                  data: { toggle: 'tooltip', placement: 'top' }, title: 'Ver' %>
                   <% end %>
                 </td>
+                <td></td>
               </tr>
           <% end %>
           </tbody>
@@ -103,7 +105,7 @@
 
     <div class="box collapsed-box">
       <div class="box-header with-border">
-        <h3 class="box-title">Rechazadas</h3>
+        <h3 class="box-title">Rechazadas (<%= Oc.all.where(:cliente => @grupo, :estado => "rechazada").count %>)</h3>
         <div class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
             <i class="fa fa-plus"></i></button>
@@ -133,13 +135,14 @@
                 <td><%= oc.cantidad %></td>
                 <td><%= oc.precioUnitario %></td>
                 <td><%= oc.estado %></td>
-                <td>
+                <td align="center">
                   <% if oc.facturaRealizadaDB == true %>
-                      <%= link_to raw('<i class="fa fa-pencil-square-o"></i>'), "/ocs/"+ oc._id.to_s + "/factura",
-                                  method: :put, class: 'btn btn-xs btn-warning',
-                                  data: { toggle: 'tooltip', placement: 'top' }, title: 'Ver Factura' %>
+                      <%= link_to raw('<i class="fa fa-pencil-square-o fa-fw" ></i>'), "/facturas/"+ Factura.find_by(:id_Oc => oc._id)._id.to_s,
+                                  method: :get, class: 'btn btn-xs btn-warning',
+                                  data: { toggle: 'tooltip', placement: 'top' }, title: 'Ver' %>
                   <% end %>
                 </td>
+                <td></td>
               </tr>
           <% end %>
           </tbody>
@@ -151,7 +154,7 @@
 
     <div class="box collapsed-box">
       <div class="box-header with-border">
-        <h3 class="box-title">Finalizadas</h3>
+        <h3 class="box-title">Finalizadas (<%= Oc.all.where(:cliente => @grupo, :estado => "finalizada").count %>) </h3>
         <div class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
             <i class="fa fa-plus"></i></button>
@@ -181,13 +184,14 @@
                 <td><%= oc.cantidad %></td>
                 <td><%= oc.precioUnitario %></td>
                 <td><%= oc.estado %></td>
-                <td>
+                <td align="center">
                   <% if oc.facturaRealizadaDB == true %>
-                      <%= link_to raw('<i class="fa fa-pencil-square-o"></i>'), "/ocs/"+ oc._id.to_s + "/factura",
-                                  method: :put, class: 'btn btn-xs btn-warning',
-                                  data: { toggle: 'tooltip', placement: 'top' }, title: 'Ver Factura' %>
+                      <%= link_to raw('<i class="fa fa-pencil-square-o fa-fw" ></i>'), "/facturas/"+ Factura.find_by(:id_Oc => oc._id)._id.to_s,
+                                  method: :get, class: 'btn btn-xs btn-warning',
+                                  data: { toggle: 'tooltip', placement: 'top' }, title: 'Ver' %>
                   <% end %>
                 </td>
+                <td></td>
               </tr>
           <% end %>
           </tbody>
@@ -199,7 +203,7 @@
 
     <div class="box collapsed-box">
       <div class="box-header with-border">
-        <h3 class="box-title">Anuladas</h3>
+        <h3 class="box-title">Anuladas (<%= Oc.all.where(:cliente => @grupo, :estado => "anulada").count %>)</h3>
         <div class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
             <i class="fa fa-plus"></i></button>
@@ -229,13 +233,14 @@
                 <td><%= oc.cantidad %></td>
                 <td><%= oc.precioUnitario %></td>
                 <td><%= oc.estado %></td>
-                <td>
+                <td align="center">
                   <% if oc.facturaRealizadaDB == true %>
-                      <%= link_to raw('<i class="fa fa-pencil-square-o"></i>'), "/ocs/"+ oc._id.to_s + "/factura",
-                                  method: :put, class: 'btn btn-xs btn-warning',
-                                  data: { toggle: 'tooltip', placement: 'top' }, title: 'Ver Factura' %>
+                      <%= link_to raw('<i class="fa fa-pencil-square-o fa-fw" ></i>'), "/facturas/"+ Factura.find_by(:id_Oc => oc._id)._id.to_s,
+                                  method: :get, class: 'btn btn-xs btn-warning',
+                                  data: { toggle: 'tooltip', placement: 'top' }, title: 'Ver' %>
                   <% end %>
                 </td>
+                <td></td>
               </tr>
           <% end %>
           </tbody>
