@@ -83,12 +83,12 @@ def rechazarTrx(trx,factura)
 	puts "trx eliminada"
 	puts trx._id
 	#rechazar Factura (arriba y abajo)
-	RequestsFactura.anularFactura(factura._id, 'Error en la transaccion, Venta cancelada')
+	RequestsFactura.new.anularFactura(factura._id, 'Error en la transaccion, Venta cancelada')
 	factura.destroy
 	puts "factura eliminada"
 	puts factura._id
 	#rechazar OC (arriba y abajo)
-	RequestsOc.rechazarOc(Oc.find_by(_id: factura.id_Oc), 'Error en la transaccion, Venta cancelada')
+	RequestsOc.new.rechazarOc(Oc.find_by(_id: factura.id_Oc), 'Error en la transaccion, Venta cancelada')
 	Oc.find_by(_id: factura.id_Oc).destroy
 	puts "oc eliminada"
 	#devolver productos guardados
@@ -98,7 +98,7 @@ end
 
 def aceptarTrx(trx,facutra)
 	#marcar OC con trx aceptada
-	#Oc.find_by(_id: facutra.id_Oc).estadoDB= 'pagada'
+	Oc.find_by(_id: facutra.id_Oc).estadoDB= 'pagada'
 	#trx.estadoDB = 'aceptada'#no existe parametro
 	#confirmar trx url mare.ing.puc.cl/banco/trx/.:id
 	return true

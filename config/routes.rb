@@ -25,8 +25,6 @@ Rails.application.routes.draw do
 
   root 'almacenes#index'
 
-  match '/testb2b/' => 'testb2b#finalizarVenta', via: :get
-
 
   namespace :api, defaults: {format: :json} do
     root  'application#index'

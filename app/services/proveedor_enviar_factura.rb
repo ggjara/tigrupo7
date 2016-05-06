@@ -26,7 +26,7 @@ def enviarFactura(oc_id)
 		puts "---FACTURA CREADA---"
 		if(facturaCreada!=false)
 		puts "---FACTURA 'ENVIADA'---"
-			return true#enviarFacturaACliente(facturaCreada)
+			return enviarFacturaACliente(facturaCreada)
 		else
 			return false
 		end
@@ -71,7 +71,7 @@ end
 def uriCliente(id_cliente, id_factura)
 	cliente =Cliente.find_by(_idGrupo: id_cliente)
 	if(cliente!=nil)
-		uri= 'http://integra'<<cliente.grupo.to_s<<'.ing.puc.cl/facturas/recibir/'<<id_factura
+		uri= 'http://integra'<<cliente.grupo.to_s<<'.ing.puc.cl/api/facturas/recibir/'<<id_factura
 		return uri
 	else
 		return false
