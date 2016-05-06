@@ -20,13 +20,9 @@ end
 #Actualiza Bodega. Retorna Bodega con 'name': 'grupo7'.
 def actualizarBodega
   if (Bodega.first!=nil)
-    @bodegaGrupo7= Bodega.first
-    Bodega.first.almacenes.destroy_all
+    @bodegaGrupo7 = Bodega.first
+    @bodegaGrupo7.almacenes.destroy_all
     @bodegaGrupo7.save
-    puts 'Almacenes: '
-    puts Bodega.first.almacenes
-    puts 'Productos'
-    puts Bodega.first.productos
     agregarSaldo
     iniciarAlmacenes(true)
     return @bodegaGrupo7

@@ -63,17 +63,20 @@ end
 def producirPrimasSkuYCantidad
   sku = params[:id].to_s
   cantidad_lotes = params[:cantidad].to_i
-  render json: ProducirMateriasPrimas.new(sku).producirCantidad(cantidad_lotes)
+  render json: ProducirMateriasPrimas.new.producirCantidad(sku, cantidad_lotes)
 end
 
 #Controlador que recibe id prima y manda a producir un lote
 def producirPrimasSku
   sku = params[:id].to_s
-  pm = ProducirMateriasPrimas.new(sku)
-  render json: pm.producirCantidad(1)
+  render json: ProducirMateriasPrimas.new.producirCantidad(sku, 1)
 end
 
-
+#Vacia la Recepcion de Bodega
+def vaciarRecepcionBodega
+  ProveedorDespacharProductos.new.vaciarRecepcion
+  render json: Almacen.find_by(recepcion: true).stocks
+end
 
 
 

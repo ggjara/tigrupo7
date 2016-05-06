@@ -13,7 +13,8 @@ def despacharProductos(ordenCompra, esFtp)
 		return false
 	else
 		if(validarOcListaParaEnvio(ordenCompra, esFtp))
-			puts 'Va!!!'
+			#Actualiza Bodega
+			Bodega.iniciarBodega(false)
 			return despachoDeProductos(ordenCompra, esFtp)
 		else
 			return false
@@ -159,7 +160,7 @@ def enviarProductosDesdeDespacho(oc, sku, cantidad, almacenDestino, esFtp)
 		end
 		productoAEnviar = productosGenerados.first
 		if(esFtp)
-			RequestsBodega.new.despacharStock(productoAEnviar._id, 'direccion', oc.precioUnitario, oc._id)
+			puts RequestsBodega.new.despacharStock(productoAEnviar._id, 'direccion', oc.precioUnitario, oc._id)
 		else
 			RequestsBodega.new.moverStockBodega(productoAEnviar._id, almacenDestino, oc._id, oc.precioUnitario)
 		end

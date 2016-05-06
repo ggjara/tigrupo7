@@ -19,6 +19,7 @@ def recibirTrx(trx_id, factura_id)
 	puts "---TRX Y FACTURA RECIBIDAS---"
 		if(validarTrxFactura(trxDB, facturaDB))#Checkeamos que esten relaciondas
 		puts "---TRX Y FACTURA VALIDADAS---"
+			Bodega.sumarSaldo(trxDB.monto.to_i)
 			aceptarTrx(trxDB, facturaDB)
 			puts "---TRX ACEPTADA---"
 			return true

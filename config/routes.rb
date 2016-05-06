@@ -40,14 +40,16 @@ Rails.application.routes.draw do
 
    namespace :admin do
     root  'application#index'
-    match '/iniciarBodega' => 'application#iniciarBodega', via: :get
-    match '/actualizarBodega' => 'application#actualizarBodega', via: :get
-    match '/consultarFtp' => 'application#consultarFtp', via: :get
-    match '/producirPrimas/:id/:cantidad' => 'application#producirPrimasSkuYCantidad', via: :get
-    match '/producirPrimas/:id' => 'application#producirPrimasSku', via: :get
-    match '/prueba' => 'application#prueba', via: :get
+    match '/bodega/iniciar' => 'application#iniciarBodega', via: :get
+    match '/bodega/actualizar' => 'application#actualizarBodega', via: :get
+    match '/bodega/vaciarRecepcion' => 'application#vaciarRecepcionBodega', via: :get
+    match '/produccion/producirPrimas/:id/:cantidad' => 'application#producirPrimasSkuYCantidad', via: :get
+    match '/produccion/producirPrimas/:id' => 'application#producirPrimasSku', via: :get
+    match '/ftp/consultar' => 'application#consultarFtp', via: :get
     match '/clientes' => 'application#clientes', via: :get
     match '/clientes/iniciar' => 'application#clientesIniciar', via: :get
+
+    
 
   end
 
