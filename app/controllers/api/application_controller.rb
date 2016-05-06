@@ -30,7 +30,9 @@ end
 
 def recibirOc
 	idOC = params[:id]
-  if (ProveedorRecibirOc.new.responderOc(idOC))
+  	if (ProveedorRecibirOc.new.responderOc(idOC))
+	  	#Si aceptamos la OC, entonces verificamos Stock, para ver si con el Stock Guardado pasamos el limite
+	  	ProducirMateriasPrimas.new.producirStockBajo
 		Thread.new do
 			ProveedorEnviarFactura.new.enviarFactura(idOC)
 			##simular respuesta
@@ -39,17 +41,17 @@ def recibirOc
 			ActiveRecord::Base.connection.close
 		end
 
-		render json: {
-			"aceptado":true,
-			"idoc": params[:id]
-		}
+	render json: {
+		"aceptado":true,
+		"idoc": params[:id]
+	}
 
 	else
 		render json: {
 			"aceptado":false,
 			"idoc": params[:id]
 		}
-  end
+  	end
 end
 
 def recibirFactura
