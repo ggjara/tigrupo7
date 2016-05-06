@@ -48,10 +48,7 @@ def vaciarAlmacenDespacho
 			almacenDespacho.eliminarEspacio(1)
 			almacenAMover.agregarEspacio(1)
 		end	
-	end
-
-	end
-	
+	end	
 end
 
 
