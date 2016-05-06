@@ -44,7 +44,6 @@ Rails.application.routes.draw do
     match '/bodega/actualizar' => 'application#actualizarBodega', via: :get
     match '/bodega/vaciarRecepcion' => 'application#vaciarRecepcionBodega', via: :get
     match '/produccion/producirPrimas/:id/:cantidad' => 'application#producirPrimasSkuYCantidad', via: :get
-    match '/produccion/producirPrimas/:id' => 'application#producirPrimasSku', via: :get
     match '/ftp/consultar' => 'application#consultarFtp', via: :get
     match '/clientes' => 'application#clientes', via: :get
     match '/clientes/iniciar' => 'application#clientesIniciar', via: :get

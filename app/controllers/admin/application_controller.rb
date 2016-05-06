@@ -13,8 +13,14 @@ end
 
 #Inicia la bodega
 def iniciarBodega
-  desdeCero = true
-  ib = Bodega.iniciarBodega(desdeCero)
+  #1. Crear clientes
+  if(Cliente.all.count==0)
+    clientesIniciar
+  end
+  #2. Crear Bodega
+  ib = Bodega.iniciarBodega(true) #True porque se inicia
+  #3. Mandar a producir Stock si es Bajo
+  ProducirMateriasPrimas.new.producirStockBajo
   render json: ib
 end
 
@@ -22,6 +28,29 @@ end
 def clientes
   clientes = Cliente.all
   render json: clientes
+end
+
+def actualizarBodega
+  #1. Actualizar Datos Bodega
+  ib = Bodega.iniciarBodega(false) #False porque no se inicia, solo actualiza
+  #2. Mandar a producir si hay bajo Stock
+  ProducirMateriasPrimas.new.producirStockBajo
+  #3. Revisar FTP
+  ConsultarPedidosFtp.new.consultarOcsFTP
+  render json: Stock.all
+end
+
+#Controlador que recibe id prima y cantidad de lotes a producir
+def producirPrimasSkuYCantidad
+  sku = params[:id].to_s
+  cantidad_lotes = params[:cantidad].to_i
+  render json: ProducirMateriasPrimas.new.producirCantidad(sku, cantidad_lotes)
+end
+
+#Vacia la Recepcion de Bodega
+def vaciarRecepcionBodega
+  ProveedorDespacharProductos.new.vaciarRecepcion
+  render json: Almacen.find_by(recepcion: true).stocks
 end
 
 #Inicializa los clientes
@@ -50,38 +79,6 @@ def clientesIniciar
   end 
 
   clientes = Cliente.all
-  render json: clientes
-end
-
-def actualizarBodega
-  desdeCero = false
-  ib = Bodega.iniciarBodega(desdeCero)
-  render json: ib
-end
-
-#Controlador que recibe id prima y cantidad a producir
-def producirPrimasSkuYCantidad
-  sku = params[:id].to_s
-  cantidad_lotes = params[:cantidad].to_i
-  render json: ProducirMateriasPrimas.new.producirCantidad(sku, cantidad_lotes)
-end
-
-#Controlador que recibe id prima y manda a producir un lote
-def producirPrimasSku
-  sku = params[:id].to_s
-  render json: ProducirMateriasPrimas.new.producirCantidad(sku, 1)
-end
-
-#Vacia la Recepcion de Bodega
-def vaciarRecepcionBodega
-  ProveedorDespacharProductos.new.vaciarRecepcion
-  render json: Almacen.find_by(recepcion: true).stocks
-end
-
-
-
-def prueba
-  render json: Bodega.first.saldo if not nil
 end
 
 end

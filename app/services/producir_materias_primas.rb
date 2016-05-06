@@ -10,11 +10,11 @@ end
 def producirStockBajo
 	bodegaGrupo7 = Bodega.first
   if (bodegaGrupo7!=nil)
-    if Bodega.checkStockTotal('1')<700
+    if Bodega.checkStockTotal('1')<800
     	puts "Stock 1: " << Bodega.checkStockTotal('1').to_s
       	producirCantidad('1',1)  
     end
-    if Bodega.checkStockTotal('39')<700
+    if Bodega.checkStockTotal('39')<800
     	puts "Stock 39: " << Bodega.checkStockTotal('39').to_s
       	producirCantidad('39',1)  
     end

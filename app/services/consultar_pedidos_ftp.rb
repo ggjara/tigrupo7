@@ -16,17 +16,14 @@ def consultarOcsFTP
 		end
 	end
 
-
-	#Antes de procesar las ordenes, se actualiza la Bodega
-	IniciarBodega.new('grupo7').actualizarBodega
 	#Cada OC nueva se procesa
 	ordenesCompraFtpPorRecepcionar.each do |ordenCompra|
 		procesarOc(ordenCompra)
 	end
 
 	#Luego de procesar las Órdenes de Compra, se verifica Stock y se manda a producir
-	puts ProducirMateriasPrimas.new.producirStockBajo
-
+	ProducirMateriasPrimas.new.producirStockBajo
+	
 	return ordenesCompraFtpPorRecepcionar
 end
 
