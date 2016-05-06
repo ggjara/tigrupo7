@@ -141,9 +141,9 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="/oc_enviadas"><i class="fa fa-circle-o"></i> OCs Enviadas
-              <span class="label label-primary pull-right"><%=Oc.all.where(:cliente => '571262b8a980ba030058ab55').size %></span></a></li>
+              <span class="label label-primary pull-right"><%=Oc.all.where(:cliente => Cliente.find_by(grupo: 7)._idGrupo).size %></span></a></li>
             <li><a href="/oc_recibidas"><i class="fa fa-circle-o"></i> OCs Recibidas
-            <span class="label label-primary pull-right"><%=Oc.all.where(:proveedor => '571262b8a980ba030058ab55').size %></span></a></li>
+            <span class="label label-primary pull-right"><%=Oc.all.where(:proveedor => Cliente.find_by(grupo: 7)._idGrupo).size %></span></a></li>
           </ul>
         </li>
         <li class="treeview " >

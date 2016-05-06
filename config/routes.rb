@@ -44,6 +44,9 @@ Rails.application.routes.draw do
     match '/produccion/producirPrimas/:id/:cantidad' => 'application#producirPrimasSkuYCantidad', via: :get
     match '/ftp/consultar' => 'application#consultarFtp', via: :get
     match '/clientes' => 'application#clientes', via: :get
+    match '/almacenes' => 'application#almacenes', via: :get
+    match '/stocks' => 'application#stocks', via: :get
+    match '/ocs' => 'application#ocs', via: :get
     match '/clientes/iniciar' => 'application#clientesIniciar', via: :get
 
     
