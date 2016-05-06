@@ -63,7 +63,6 @@ def transferir(monto, origen, destino)#Validates
     return jsonResponse
   else
     paramsTransaccion = { _id: jsonResponse['_id'],
-			fechaCreacion: jsonResponse['created_at'],
       cuentaOrigen: jsonResponse['origen'],
       cuentaDestino: jsonResponse['destino'],
 			monto: jsonResponse['monto']}
