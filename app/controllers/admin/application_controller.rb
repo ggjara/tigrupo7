@@ -16,8 +16,6 @@ end
 
 #Inicializa la Bodega y Clientes.
 def iniciarBodega
-  #0. Se eliminan los clientes
-  Cliente.destroy_all
   #1. Crear clientes
   if(Cliente.all.count==0)
     clientesIniciar
