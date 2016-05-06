@@ -39,6 +39,9 @@ def eliminarStock(sku)
 	if stockBuscado != nil
 		stockBuscado.total = stockBuscado.total - 1
 		stockBuscado.save
+		if stockBuscado.total <= 0
+			stockBuscado.delete
+		end
 		self.save
 	else
 		return false

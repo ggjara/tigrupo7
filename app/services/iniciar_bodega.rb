@@ -10,6 +10,8 @@ def iniciarBodega
   Bodega.destroy_all
   Almacen.destroy_all
   Producto.destroy_all
+  Oc.destroy_all
+  Stock.destroy_all
   @bodegaGrupo7 = Bodega.new(name: @nameBodega, cantAlmacenes: @cantAlmacenes)
   @bodegaGrupo7.save
   agregarSaldo
@@ -20,13 +22,9 @@ end
 #Actualiza Bodega. Retorna Bodega con 'name': 'grupo7'.
 def actualizarBodega
   if (Bodega.first!=nil)
-    @bodegaGrupo7= Bodega.first
-    Bodega.first.almacenes.destroy_all
+    @bodegaGrupo7 = Bodega.first
+    @bodegaGrupo7.almacenes.destroy_all
     @bodegaGrupo7.save
-    puts 'Almacenes: '
-    puts Bodega.first.almacenes
-    puts 'Productos'
-    puts Bodega.first.productos
     agregarSaldo
     iniciarAlmacenes(true)
     return @bodegaGrupo7

@@ -15,12 +15,12 @@ end
 #Si la Bodega no está iniciada, se inicia
 def consultar
 	skuAsked= params[:id].to_s
-	bodegaGrupo7 = Bodega.find_by name: 'grupo7'
+	bodegaGrupo7 = Bodega.first
 	if (bodegaGrupo7!=nil)
 		cantDisponible = Bodega.checkStockTotal(skuAsked)
 		render json: {total: cantDisponible}
 	else
-		bodegaGrupo7 = Bodega.iniciarBodega
+		bodegaGrupo7 = Bodega.iniciarBodega(true)
 		cantDisponible = Bodega.checkStockTotal(skuAsked)
 		render json: {total: cantDisponible}
 	end

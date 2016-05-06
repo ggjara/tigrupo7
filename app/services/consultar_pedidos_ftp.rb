@@ -17,23 +17,36 @@ def consultarOcsFTP
 	end
 
 	#Cada OC nueva se procesa
+	seAceptaPorLoMenos1 = false
 	ordenesCompraFtpPorRecepcionar.each do |ordenCompra|
-		procesarOc(ordenCompra)
+		if procesarOc(ordenCompra)
+			seAceptaPorLoMenos1 = true
+		end
 	end
+
+	#Si se acepto una OC, entonces se verifica stock y manda a producir
+	if(seAceptaPorLoMenos1)
+		ProducirMateriasPrimas.new.producirStockBajo
+	end
+
 	return ordenesCompraFtpPorRecepcionar
 end
 
 #Procesar OC: Verificar si la aceptamos. Generar Factura. Despachar productos
 def procesarOc(ordenCompra)
+	respuesta = ProveedorRecibirOcFtp.new.responderOc(ordenCompra)
 	puts ':) Procesando OC: '<< ordenCompra._id.to_s
-	if(ProveedorRecibirOcFtp.new.responderOc(ordenCompra)) #Si la aceptamos, debemos ir a generar Factura
+	if(respuesta) #Si la aceptamos, debemos ir a generar Factura
 		puts ':) Aceptamos OC'
 		if(ProveedorEnviarFacturaFtp.new.enviarFactura(ordenCompra._id)) #Si se genera la Factura, debemos despachar producto
 			puts ':) Enviamos Factura'
 			ProveedorDespacharProductos.new.despacharProductos(ordenCompra, true)
 			puts ':) Despachamos productos'
+			return respuesta
 		end
 	end
+
+	return respuesta
 end
 
 private

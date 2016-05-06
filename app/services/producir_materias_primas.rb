@@ -1,6 +1,5 @@
-	class ProducirMateriasPrimas < ApplicationController
-def initialize(sku)
-  @sku =sku 
+class ProducirMateriasPrimas < ApplicationController
+def initialize
 end
 
 #1. Se verifica que haya plata para mandar a producir
@@ -8,12 +7,29 @@ end
 #3. Se envía a producir con la info de la TRX
 
 
-def producirCantidad(cantidad_lotes)
-  if(hayPlataProducirCantidad(cantidad_lotes))
+def producirStockBajo
+	bodegaGrupo7 = Bodega.first
+  if (bodegaGrupo7!=nil)
+    if Bodega.checkStockTotal('1')<800
+    	puts "Stock 1: " << Bodega.checkStockTotal('1').to_s
+      	producirCantidad('1',1)  
+    end
+    if Bodega.checkStockTotal('39')<800
+    	puts "Stock 39: " << Bodega.checkStockTotal('39').to_s
+      	producirCantidad('39',1)  
+    end
+  else
+    return false
+  end
+end
+
+
+def producirCantidad(sku, cantidad_lotes)
+  if(hayPlataProducirCantidad(sku, cantidad_lotes))
   	#Si hay Plata, Realizamos la TRX
-  	transaccionRealizada = realizarTrx(cantidad_lotes)
+  	transaccionRealizada = realizarTrx(sku, cantidad_lotes)
   	#Luego de realizar la TRX, envíamos a producir
-  	respuesta = enviarAProducir(@sku, cantidad_lotes.to_i, transaccionRealizada)
+  	respuesta = enviarAProducir(sku, cantidad_lotes.to_i, transaccionRealizada)
   	return respuesta
   else
   	return false
@@ -26,15 +42,15 @@ def enviarAProducir(sku, cantidad_lotes, trx)
 	puts 'Sku: '<<sku.to_s
 	puts 'Lotes: ' << cantidad_lotes.to_s
 	puts 'TRX: '<<trx._id.to_s
-	cantidadAproducir =cantidad_lotes * cantidadLoteProducto(@sku)
+	cantidadAproducir =cantidad_lotes * cantidadLoteProducto(sku)
 	return RequestsBodega.new.producirStock(sku.to_s, cantidadAproducir.to_i, trx._id.to_s)
 end
 
 
 
-def realizarTrx(cantidad_lotes)
+def realizarTrx(sku, cantidad_lotes)
 	puts 'Haciendo Transacción'
-	cantidadATransferir =cantidad_lotes*cantidadLoteProducto(@sku)*precioProduccionProducto(@sku)
+	cantidadATransferir =cantidad_lotes*cantidadLoteProducto(sku)*precioProduccionProducto(sku)
 	paramsTrx = RequestsBanco.new.transferir(cantidadATransferir.to_i, Cliente.find_by(grupo: 7)._idBanco, cuentaFabrica)
 	
 	transaccionRealizada = Trx.new(paramsTrx)
@@ -49,12 +65,12 @@ def cuentaFabrica
 	return RequestsBodega.new.getCuentaFabrica.to_s
 end
 
-def hayPlataProducirCantidad(cantidad_lotes)
+def hayPlataProducirCantidad(sku, cantidad_lotes)
 	if Bodega.first == nil
 		return false
 	end
 
-	if(cantidad_lotes*cantidadLoteProducto(@sku)*precioProduccionProducto(@sku)>Bodega.first.saldo)
+	if(cantidad_lotes*cantidadLoteProducto(sku)*precioProduccionProducto(sku)>Bodega.first.saldo)
 		return false
 	else
 		return true

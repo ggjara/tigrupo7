@@ -1,7 +1,6 @@
 class ProducirProductosProcesados < ApplicationController
 
-def initialize(sku)
-  @sku =sku 
+def initialize
 end
 
 #1. Se verifica que estén las condiciones para mandar a producir (Saldo y Materias Primas)
@@ -10,7 +9,7 @@ end
 #4. Se envía a producir con la info de la TRX
 
 
-def producirCantidad(cantidad_lotes)
+def producirCantidad(sku, cantidad_lotes)
   if(hayCondicionesProducirCantidad(cantidad_lotes))
   	#Si hay Condiciones para Producir, hacemos la TRX.
   	transaccionRealizada = realizarTrx(cantidad_lotes)
@@ -22,7 +21,7 @@ def producirCantidad(cantidad_lotes)
 	resultadoMoverPrimas = moverPrimasADespacho(cantidad_lotes)
 
   	if(resultadoMoverPrimas) #Si se pudieron mover, entonces seguimos el flujo
-  		respuesta = enviarAProducir(@sku, cantidad_lotes.to_i, transaccionRealizada)
+  		respuesta = enviarAProducir(sku, cantidad_lotes.to_i, transaccionRealizada)
   		return respuesta
   	end
   else
@@ -61,16 +60,16 @@ def enviarAProducir(sku, cantidad_lotes, trx)
 	puts sku.to_s
 	puts 'Lotes' << cantidad_lotes.to_s
 	puts trx._id.to_s
-	cantidadAProducir = cantidad_lotes*cantidadLoteProducto(@sku)
+	cantidadAProducir = cantidad_lotes*cantidadLoteProducto(sku)
 	return RequestsBodega.new.producirStock(sku.to_s, cantidadAProducir.to_i, trx._id.to_s)
 end
 
 
 
 #Retorna la TRX si se pudo realizar
-def realizarTrx(cantidad_lotes)
+def realizarTrx(sku, cantidad_lotes)
 	puts 'Haciendo Transacción'
-	cantidadATransferir =cantidad_lotes*cantidadLoteProducto(@sku)* precioProduccionProducto(@sku)
+	cantidadATransferir =cantidad_lotes*cantidadLoteProducto(sku)* precioProduccionProducto(sku)
 	paramsTrx = RequestsBanco.new.transferir(cantidadATransferir.to_i, Cliente.find_by(grupo: 7)._idBanco, cuentaFabrica)
 	
 	transaccionRealizada = Trx.new(paramsTrx)
@@ -98,11 +97,11 @@ end
 
 #Retorna True si tenemos la cantidad de Primas en Bodega
 #Retorna False si no las tenemos
-def hayMateriasPrimasProducirCantidad(cantidad_lotes)
+def hayMateriasPrimasProducirCantidad(sku, cantidad_lotes)
 	if Bodega.first == nil
 		return false
 	end
-	skusYCantidades = skusMateriasPrimasPorLote(@sku)
+	skusYCantidades = skusMateriasPrimasPorLote(sku)
 	skusYCantidades.each do |skuYCantidad|
 		skuYCantidad[:cantidad] = skuYCantidad[:cantidad] * cantidad_lotes
 		if(skuYCantidad[:cantidad].to_i>Bodega.checkStockTotal(skuYCantidad[:sku]))
@@ -113,12 +112,12 @@ def hayMateriasPrimasProducirCantidad(cantidad_lotes)
 	return true	
 end
 
-def hayPlataProducirCantidad(cantidad_lotes)
+def hayPlataProducirCantidad(sku, cantidad_lotes)
 	if Bodega.first == nil
 		return false
 	end
 
-	if(cantidad_lotes*cantidadLoteProducto(@sku)*precioProduccionProducto(@sku)>Bodega.first.saldo)
+	if(cantidad_lotes*cantidadLoteProducto(sku)*precioProduccionProducto(sku)>Bodega.first.saldo)
 		return false
 	else
 		return true
