@@ -13,7 +13,7 @@ def obtenerOc(id) #CHECK
 				cliente: jsonResponse['cliente'],
 				proveedor: jsonResponse['proveedor'],
 				sku: jsonResponse['sku'],
-				#fechaDespachos: jsonResponse['fechaDespachos'],
+				direccion: '',
 				fechaEntrega: jsonResponse['fechaEntrega'],
 				precioUnitario: jsonResponse['precioUnitario'],
 				cantidadDespachada: jsonResponse['cantidadDespachada'],
@@ -68,7 +68,7 @@ end
 #Rechaza una OC en servidor y retorna los parámetros de la OC o error
 def rechazarOc(oc_id, rechazo) #CHECK
 	jsonResponse = requestWeb('POST', 'http://mare.ing.puc.cl/oc/rechazar/'<<oc_id,
-	generateParam('id', oc_id), generateParam('rechazo', rechazo)).first
+	generateParam('id', oc_id), generateParam('rechazo', rechazo))
 	if(jsonResponse==false)
 		return jsonResponse
 	else

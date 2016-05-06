@@ -42,10 +42,10 @@ def getSkusWithStock(almacen_id)
 end
 
 #Recibe un :_id de un almacen y un :sku de un producto y retorna todos los productos con ese sku en ese almacen.
-def getStock(almacen_id, sku)
+def getStock(almacen_id, sku, limit)
 	paramsProductos=Array.new
 	jsonProducts = requestWeb('GET', 'http://integracion-2016-dev.herokuapp.com/bodega/stock',
-      generateParam('almacenId', almacen_id), generateParam('sku', sku))
+      generateParam('almacenId', almacen_id), generateParam('sku', sku), generateParam('limit', limit.to_i))
 	if(jsonProducts==false)
 		return jsonProducts
 	else
@@ -66,7 +66,7 @@ end
 # Recibe un producto_id y un almacen_id y mueve ese producto al almacen (solo si hay espacio)
 def moverStock(producto_id, almacen_id) #CHECK & V
   jsonMoverStock = requestWeb('POST', 'http://integracion-2016-dev.herokuapp.com/bodega/moveStock',
-    generateParam('productoId', producto_id), generateParam('almacenId', almacen_id))
+    generateParam('productoId', producto_id.to_s), generateParam('almacenId', almacen_id.to_s))
 	if(jsonMoverStock==false)
 		return jsonMoverStock
 	else
@@ -115,10 +115,12 @@ end
 
 # Despacha un producto a una dirección de una OC #CHECK
 def despacharStock(producto_id, direccion, precio, oc_id)
-  jsonDespacharStock = requestWeb('DELETE', 'http://integracion-2016-dev.herokuapp.com/bodega/stock',
-    generateParam('productoId', producto_id), generateParam('direccion', direccion),
-    generateParam('precio', precio), generateParam('pedidoId', oc_id))
 
+  jsonDespacharStock = requestWeb('DELETE', 'http://integracion-2016-dev.herokuapp.com/bodega/stock',
+    generateParam('productoId', producto_id.to_s), generateParam('direccion', direccion.to_s),
+    generateParam('precio', precio.to_i), generateParam('oc', oc_id.to_s))
+  puts '---- Respuesta:'
+  puts jsonDespacharStock
 	return jsonDespacharStock
 end
 
@@ -137,6 +139,8 @@ def getCuentaFabrica #CHECK
     return jsonCuentaFabrica['cuentaId']
 end
 
-
-
+def hola
+return generateAuthToken('DELETE', generateParam('productoId', '5729a20eb8b57203000a8ae8'), generateParam('direccion', 'direccion'),
+    generateParam('precio', 2676), generateParam('oc', '5729925f6187030300aacf16') )
+end
 end

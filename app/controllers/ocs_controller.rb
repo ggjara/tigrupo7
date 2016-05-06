@@ -1,10 +1,10 @@
 class OcsController < ApplicationController
   def oc_enviadas
-    @oc_enviadas = Oc.all.where(:cliente => '571262b8a980ba030058ab55')
+    @oc_enviadas = Oc.all.where(:cliente => Cliente.find_by(grupo: 7)._idGrupo)
   end
 
   def oc_recibidas
-    @oc_recibidas = Oc.all.where(:proveedor => '571262b8a980ba030058ab55')
+    @oc_recibidas = Oc.all.where(:proveedor => Cliente.find_by(grupo: 7)._idGrupo)
   end
 
   def factura
@@ -18,7 +18,7 @@ class OcsController < ApplicationController
   def esNuestra(id)
     @oc = Oc.find_by(_id: id)
     if @oc != nil
-      if(@oc.proveedor == '571262b8a980ba030058ab55')
+      if(@oc.proveedor == Cliente.find_by(grupo: 7)._idGrupo)
         return true
       else
         return false

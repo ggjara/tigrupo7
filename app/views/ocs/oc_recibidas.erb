@@ -18,18 +18,24 @@
           <tr>
             <th>ID</th>
             <th>Cliente</th>
+            <th>Canal</th>
             <th>SKU</th>
             <th>Cantidad</th>
+            <th>Precio Unitario</th>
+            <th>Estado</th>
             <th>Documentos Asociados</th>
           </tr>
           </thead>
           <tbody>
           <% @oc_recibidas.where(:estado => "creada").each do |oc| %>
               <tr>
-                <td><%=oc._id %></td>
+                <td><%= oc._id %></td>
                 <td><%= oc.cliente %></td>
+                <td><%=oc.canal %></td>
                 <td><%= oc.sku %></td>
                 <td><%= oc.cantidad %></td>
+                <td><%= oc.precioUnitario %></td>
+                <td><%= oc.estado %></td>
                 <td>
                   <% if oc.facturaRealizadaDB == true %>
                       <%= link_to raw('<i class="fa fa-pencil-square-o"></i>'), "/ocs/"+ oc._id.to_s + "/factura",
@@ -59,18 +65,26 @@
         <table class="table table-hover search-table">
           <thead>
           <tr>
+            <th>ID</th>
             <th>Cliente</th>
+            <th>Canal</th>
             <th>SKU</th>
             <th>Cantidad</th>
+            <th>Precio Unitario</th>
+            <th>Estado</th>
             <th>Documentos Asociados</th>
           </tr>
           </thead>
           <tbody>
           <% @oc_recibidas.where(:estado => "aceptada").each do |oc| %>
               <tr>
+                <td><%= oc._id %></td>
                 <td><%= oc.cliente %></td>
+                <td><%=oc.canal %></td>
                 <td><%= oc.sku %></td>
                 <td><%= oc.cantidad %></td>
+                <td><%= oc.precioUnitario %></td>
+                <td><%= oc.estado %></td>
                 <td>
                   <% if oc.facturaRealizadaDB == true %>
                       <%= link_to raw('<i class="fa fa-pencil-square-o"></i>'), "/ocs/"+ oc._id.to_s + "/factura",
@@ -100,18 +114,26 @@
         <table class="table table-hover search-table">
           <thead>
           <tr>
+            <th>ID</th>
             <th>Cliente</th>
+            <th>Canal</th>
             <th>SKU</th>
             <th>Cantidad</th>
+            <th>Precio Unitario</th>
+            <th>Estado</th>
             <th>Documentos Asociados</th>
           </tr>
           </thead>
           <tbody>
           <% @oc_recibidas.where(:estado => "rechazada").each do |oc| %>
               <tr>
+                <td><%= oc._id %></td>
                 <td><%= oc.cliente %></td>
+                <td><%=oc.canal %></td>
                 <td><%= oc.sku %></td>
                 <td><%= oc.cantidad %></td>
+                <td><%= oc.precioUnitario %></td>
+                <td><%= oc.estado %></td>
                 <td>
                   <% if oc.facturaRealizadaDB == true %>
                       <%= link_to raw('<i class="fa fa-pencil-square-o"></i>'), "/ocs/"+ oc._id.to_s + "/factura",
@@ -141,18 +163,26 @@
         <table class="table table-hover search-table">
           <thead>
           <tr>
+            <th>ID</th>
             <th>Cliente</th>
+            <th>Canal</th>
             <th>SKU</th>
             <th>Cantidad</th>
+            <th>Precio Unitario</th>
+            <th>Estado</th>
             <th>Documentos Asociados</th>
           </tr>
           </thead>
           <tbody>
           <% @oc_recibidas.where(:estado => "finalizada").each do |oc| %>
               <tr>
+                <td><%= oc._id %></td>
                 <td><%= oc.cliente %></td>
+                <td><%=oc.canal %></td>
                 <td><%= oc.sku %></td>
                 <td><%= oc.cantidad %></td>
+                <td><%= oc.precioUnitario %></td>
+                <td><%= oc.estado %></td>
                 <td>
                   <% if oc.facturaRealizadaDB == true %>
                       <%= link_to raw('<i class="fa fa-pencil-square-o"></i>'), "/ocs/"+ oc._id.to_s + "/factura",
@@ -182,18 +212,26 @@
         <table class="table table-hover search-table">
           <thead>
           <tr>
+            <th>ID</th>
             <th>Cliente</th>
+            <th>Canal</th>
             <th>SKU</th>
             <th>Cantidad</th>
+            <th>Precio Unitario</th>
+            <th>Estado</th>
             <th>Documentos Asociados</th>
           </tr>
           </thead>
           <tbody>
           <% @oc_recibidas.where(:estado => "anulada").each do |oc| %>
               <tr>
+                <td><%= oc._id %></td>
                 <td><%= oc.cliente %></td>
+                <td><%=oc.canal %></td>
                 <td><%= oc.sku %></td>
                 <td><%= oc.cantidad %></td>
+                <td><%= oc.precioUnitario %></td>
+                <td><%= oc.estado %></td>
                 <td>
                   <% if oc.facturaRealizadaDB == true %>
                       <%= link_to raw('<i class="fa fa-pencil-square-o"></i>'), "/ocs/"+ oc._id.to_s + "/factura",

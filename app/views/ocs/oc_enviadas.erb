@@ -16,9 +16,12 @@
         <table class="table table-hover search-table">
           <thead>
           <tr>
+            <th>ID</th>
             <th>Proveedor</th>
+            <th>Canal</th>
             <th>SKU</th>
             <th>Cantidad</th>
+            <th>Precio Unitario</th>
             <th>Estado</th>
             <th>Documentos Asociados</th>
           </tr>
@@ -26,11 +29,15 @@
           <tbody>
           <% @oc_enviadas.where(:estado => "creada").each do |oc| %>
               <tr>
+                <td><%= oc._id %></td>
                 <td><%= oc.proveedor %></td>
+                <td><%=oc.canal %></td>
                 <td><%= oc.sku %></td>
                 <td><%= oc.cantidad %></td>
+                <td><%= oc.precioUnitario %></td>
                 <td><%= oc.estado %></td>
                 <td>
+
                   <% if oc.facturaRealizadaDB == true %>
                       <%= link_to raw('<i class="fa fa-pencil-square-o"></i>'), "/ocs/"+ oc._id.to_s + "/factura",
                                   method: :put, class: 'btn btn-xs btn-warning',
@@ -58,9 +65,12 @@
         <table class="table table-hover search-table">
           <thead>
           <tr>
+            <th>ID</th>
             <th>Proveedor</th>
+            <th>Canal</th>
             <th>SKU</th>
             <th>Cantidad</th>
+            <th>Precio Unitario</th>
             <th>Estado</th>
             <th>Documentos Asociados</th>
           </tr>
@@ -68,9 +78,12 @@
           <tbody>
           <% @oc_enviadas.where(:estado => "aceptada").each do |oc| %>
               <tr>
+                <td><%= oc._id %></td>
                 <td><%= oc.proveedor %></td>
+                <td><%=oc.canal %></td>
                 <td><%= oc.sku %></td>
                 <td><%= oc.cantidad %></td>
+                <td><%= oc.precioUnitario %></td>
                 <td><%= oc.estado %></td>
                 <td>
                   <% if oc.facturaRealizadaDB == true %>
@@ -100,18 +113,26 @@
         <table class="table table-hover search-table">
           <thead>
           <tr>
+            <th>ID</th>
             <th>Proveedor</th>
+            <th>Canal</th>
             <th>SKU</th>
             <th>Cantidad</th>
+            <th>Precio Unitario</th>
+            <th>Estado</th>
             <th>Documentos Asociados</th>
           </tr>
           </thead>
           <tbody>
           <% @oc_enviadas.where(:estado => "rechazada").each do |oc| %>
               <tr>
+                <td><%= oc._id %></td>
                 <td><%= oc.proveedor %></td>
+                <td><%=oc.canal %></td>
                 <td><%= oc.sku %></td>
                 <td><%= oc.cantidad %></td>
+                <td><%= oc.precioUnitario %></td>
+                <td><%= oc.estado %></td>
                 <td>
                   <% if oc.facturaRealizadaDB == true %>
                       <%= link_to raw('<i class="fa fa-pencil-square-o"></i>'), "/ocs/"+ oc._id.to_s + "/factura",
@@ -140,9 +161,12 @@
         <table class="table table-hover search-table">
           <thead>
           <tr>
+            <th>ID</th>
             <th>Proveedor</th>
+            <th>Canal</th>
             <th>SKU</th>
             <th>Cantidad</th>
+            <th>Precio Unitario</th>
             <th>Estado</th>
             <th>Documentos Asociados</th>
           </tr>
@@ -150,9 +174,13 @@
           <tbody>
           <% @oc_enviadas.where(:estado => "finalizada").each do |oc| %>
               <tr>
+                <td><%= oc._id %></td>
                 <td><%= oc.proveedor %></td>
+                <td><%=oc.canal %></td>
                 <td><%= oc.sku %></td>
                 <td><%= oc.cantidad %></td>
+                <td><%= oc.precioUnitario %></td>
+                <td><%= oc.estado %></td>
                 <td>
                   <% if oc.facturaRealizadaDB == true %>
                       <%= link_to raw('<i class="fa fa-pencil-square-o"></i>'), "/ocs/"+ oc._id.to_s + "/factura",
@@ -181,9 +209,12 @@
         <table class="table table-hover search-table">
           <thead>
           <tr>
+            <th>ID</th>
             <th>Proveedor</th>
+            <th>Canal</th>
             <th>SKU</th>
             <th>Cantidad</th>
+            <th>Precio Unitario</th>
             <th>Estado</th>
             <th>Documentos Asociados</th>
           </tr>
@@ -191,9 +222,12 @@
           <tbody>
           <% @oc_enviadas.where(:estado => "anulada").each do |oc| %>
               <tr>
+                <td><%= oc._id %></td>
                 <td><%= oc.proveedor %></td>
+                <td><%=oc.canal %></td>
                 <td><%= oc.sku %></td>
                 <td><%= oc.cantidad %></td>
+                <td><%= oc.precioUnitario %></td>
                 <td><%= oc.estado %></td>
                 <td>
                   <% if oc.facturaRealizadaDB == true %>
