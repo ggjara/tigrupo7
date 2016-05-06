@@ -1,0 +1,261 @@
+<% content_for :header do %>
+    <h1>Bodega G7</h1>
+<%end%>
+
+<% content_for :content do %>
+    <!-- Default box -->
+    <div class="box collapsed-box">
+      <div class="box-header with-border">
+        <h3 class="box-title">SALDO: $<%= Bodega.first.saldo%></h3>
+      </div>
+    </div>
+
+    <div class="box">
+      <div class="box-header with-border">
+        <h3 class="box-title">RESUMEN Productos</h3>
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+            <i class="fa fa-minus"></i></button>
+        </div>
+      </div>
+      <div class="box-body">
+        <table class="table table-hover search-table">
+          <thead>
+          <tr>
+            <th>SKU</th>
+            <th>Stock</th>
+            <th>Stock Reservado</th>
+          </tr>
+          </thead>
+          <tbody>
+              <tr>
+                <td>1</td>
+                <td><%= Bodega.checkStock(1) %></td>
+                <td><%= Bodega.checkStockGuardado(1) %></td>
+              </tr>
+              <tr>
+                <td>10</td>
+                <td><%= Bodega.checkStock(10) %></td>
+                <td><%= Bodega.checkStockGuardado(10) %></td>
+              </tr>
+              <tr>
+                <td>23</td>
+                <td><%= Bodega.checkStock(23) %></td>
+                <td><%= Bodega.checkStockGuardado(23) %></td>
+              </tr>
+              <tr>
+                <td>39</td>
+                <td><%= Bodega.checkStock(39) %></td>
+                <td><%= Bodega.checkStockGuardado(39) %></td>
+              </tr>
+          </tbody>
+        </table>
+      </div><!-- /.box-body -->
+      <div class="box-footer">
+      </div><!-- /.box-footer-->
+    </div><!-- /.box -->
+
+    <div class="box collapsed-box">
+      <div class="box-header with-border">
+        <h3 class="box-title">RESUMEN Almacenes</h3>
+
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+            <i class="fa fa-plus"></i></button>
+        </div>
+      </div>
+      <div class="box-body">
+        <div class="box">
+          <div class="box-header with-border">
+            <h3 class="box-title">Despacho</h3>
+          </div>
+          <div class="box-body">
+            <table class="table table-hover search-table">
+              <thead>
+              <tr>
+                <th>ID</th>
+                <th>Espacio Usado</th>
+                <th>Espacio Total</th>
+                <th>SKU</th>
+                <th>Stock</th>
+              </tr>
+              </thead>
+              <tbody>
+              <% @Almacenes.where(:despacho => true).each do |almacen| %>
+                  <tr>
+                    <td><%= almacen._id %></td>
+                    <td><%= almacen.usedSpace %></td>
+                    <td><%= almacen.totalSpace %></td>
+                    <td>
+                      <table>
+                        <% almacen.stocks.select("DISTINCT(SKU)").each do |prod| %>
+                            <tr>
+                              <td><%= prod.sku %></td>
+                            </tr>
+                        <%end%>
+                      </table>
+                    </td>
+                    <td>
+                      <table>
+                        <% almacen.stocks.select("DISTINCT(SKU)").each do |prod| %>
+                            <tr>
+                              <td><%= almacen.stocks.find_by(:sku => prod.sku).total%></td>
+                            </tr>
+                        <%end%>
+                      </table>
+                    </td>
+                  </tr>
+              <% end %>
+              </tbody>
+            </table>
+          </div><!-- /.box-body -->
+          <div class="box-footer">
+          </div><!-- /.box-footer-->
+        </div><!-- /.box -->
+        <div class="box">
+          <div class="box-header with-border">
+            <h3 class="box-title">Recepción</h3>
+          </div>
+          <div class="box-body">
+            <table class="table table-hover search-table">
+              <thead>
+              <tr>
+                <th>ID</th>
+                <th>Espacio Usado</th>
+                <th>Espacio Total</th>
+                <th>SKU</th>
+                <th>Stock</th>
+              </tr>
+              </thead>
+              <tbody>
+              <% @Almacenes.where(:recepcion => true).each do |almacen| %>
+                  <tr>
+                    <td><%= almacen._id %></td>
+                    <td><%= almacen.usedSpace %></td>
+                    <td><%= almacen.totalSpace %></td>
+                    <td>
+                      <table>
+                        <% almacen.stocks.select("DISTINCT(SKU)").each do |prod| %>
+                            <tr>
+                              <td><%= prod.sku %></td>
+                            </tr>
+                        <%end%>
+                      </table>
+                    </td>
+                    <td>
+                      <table>
+                        <% almacen.stocks.select("DISTINCT(SKU)").each do |prod| %>
+                            <tr>
+                              <td><%= almacen.stocks.find_by(:sku => prod.sku).total%></td>
+                            </tr>
+                        <%end%>
+                      </table>
+                    </td>
+                  </tr>
+              <% end %>
+              </tbody>
+            </table>
+          </div><!-- /.box-body -->
+          <div class="box-footer">
+          </div><!-- /.box-footer-->
+        </div><!-- /.box -->
+        <div class="box">
+          <div class="box-header with-border">
+            <h3 class="box-title">Pulmón</h3>
+          </div>
+          <div class="box-body">
+            <table class="table table-hover search-table">
+              <thead>
+              <tr>
+                <th>ID</th>
+                <th>Espacio Usado</th>
+                <th>Espacio Total</th>
+                <th>SKU</th>
+                <th>Stock</th>
+              </tr>
+              </thead>
+              <tbody>
+              <% @Almacenes.where(:pulmon => true).each do |almacen| %>
+                  <tr>
+                    <td><%= almacen._id %></td>
+                    <td><%= almacen.usedSpace %></td>
+                    <td><%= almacen.totalSpace %></td>
+                    <td>
+                      <table>
+                        <% almacen.stocks.select("DISTINCT(SKU)").each do |prod| %>
+                            <tr>
+                              <td><%= prod.sku %></td>
+                            </tr>
+                        <%end%>
+                      </table>
+                    </td>
+                    <td>
+                      <table>
+                        <% almacen.stocks.select("DISTINCT(SKU)").each do |prod| %>
+                            <tr>
+                              <td><%= almacen.stocks.find_by(:sku => prod.sku).total%></td>
+                            </tr>
+                        <%end%>
+                      </table>
+                    </td>
+                  </tr>
+              <% end %>
+              </tbody>
+            </table>
+          </div><!-- /.box-body -->
+          <div class="box-footer">
+          </div><!-- /.box-footer-->
+        </div><!-- /.box -->
+        <div class="box">
+          <div class="box-header with-border">
+            <h3 class="box-title">Otros</h3>
+          </div>
+          <div class="box-body">
+            <table class="table table-hover search-table">
+              <thead>
+              <tr>
+                <th>ID</th>
+                <th>Espacio Usado</th>
+                <th>Espacio Total</th>
+                <th>SKU</th>
+                <th>Stock</th>
+              </tr>
+              </thead>
+              <tbody>
+              <% @Almacenes.where(:pulmon => false, :despacho => false, :recepcion => false).each do |almacen| %>
+                  <tr>
+                    <td><%= almacen._id %></td>
+                    <td><%= almacen.usedSpace %></td>
+                    <td><%= almacen.totalSpace %></td>
+                    <td>
+                      <table>
+                        <% almacen.stocks.select("DISTINCT(SKU)").each do |prod| %>
+                            <tr>
+                              <td><%= prod.sku %></td>
+                            </tr>
+                        <%end%>
+                      </table>
+                    </td>
+                    <td>
+                      <table>
+                        <% almacen.stocks.select("DISTINCT(SKU)").each do |prod| %>
+                            <tr>
+                              <td><%= almacen.stocks.find_by(:sku => prod.sku).total%></td>
+                            </tr>
+                        <%end%>
+                      </table>
+                    </td>
+                  </tr>
+              <% end %>
+              </tbody>
+            </table>
+          </div><!-- /.box-body -->
+          <div class="box-footer">
+          </div><!-- /.box-footer-->
+        </div><!-- /.box -->
+      </div><!-- /.box-body -->
+      <div class="box-footer">
+      </div><!-- /.box-footer-->
+    </div><!-- /.box -->
+
+<%end%>

@@ -7,11 +7,6 @@ class OcsController < ApplicationController
     @oc_recibidas = Oc.all.where(:proveedor => Cliente.find_by(grupo: 7)._idGrupo)
   end
 
-  def factura
-    @oc = Oc.find_by(:_id => params[:oc])
-    @factura = Factura.find_by(:id_Oc => params[:oc].to_s)
-  end
-
   def show
   end
 

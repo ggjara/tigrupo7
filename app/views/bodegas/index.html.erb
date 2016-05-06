@@ -1,0 +1,58 @@
+<% content_for :header do %>
+    <h1>Bodega G7</h1>
+<%end%>
+
+<% content_for :content do %>
+    <!-- Default box -->
+
+    <div class="box collapsed-box">
+      <div class="box-header with-border">
+        <h3 class="box-title">RESUMEN Productos</h3>
+
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+            <i class="fa fa-plus"></i></button>
+        </div>
+      </div>
+      <div class="box-body">
+        <table class="table table-hover search-table">
+          <thead>
+          <tr>
+            <th>SKU</th>
+            <th>ID Almacen</th>
+            <th>Tipo Almacen</th>
+            <th>Stock</th>
+            <th>Stock Reservado</th>
+            <th>Precio</th>
+            <th>Costo</th>
+            <th>Despachado</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+          <% if @Stocks.nil? %>
+              <% @Stock.each do |stock| %>
+
+                    <% @almacenID = stock.almacen_id %>
+                    <td><%= stock.sku %></td>
+                    <td><%= @almacenID %></td>
+                    <% if Almacen.find_by(:id => @almacenID).pulmon? %>
+                        <td>Pulmón</td>
+                    <% elsif Almacen.find_by(:id => @almacenID).despacho? %>
+                        <td>Despacho</td>
+                    <% elsif Almacen.find_by(:id => @almacenID).recepcion? %>
+                        <td>Recepción</td>
+                    <% else %>
+                        <td>Otro</td>
+                    <% end %>
+              <% end %>
+          <% end %>
+          </tr>
+          </tbody>
+        </table>
+      </div><!-- /.box-body -->
+      <div class="box-footer">
+      </div><!-- /.box-footer-->
+    </div><!-- /.box -->
+
+<%end%>
