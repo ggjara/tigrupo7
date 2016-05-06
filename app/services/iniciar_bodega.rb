@@ -10,6 +10,8 @@ def iniciarBodega
   Bodega.destroy_all
   Almacen.destroy_all
   Producto.destroy_all
+  Oc.destroy_all
+  Stock.destroy_all
   @bodegaGrupo7 = Bodega.new(name: @nameBodega, cantAlmacenes: @cantAlmacenes)
   @bodegaGrupo7.save
   agregarSaldo

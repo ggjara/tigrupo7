@@ -16,15 +16,18 @@ end
 
 #Inicializa la Bodega y Clientes.
 def iniciarBodega
+  #0. Se eliminan los clientes
+  Cliente.destroy_all
   #1. Crear clientes
   if(Cliente.all.count==0)
     clientesIniciar
   end
   #2. Crear Bodega
   ib = Bodega.iniciarBodega(true) #True porque se inicia
+  
   #3. Mandar a producir Stock si es Bajo
   ProducirMateriasPrimas.new.producirStockBajo
-  render json: ib
+  render json: "Iniciada"
 end
 
 #Muestra los clientes
@@ -43,10 +46,19 @@ def actualizarBodega
 
   #Si tenemos ordenes de Compra llegadas por FTP que no se han analizado
   ocCreadasFtp = Oc.where(cliente: "internacional", estado: 'creada')
+  seAceptaPorLoMenos1 = false
   if(ocCreadasFtp.count>0)
     ocCreadasFtp.each do |ocCreada|
-      ConsultarPedidosFtp.new.procesarOc(ocCreada)
+      if ConsultarPedidosFtp.new.procesarOc(ocCreada)
+        se seAceptaPorLoMenos1 =true
+      end
     end
+  end
+
+  #Si se acepta por lo menos 1, se manda a producir si es necesario
+  if(seAceptaPorLoMenos1)
+    #2. Mandar a producir si hay bajo Stock
+    ProducirMateriasPrimas.new.producirStockBajo
   end
 
   render json: "Actualizada"
