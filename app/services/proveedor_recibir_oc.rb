@@ -26,14 +26,9 @@ def responderOc(oc_id)
 
 				puts "++++++++++++++++++"
 				puts ocGenerada._id
-				puts ocGenerada.proveedor
-				puts ocGenerada.cliente
-				puts ocGenerada.sku
-				puts ocGenerada.cantidad
-				puts ocGenerada.precioUnitario
-				puts ocGenerada.estadoDB
 				puts ocGenerada.estado
 				puts "++++++++++++++++++"
+
 				respuesta= true
 			else
 				rechazarOcServerDB(ocGenerada,'NoSePudoAceptarProblemaServidor')
@@ -60,6 +55,9 @@ def hacerOcDB(oc_id)
 	else
 		request= RequestsOc.new
 		paramsOc = request.obtenerOc(oc_id)
+		if(paramsOc==false)
+			return false
+		end
 		ocGenerada = Oc.new(paramsOc)
 		ocGenerada.save
 		return ocGenerada
@@ -100,15 +98,9 @@ def aceptarOcServerDB(oc)
 	if(estadoServidor!=false)
 		oc.estado= estadoServidor[:estado]
 		oc.save
-		#no actualiza estadoDB???
 		Bodega.guardarStock(oc.sku, oc.cantidad.to_i)
 		puts "++++++++++++++++++"
 		puts estadoServidor[:_id]
-		puts estadoServidor[:proveedor]
-		puts estadoServidor[:cliente]
-		puts estadoServidor[:sku]
-		puts estadoServidor[:cantidad]
-		puts estadoServidor[:precioUnitario]
 		puts estadoServidor[:estado]
 		puts "++++++++++++++++++"
 		return true
@@ -133,6 +125,9 @@ end
 
 def rechazarOcServerDBById(oc_id,rechazo)
 	oc = Oc.find_by(_id: oc_id)
+	if(oc == nil)
+		return false
+	end
 	estadoServidor = RequestsOc.new.rechazarOc(oc._id,rechazo)
 	if(estadoServidor!=false)
 		oc.estado= estadoServidor[:estado]

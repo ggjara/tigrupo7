@@ -9,7 +9,8 @@ def initialize
 end
 
 def despacharProductos(ordenCompra, esFtp)
-	if ordenCompra==nil
+	if (ordenCompra==nil)
+		puts "xxxORDEN DE COMPRA NULLxxx"
 		return false
 	else
 		if(validarOcListaParaEnvio(ordenCompra, esFtp))
@@ -17,6 +18,7 @@ def despacharProductos(ordenCompra, esFtp)
 			Bodega.iniciarBodega(false)
 			return despachoDeProductos(ordenCompra, esFtp)
 		else
+			puts "xxxOC invalidaxxx"
 			return false
 		end
 	end
@@ -38,7 +40,7 @@ def despachoDeProductos(oc, esFtp)
 	if(cantidad>0)
 		puts '#2. Envía todos los de los demás almacenes'
 		otrosAlmacenes = Almacen.where(pulmon: false, despacho: false)
-		otrosAlmacenes.each do |otroAlmacen| 
+		otrosAlmacenes.each do |otroAlmacen|
 			enviarProductosDesdeAlmacenADespacho(sku, otroAlmacen, cantidad)
 			cantidad = enviarProductosDesdeDespacho(oc, sku, cantidad, almacenDestino, esFtp)
 			break if cantidad <= 0
@@ -78,7 +80,7 @@ def despachoDeProductos(oc, esFtp)
 		oc.estado = 'finalizada'
 		oc.save
 		return true
-	end	
+	end
 end
 
 def cargarProductos(sku, almacen)
@@ -95,7 +97,7 @@ end
 def cargarProductosCualquiera(almacen)
 	productosGenerados = Array.new
 	stocksPillado = almacen.stocks.where('total > 0')
-	if stocksPillado.count > 0  
+	if stocksPillado.count > 0
 		sku = stocksPillado.first.sku
 		paramsProductos = RequestsBodega.new.getStock(almacen._id, sku, 200)
 		paramsProductos.each do |paramsProducto|
@@ -103,10 +105,10 @@ def cargarProductosCualquiera(almacen)
 	       productoCreado.save
 	       productosGenerados.append(productoCreado)
 	    end
-	    return productosGenerados	
+	    return productosGenerados
 	else
 		return productosGenerados
-	end	
+	end
 end
 
 def enviarProductosDesdeAlmacenADespacho(sku, almacen, cantidad)
@@ -124,7 +126,7 @@ def enviarProductosDesdeAlmacenADespacho(sku, almacen, cantidad)
 		almacenDespacho.agregarStock(sku.to_s)
 		almacen.eliminarEspacio(1)
 		almacenDespacho.agregarEspacio(1)
-		cantidadMovida = cantidadMovida + 1 
+		cantidadMovida = cantidadMovida + 1
 		break if cantidadMovida >= cantidad
 	end
 end
@@ -177,7 +179,7 @@ def vaciarRecepcion
 	almacenRecepcion = Almacen.find_by(recepcion: true)
 	almacenesOtros = Almacen.where(pulmon: false, recepcion: false, despacho: false)
 	productosGenerados = Array.new
-	almacenesOtros.each do |almacenQueRecibe| 
+	almacenesOtros.each do |almacenQueRecibe|
 		while (almacenRecepcion.tieneProductos && almacenQueRecibe.tieneEspacio(1)) do
 			if(productosGenerados.count==0)
 				productosGenerados = cargarProductosCualquiera(almacenRecepcion)
@@ -198,7 +200,7 @@ def vaciarDespacho
 	almacenDespacho = Almacen.find_by(despacho: true)
 	almacenesOtros = Almacen.where(pulmon: false, recepcion: false, despacho: false)
 	productosGenerados = Array.new
-	almacenesOtros.each do |almacenQueRecibe| 
+	almacenesOtros.each do |almacenQueRecibe|
 		while (almacenDespacho.tieneProductos && almacenQueRecibe.tieneEspacio(1)) do
 			if(productosGenerados.count==0)
 				productosGenerados = cargarProductosCualquiera(almacenDespacho)
@@ -218,7 +220,6 @@ end
 #Retorna true si la oc fue aceptada
 #Factura y TRX realizadas y aun no se despacha
 def validarOcListaParaEnvio(ordenCompra, esFtp)
-
 	if (ordenCompra==nil)
 		puts "xxxOC NULLxxx"
 		return false
@@ -244,6 +245,7 @@ def validarOcListaParaEnvio(ordenCompra, esFtp)
 		return false
 	end
 
+	puts "---OC VALIDA---"
 	return true
 end
 
