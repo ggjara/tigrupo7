@@ -38,17 +38,18 @@ end
 #Vacia el Almacen de Despacho
 def vaciarAlmacenDespacho
 	if(Bodega.first!=nil)
-	almacenDespacho = Almacen.find_by(despacho: true)
-	almacenesAMover = Almacen.where(despacho: false, recepcion: false, pulmon: false)
-	almacenesAMover.each do |almacenRecepcion|
-		while(almacenDespacho.productos.count >0 && almacenAMover.tieneEspacio(1) do
-			productoAEnviar = almacenDespacho.productos.first
-			RequestsBodega.new.moverStock(productoAEnviar._id, almacenAMover._id)
-			productoAEnviar.almacen= almacenAMover
-			almacenDespacho.eliminarEspacio(1)
-			almacenAMover.agregarEspacio(1)
+		almacenDespacho = Almacen.find_by(despacho: true)
+		almacenesAMover = Almacen.where(despacho: false, recepcion: false, pulmon: false)
+		almacenesAMover.each do |almacenRecepcion|
+			while(almacenDespacho.productos.count >0 && almacenAMover.tieneEspacio(1) do
+				productoAEnviar = almacenDespacho.productos.first
+				RequestsBodega.new.moverStock(productoAEnviar._id, almacenAMover._id)
+				productoAEnviar.almacen= almacenAMover
+				almacenDespacho.eliminarEspacio(1)
+				almacenAMover.agregarEspacio(1)
+			end	
 		end	
-	end	
+	end
 end
 
 
