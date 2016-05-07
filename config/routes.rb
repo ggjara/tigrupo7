@@ -60,6 +60,7 @@ Rails.application.routes.draw do
     match '/almacenes' => 'application#almacenes', via: :get
     match '/stocks' => 'application#stocks', via: :get
     match '/ocs' => 'application#ocs', via: :get
+    match '/facturas' => 'application#facturas', via: :get
     match '/clientes/iniciar' => 'application#clientesIniciar', via: :get
 
     

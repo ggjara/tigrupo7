@@ -58,7 +58,7 @@ end
 #Vacia la Recepcion de Bodega
 def vaciarRecepcionBodega
   ProveedorDespacharProductos.new.vaciarRecepcion
-  render json: 'Listo'
+  render json: 'Almacen.find_by(recepcion: true).stocks'
 end
 
 #Inicializa los clientes
@@ -101,6 +101,11 @@ end
 def almacenes
   almacenes = Almacen.all
   render json: almacenes
+end
+
+def facturas
+  almacenes = 
+  render json: Factura.all
 end
 
 def stocks
