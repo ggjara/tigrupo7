@@ -51,7 +51,7 @@ Rails.application.routes.draw do
 
    namespace :admin do
     root  'application#index'
-    match '/bodega/iniciar' => 'application#iniciarBodega', via: :get
+    #match '/bodega/iniciar' => 'application#iniciarBodega', via: :get
     match '/bodega/actualizar' => 'application#actualizarBodega', via: :get
     match '/bodega/vaciarRecepcion' => 'application#vaciarRecepcionBodega', via: :get
     match '/produccion/producirPrimas/:id/:cantidad' => 'application#producirPrimasSkuYCantidad', via: :get

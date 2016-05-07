@@ -24,6 +24,7 @@ def actualizarBodega
   if (Bodega.first!=nil)
     @bodegaGrupo7 = Bodega.first
     @bodegaGrupo7.almacenes.destroy_all
+    Almacen.destroy_all
     Stock.destroy_all
     @bodegaGrupo7.save
     agregarSaldo
