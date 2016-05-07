@@ -103,35 +103,31 @@
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
       <!-- Sidebar user panel -->
-      <div class="user-panel">
+      <!--<div class="user-panel">
         <div class="pull-left image">
           <%= image_tag 'person-flat.png', class: 'img-responsive' %>
         </div>
         <div class="pull-left info">
           <p>Alexander Pierce</p>
         </div>
-      </div>
-<!--      &lt;!&ndash; search form &ndash;&gt;
-      <form action="#" method="get" class="sidebar-form">
-        <div class="input-group">
-          <input type="text" name="q" class="form-control" placeholder="Search...">
-              <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
-              </span>
-        </div>
-      </form>-->
+      </div>-->
+      <!--      &lt;!&ndash; search form &ndash;&gt;
+            <form action="#" method="get" class="sidebar-form">
+              <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="Search...">
+                    <span class="input-group-btn">
+                      <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                    </span>
+              </div>
+            </form>-->
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
-        <li class="header">OPCIONES</li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-archive"></i> <span>Bodega</span> <i class="fa fa-angle-left pull-right"></i>
+        <!--<li class="header">OPCIONES</li>-->
+        <li>
+          <a href="/bodegaG7">
+            <i class="fa fa-archive"></i> <span>Bodega</span> </i>
           </a>
-          <ul class="treeview-menu">
-            <li><a href="/productos" ><i class="fa fa-circle-o"></i> Productos</a></li>
-            <li><a href="/almacenes"><i class="fa fa-circle-o"></i> Almacenes</a></li>
-          </ul>
         </li>
         <li class="treeview " >
           <a href="/">
@@ -140,22 +136,19 @@
             <i class="fa fa-angle-left pull-right"></i>
           </a>
           <ul class="treeview-menu">
+            <% @grupo = Cliente.find_by(grupo: 7)._idGrupo %>
             <li><a href="/oc_enviadas"><i class="fa fa-circle-o"></i> OCs Enviadas
-              <span class="label label-primary pull-right"><%=Oc.all.where(:cliente => Cliente.find_by(grupo: 7)._idGrupo).size %></span></a></li>
+              <span class="label label-primary pull-right"><%=Oc.all.where(:cliente => @grupo).count %></span></a></li>
             <li><a href="/oc_recibidas"><i class="fa fa-circle-o"></i> OCs Recibidas
-            <span class="label label-primary pull-right"><%=Oc.all.where(:proveedor => Cliente.find_by(grupo: 7)._idGrupo).size %></span></a></li>
+              <span class="label label-primary pull-right"><%=Oc.all.where(:proveedor => @grupo).count %></span>
+            </a></li>
           </ul>
         </li>
-        <li class="treeview " >
-          <a href="/">
+        <li >
+          <a href="/documentacionAPI">
             <i class="fa fa-book"></i>
             <span>Documentación</span>
-            <i class="fa fa-angle-left pull-right"></i>
           </a>
-          <ul class="treeview-menu">
-            <li><a href="/api/documentacion"><i class="fa fa-circle-o"></i> Métodos API</a></li>
-            <li><a href="/flujos"><i class="fa fa-circle-o"></i> Flujos de Procesos</a></li>
-          </ul>
         </li>
 
 
