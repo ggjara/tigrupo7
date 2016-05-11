@@ -43,7 +43,7 @@ def emitirFactura(id)#Validates
       valorTotal: jsonResponse['total'],
       estadoPago: jsonResponse['estado'],
       updated_at: jsonResponse['updated_at'],
-      id_Oc: jsonResponse['oc'],
+      id_Oc: jsonResponse['oc']['_id'],
       motivoRechazo: jsonResponse['rechazo'],
       motivoAnulacion: jsonResponse['anulacion']
     }
