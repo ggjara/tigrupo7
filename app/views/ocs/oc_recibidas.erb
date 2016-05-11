@@ -39,9 +39,11 @@
                 <td><%= oc.estado %></td>
                 <td align="center">
                   <% if oc.facturaRealizadaDB == true %>
+                  <% if Factura.find_by(:id_Oc => oc._id)!=nil>
                       <%= link_to raw('<i class="fa fa-pencil-square-o fa-fw" ></i>'), "/facturas/"+ Factura.find_by(:id_Oc => oc._id)._id.to_s,
                                   method: :get, class: 'btn btn-xs btn-warning',
                                   data: { toggle: 'tooltip', placement: 'top' }, title: 'Ver' %>
+                  <% end %>
                   <% end %>
                 </td>
                 <td></td>
