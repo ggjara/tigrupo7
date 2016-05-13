@@ -83,7 +83,7 @@ def generateAuthToken(typeOfRequest, *paramsRequest)
     end
   end
     #Clave única Grupo7
-    authToken= 'INTEGRACION grupo7:' << hmac_sha1(data, 'PBEFMUf;oR5$:#@')
+    authToken= 'INTEGRACION grupo7:' << hmac_sha1(data, ENV["pass_bodega"])
     return authToken
   #end
 end
@@ -97,7 +97,7 @@ def generateAuthTokenEspecialBodega(typeOfRequest, *paramsRequest)
     end
   end
   #Clave única Grupo7
-  authToken = 'INTEGRACION grupo7:' << hmac_sha1(data, 'PBEFMUf;oR5$:#@')
+  authToken = 'INTEGRACION grupo7:' << hmac_sha1(data, ENV["pass_bodega"])
   return authToken
 end
 

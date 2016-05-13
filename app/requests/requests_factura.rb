@@ -4,7 +4,7 @@ end
 
 #Busca en el servidor una factura por su id, retorna la factura
 def obtenerFactura(id)#Validates
-  jsonResponse = requestWebWithoutParams('GET', ('http://moto.ing.puc.cl/facturas/'<<id))
+  jsonResponse = requestWebWithoutParams('GET', (ENV["url_factura"]+id))
 
   if(jsonResponse==false)
     return jsonResponse
@@ -28,7 +28,7 @@ def obtenerFactura(id)#Validates
 end
 
 def emitirFactura(id)#Validates
-  jsonResponse = requestWeb('PUT', 'http://moto.ing.puc.cl/facturas/',
+  jsonResponse = requestWeb('PUT', ENV["url_factura"],
     generateParam('oc',id))
 
   if(jsonResponse==false)
@@ -52,7 +52,7 @@ def emitirFactura(id)#Validates
 end
 
 def pagarFactura(id)#Validates
-  jsonResponse = requestWeb('POST', 'http://moto.ing.puc.cl/facturas/pay/',
+  jsonResponse = requestWeb('POST', ENV["url_factura"]+"pay/",
     generateParam('id',id))
 
   if(jsonResponse==false)
@@ -77,7 +77,7 @@ def pagarFactura(id)#Validates
 end
 
 def rechazarFactura(id, motivo)#Validates
-  jsonResponse = requestWeb('POST', 'http://moto.ing.puc.cl/facturas/reject/',
+  jsonResponse = requestWeb('POST', ENV["url_factura"]+"reject/",
     generateParam('id',id), generateParam('motivo',motivo))
   if(jsonResponse==false)
     return jsonResponse
@@ -101,7 +101,7 @@ def rechazarFactura(id, motivo)#Validates
 end
 
 def anularFactura(id, motivo)#Validates
-  jsonResponse = requestWeb('POST', 'http://moto.ing.puc.cl/facturas/cancel/',
+  jsonResponse = requestWeb('POST', ENV["url_factura"]+"cancel/",
     generateParam('id',id), generateParam('motivo',motivo))
   if(jsonResponse==false)
     return jsonResponse
@@ -125,7 +125,7 @@ def anularFactura(id, motivo)#Validates
 end
 
 def crearBoleta(proveedor, cliente, monto)#Validates
-  jsonResponse = requestWeb('PUT', 'http://moto.ing.puc.cl/facturas/boleta/',
+  jsonResponse = requestWeb('PUT', ENV["url_factura"]+"boleta/",
     generateParam('proveedor',proveedor), generateParam('cliente',cliente),
     generateParam('total',monto))
   if(jsonResponse==false)

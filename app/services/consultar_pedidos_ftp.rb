@@ -58,9 +58,9 @@ def consultarPedidos
 	require 'net/sftp'
 	require 'net/ssh'
 
-	@host = "moto.ing.puc.cl"
+	@host = ENV["url_sftp"]
 	@user = "integra7"
-	@password = "gAYCBfLR"
+	@password = ENV["pass_sftp"]
 	pedidos =Array.new
 
 	begin

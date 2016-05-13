@@ -58,6 +58,8 @@ gem 'bootstrap-sass', '~> 3.2.0'
 gem 'autoprefixer-rails'
 gem 'font-awesome-sass'
 
+gem "figaro"
+
 #gem 'whenever', :require => false
 
 # Use ActiveModel has_secure_password
