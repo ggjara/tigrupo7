@@ -58,9 +58,9 @@ def consultarPedidos
 	require 'net/sftp'
 	require 'net/ssh'
 
-	@host = "mare.ing.puc.cl"
+	@host = "moto.ing.puc.cl"
 	@user = "integra7"
-	@password = "sFwhHaZE"
+	@password = "gAYCBfLR"
 	pedidos =Array.new
 
 	begin
@@ -72,7 +72,8 @@ def consultarPedidos
 	  Timeout.timeout(400) do
 	    sftp.connect! # Establish connection
 	    sftp.dir.foreach("/pedidos") do |namePedido|
-	    	if (namePedido.name!= '.' && namePedido.name != '..' && namePedido.name != 'leidos')
+	    	puts namePedido.name
+	    	if (namePedido.name!= '.' && namePedido.name != '..' && namePedido.name != 'leidos' && namePedido.name != 'temporal')
 			file = sftp.download!('/pedidos/'<<namePedido.name)
 		   	doc = Nokogiri::XML(file)
 		   	pedidos.append(doc.css("id").map.first.children.text)

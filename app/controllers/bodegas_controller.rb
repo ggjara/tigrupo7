@@ -2,16 +2,19 @@ class BodegasController < ApplicationController
   #requestWeb(typeOfRequest, uri, *paramsRequest)
   #generateParam(name, value)
 
-def initialize
-  cantAlmacenes=0
-end
+  def index
+    @Stocks = Stock.all
+  end
 
-def consultarInfo
-  render json: Bodega.first
-end
+  def initialize
+    cantAlmacenes=0
+  end
 
-def show
-   @Productos= Bodega.first.productos
-end
+  def consultarInfo
+    render json: Bodega.first
+  end
 
+  def show
+    @Productos= Bodega.first.productos
+  end
 end

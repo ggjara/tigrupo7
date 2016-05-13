@@ -120,7 +120,7 @@ def enviarProductosDesdeAlmacenADespacho(sku, almacen, cantidad)
 			productosGenerados = cargarProductos(sku, almacen)
 		end
 		productoAEnviar = productosGenerados.first
-		RequestsBodega.new.moverStock(productoAEnviar._id, almacenDespacho._id)
+		puts RequestsBodega.new.moverStock(productoAEnviar._id, almacenDespacho._id)
 		productosGenerados.delete(productoAEnviar)
 		almacen.eliminarStock(sku.to_s)
 		almacenDespacho.agregarStock(sku.to_s)
@@ -141,7 +141,7 @@ def enviarProductosDesdePulmonADespacho(sku, cantidad)
 			productosGenerados = cargarProductos(sku, almacenPulmon)
 		end
 		productoAEnviar = productosGenerados.first
-		RequestsBodega.new.moverStock(productoAEnviar._id, almacenRecepcion._id)
+		puts RequestsBodega.new.moverStock(productoAEnviar._id, almacenRecepcion._id)
 		productosGenerados.delete(productoAEnviar)
 		almacenPulmon.eliminarStock(sku.to_s)
 		almacenRecepcion.agregarStock(sku.to_s)
@@ -164,7 +164,7 @@ def enviarProductosDesdeDespacho(oc, sku, cantidad, almacenDestino, esFtp)
 		if(esFtp)
 			puts RequestsBodega.new.despacharStock(productoAEnviar._id, 'direccion', oc.precioUnitario, oc._id)
 		else
-			RequestsBodega.new.moverStockBodega(productoAEnviar._id, almacenDestino, oc._id, oc.precioUnitario)
+			puts RequestsBodega.new.moverStockBodega(productoAEnviar._id, almacenDestino, oc._id, oc.precioUnitario)
 		end
 		productosGenerados.delete(productoAEnviar)
 		almacenDespacho.eliminarStock(sku.to_s)
@@ -186,7 +186,7 @@ def vaciarRecepcion
 			end
 			break if productosGenerados.count==0
 			productoAEnviar = productosGenerados.first
-			RequestsBodega.new.moverStock(productoAEnviar._id, almacenQueRecibe._id)
+			puts RequestsBodega.new.moverStock(productoAEnviar._id, almacenQueRecibe._id)
 			productosGenerados.delete(productoAEnviar)
 			almacenRecepcion.eliminarStock(productoAEnviar.sku.to_s)
 			almacenQueRecibe.agregarStock(productoAEnviar.sku.to_s)

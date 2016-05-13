@@ -1,6 +1,17 @@
 Rails.application.routes.draw do
-
-  match '/api/documentacion'=> 'documentos#metodos', via: :get
+ resources :facturas
+ 
+  get 'stocks/show'
+ 
+  get 'stocks/index'
+ 
+   get 'bodegas/initialize'
+ 
+   get 'bodegas/consultarInfo'
+ 
+   get 'bodegas/show'
+   
+ get '/documentacionAPI', to: 'documentos#index'
   get 'flujos', to: 'documentos#flujos'
 
   get 'productos', to: 'productos#index'
@@ -17,13 +28,13 @@ Rails.application.routes.draw do
 
   get 'ocs/show'
 
-  get 'bodegaG7', to: 'bodegas#show'
+  get 'bodegaG7', to: 'stocks#index'
 
   get 'bodegas/consultar/:id' => 'bodegas#consultarProducto'
 
   resources :pizzas
 
-  root 'almacenes#index'
+  root 'application#index'
 
 
   namespace :api, defaults: {format: :json} do
@@ -40,7 +51,7 @@ Rails.application.routes.draw do
 
    namespace :admin do
     root  'application#index'
-    match '/bodega/iniciar' => 'application#iniciarBodega', via: :get
+    #match '/bodega/iniciar' => 'application#iniciarBodega', via: :get
     match '/bodega/actualizar' => 'application#actualizarBodega', via: :get
     match '/bodega/vaciarRecepcion' => 'application#vaciarRecepcionBodega', via: :get
     match '/produccion/producirPrimas/:id/:cantidad' => 'application#producirPrimasSkuYCantidad', via: :get
@@ -49,6 +60,7 @@ Rails.application.routes.draw do
     match '/almacenes' => 'application#almacenes', via: :get
     match '/stocks' => 'application#stocks', via: :get
     match '/ocs' => 'application#ocs', via: :get
+    match '/facturas' => 'application#facturas', via: :get
     match '/clientes/iniciar' => 'application#clientesIniciar', via: :get
 
     

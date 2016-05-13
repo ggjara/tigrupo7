@@ -1,8 +1,6 @@
 class DocumentosController < ApplicationController
-  def metodos
+  def index
 
-  end
-
-  def flujos
   end
 end
+
