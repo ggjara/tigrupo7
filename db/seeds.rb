@@ -50,3 +50,9 @@ clientes_list.each do |_idGrupo, _idBanco, _idAlmacenRecepcion, grupo|
 	cliente = Cliente.create(_idGrupo: _idGrupo, _idBanco: _idBanco, _idAlmacenRecepcion: _idAlmacenRecepcion, grupo: grupo)
 	cliente.save!
 end	
+
+Spree::Auth::Engine.load_seed if defined?(Spree::Auth)
+
+puts "Crear Productos"
+product = Spree::Product.create(name: 'ProductoPrueba', description: 'prueba', available_on: Time.now, shipping_category: Spree::ShippingCategory.find_by(id: 1), price: 1000)
+product.save
