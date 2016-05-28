@@ -1,3 +1,4 @@
+require 'bodega.rb'
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 #
@@ -51,8 +52,53 @@ clientes_list.each do |_idGrupo, _idBanco, _idAlmacenRecepcion, grupo|
 	cliente.save!
 end	
 
+
 Spree::Auth::Engine.load_seed if defined?(Spree::Auth)
 
-puts "Crear Productos"
+
+
+# *** ---- SPREE ---- ***
+
+puts "Creando Tax Category"
+tax_category = Spree::TaxCategory.create(name: 'IVA',is_default: true)
+tax_category.save
+
+
+puts "Creando Tax Rate"
+tax_rate = Spree::TaxRate.create(amount: 0.19, tax_category_id: 1, included_in_price: true)
+tax_rate.save
+
+
+puts "Creando Productos"
+#Test
 product = Spree::Product.create(name: 'ProductoPrueba', description: 'prueba', available_on: Time.now, shipping_category: Spree::ShippingCategory.find_by(id: 1), price: 1000)
 product.save
+
+productos_list = [
+	["Pollo", "Los mejores pollos del mundo, elevados al aire libre y alimentados por semillas nacidas de la agricultura biológica.", Time.now, "pollo", 1159],
+	["Pan Marraqueta", "Un pan rico y tradicional.", Time.now, "pan marraqueta", 15718],
+	["Farina", "Una farina rica y preparada con mucho amor.", Time.now, "farina", 4294],
+	["Uva", "Uva biologico cultivado en Chile.", Time.now, "uva", 1217]
+]
+
+productos_list.each do |name, description, available_on, meta_keywords, price|
+	product = Spree::Product.create(name: name, description: description, available_on: available_on, meta_keywords: meta_keywords, tax_category_id: 1, shipping_category_id: 1, promotionable: false, price: price)
+	product.save
+end
+
+# puts "Creando Variants"
+# variants_list = [
+# 	["1", 1, Spree::Product.find_by_name('Pollo').id, Bodega.first.checkStockTotal(1)],
+# 	["10", 1, Spree::Product.find_by_name('Pan Marraqueta').id, Bodega.first.checkStockTotal(10)],
+# 	["23", 1, Spree::Product.find_by_name('Farina').id, Bodega.first.checkStockTotal(23)],
+# 	["39", 1, Spree::Product.find_by_name('Uva').id, Bodega.checkStockTotal(39)]
+# ]
+# variants_list.each do |sku, weight, product_id, stock_items_count|
+# 	variant = Spree::Variant.create(sku: sku, weight: weight, is_master: true, product_id: product_id, updated_at: Time.now, stock_items_count: stock_items_count)
+# 	variant.save
+# end
+
+
+
+
+
