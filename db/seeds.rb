@@ -71,8 +71,8 @@ tax_rate.save
 
 puts "Creando Productos"
 #Test
-product = Spree::Product.create(name: 'ProductoPrueba', description: 'prueba', available_on: Time.now, shipping_category: Spree::ShippingCategory.find_by(id: 1), price: 1000)
-product.save
+#product = Spree::Product.create(name: 'ProductoPrueba', description: 'prueba', available_on: Time.now, shipping_category: Spree::ShippingCategory.find_by(id: 1), price: 1000)
+#product.save
 
 productos_list = [
 	["Pollo", "Los mejores pollos del mundo, elevados al aire libre y alimentados por semillas nacidas de la agricultura biológica.", Time.now, "pollo", 1159],
