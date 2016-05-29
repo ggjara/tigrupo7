@@ -5,9 +5,11 @@ Rails.application.routes.draw do
   # If you would like to change where this engine is mounted, simply change the :at option to something different.
   #
   # We ask that you don't use the :as option here, as Spree relies on it being the default of "spree"
-  mount Spree::Core::Engine, at: '/'
-         resources :facturas
- 
+  mount Spree::Core::Engine, at: '/spree'
+
+  match '/spree/confirmarCompra/:id' => 'spree/bills#show', via: :get
+   match '/spree/errorCompra/' => 'spree/bills#error', via: :get
+
   get 'stocks/show'
  
   get 'stocks/index'
