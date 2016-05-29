@@ -75,15 +75,18 @@ puts "Creando Productos"
 #product.save
 
 productos_list = [
-	["Pollo", "Los mejores pollos del mundo, elevados al aire libre y alimentados por semillas nacidas de la agricultura biológica.", Time.now, "pollo", 1159],
-	["Pan Marraqueta", "Un pan rico y tradicional.", Time.now, "pan marraqueta", 15718],
-	["Farina", "Una farina rica y preparada con mucho amor.", Time.now, "farina", 4294],
-	["Uva", "Uva biologico cultivado en Chile.", Time.now, "uva", 1217]
+	["Pollo", "Los mejores pollos del mundo, elevados al aire libre y alimentados por semillas nacidas de la agricultura biológica.", Time.now, "pollo", 1159, "carne-di-pollo-eurocarne", "1"],
+	["Pan Marraqueta", "Un pan rico y tradicional.", Time.now, "pan marraqueta", 15718, "carne-di-pollo-eurocarne", "10"],
+	["Harina", "Una harina rica y preparada con mucho amor.", Time.now, "harina", 4294, "carne-di-pollo-eurocarne", "23"],
+	["Uva", "Uva biologico cultivado en Chile.", Time.now, "uva", 1217, "carne-di-pollo-eurocarne", "39"]
 ]
 
-productos_list.each do |name, description, available_on, meta_keywords, price|
-	product = Spree::Product.create(name: name, description: description, available_on: available_on, meta_keywords: meta_keywords, tax_category_id: 1, shipping_category_id: 1, promotionable: false, price: price)
+productos_list.each do |name, description, available_on, meta_keywords, price, image_name, sku|
+	product = Spree::Product.create(sku: sku, cost_currency: "CLP", name: name, description: description, available_on: available_on, meta_keywords: meta_keywords, tax_category_id: 1, shipping_category_id: 1, promotionable: false, price: price)
 	product.save
+  path = 'public/spree/products/' + sku + '/product/' + image_name +'.jpg'
+  image = Spree::Image.create(attachment: File.open(path), viewable: product.master, viewable_id: product.id, viewable_type: 'Spree::Variant', attachment_file_name: image_name , type: "Spree::Image")
+	image.save
 end
 
 # puts "Creando Variants"
