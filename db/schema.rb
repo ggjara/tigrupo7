@@ -1114,9 +1114,11 @@ ActiveRecord::Schema.define(version: 20160529203007) do
   add_index "spree_zones", ["kind"], name: "index_spree_zones_on_kind"
 
   create_table "stocks", force: :cascade do |t|
-    t.string  "sku"
-    t.integer "total"
-    t.integer "almacen_id"
+    t.string   "sku"
+    t.integer  "total"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "almacen_id"
   end
 
   create_table "trxes", force: :cascade do |t|
@@ -1126,6 +1128,7 @@ ActiveRecord::Schema.define(version: 20160529203007) do
     t.float    "monto"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+    t.datetime "fechaCreacion"
   end
 
 end
