@@ -135,14 +135,12 @@ def crearBoleta(proveedor, cliente, monto)#Validates
       fechaCreacion: jsonResponse['created_at'],
       proveedor: jsonResponse['proveedor'],
       cliente: jsonResponse['cliente'],
-      valorBruto: jsonResponse['bruto'],
-      iva: jsonResponse['iva'],
-      valorTotal: jsonResponse['total'],
+      valorBruto: jsonResponse['bruto'].to_i,
+      iva: jsonResponse['iva'].to_i,
+      valorTotal: jsonResponse['total'].to_i,
       estadoPago: jsonResponse['estado'],
       fechaUpdate: jsonResponse['updated_at'],
-      id_Oc: jsonResponse['oc'],
-      motivoRechazo: jsonResponse['rechazo'],
-      motivoAnulacion: jsonResponse['anulacion']
+      id_Oc: jsonResponse['oc']
     }
     return paramsFactura
   end

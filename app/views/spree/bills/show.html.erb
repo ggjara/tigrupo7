@@ -1,0 +1,39 @@
+ <div data-hook="product_show" class="row" itemscope itemtype="https://schema.org/Product">
+
+    <div class="col-md-8 col-sm-7" data-hook="product_right_part">
+      <div data-hook="product_right_part_wrap">
+        <div id="product-description" data-hook="product_description">
+          <h1 class="product-title" itemprop="name"> Tu Compra fue realizada con éxito.</h1>
+
+          <h3> Información de tu boleta </h3>
+          <div class="well" itemprop="description" data-hook="description">
+            <b> Sku: </b> <%= @bill.sku %>
+            <br />
+            <b> Cantidad: </b> <%= @bill.cantidad %>
+            <br />
+            <b> ID: </b> <%= @bill._id %>
+            <br />
+            <b> Cliente: </b> <%= @bill.cliente %>
+            <br />
+            <b> Proveedor: </b> <%= @bill.proveedor %>
+            <br />
+            <b> Direccion Despacho: </b> <%= @bill.direccion %>
+            <br />
+            <b> Valor Bruto: </b> <%= @bill.valorBruto %>
+            <br />
+            <b> Valor IVA: </b> <%= @bill.iva %>
+            <br />
+            <b> Valor Total: </b> <%= @bill.valorTotal %>
+            <br />
+            <b> Fecha: </b> <%= @bill.fechaCreacion %>
+          </div>
+
+          <div id="cart-form" data-hook="cart_form">
+          </div>
+        </div>
+
+        <div id="taxon-crumbs" class=" five " data-hook="product_taxons">
+        </div>
+      </div>
+    </div>
+  </div>

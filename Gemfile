@@ -54,7 +54,7 @@ gem 'nokogiri'
 
 gem 'net-sftp'
 
-gem 'bootstrap-sass', '~> 3.2.0'
+gem 'bootstrap-sass', '~> 3.3'
 gem 'autoprefixer-rails'
 gem 'font-awesome-sass'
 
@@ -84,3 +84,7 @@ group :development do
   gem 'spring'
 end
 
+
+gem 'spree', '~> 3.0.9'
+gem 'spree_gateway', '~> 3.0.0'
+gem 'spree_auth_devise', '~> 3.0.0'
