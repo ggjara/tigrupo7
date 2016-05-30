@@ -81,12 +81,15 @@ productos_list = [
 	["Uva", "Uva biologico cultivado en Chile.", Time.now, "uva", 1217, "uva.jpg", "39"]
 ]
 
+Spree::Product.delete_all
+Spree::Variant.delete_all
+
 productos_list.each do |name, description, available_on, meta_keywords, price, image_name, sku|
 	product = Spree::Product.create(sku: sku, cost_currency: "CLP", name: name, description: description, available_on: available_on, meta_keywords: meta_keywords, tax_category_id: 1, shipping_category_id: 1, promotionable: false, price: price)
-  path = 'public/spree/products/' + sku + '/product/' + image_name
-  id = Spree::Variant.find_by(product_id: product.id).id
-	i = Spree::Image.create!(attachment: File.open(path), viewable_type: "Spree::Variant", viewable_id: id, attachment_file_name: image_name)
-  product.images << i
+ #  path = 'public/spree/products/' + sku + '/product/' + image_name
+ #  id = Spree::Variant.find_by(product_id: product.id).id
+	# i = Spree::Image.create!(attachment: File.open(path), viewable_type: "Spree::Variant", viewable_id: id, attachment_file_name: image_name)
+ #  product.images << i
   product.save
   #path = 'public/spree/products/' + sku + '/product/' + image_name +'.jpg'
 #   image = Spree::Image.create(attachment: File.open(path), viewable: product.master, viewable_id: product.id, viewable_type: 'Spree::Variant', attachment_file_name: image_name , type: "Spree::Image")
