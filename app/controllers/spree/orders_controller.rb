@@ -71,6 +71,8 @@ module Spree
         paramsBill = RequestsFactura.new.crearBoleta(Cliente.find_by(grupo: 7)._idGrupo, "b2c", cantidad*precioDeSku(sku))
         boleta = Bill.new(paramsBill)
         boleta.direccion = direccion
+        boleta.sku = sku.to_s
+        boleta.cantidad = cantidad
         boleta.save
 
         #Redireccion a Sistema Pago

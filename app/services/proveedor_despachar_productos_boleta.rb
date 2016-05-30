@@ -9,15 +9,14 @@ def initialize
 end
 
 def despacharProductos(sku, cantidad, direccion, boleta)
-		if(validarEnvio(sku, cantidad, direccion, boleta))
-			precio = boleta.valorTotal / cantidad
-			id = boleta._id
-			#Actualiza Bodega
-			Bodega.iniciarBodega(false)
-			return despachoDeProductos(sku, cantidad, direccion, precio, id)
-		else
-			return false
-		end
+	if(validarEnvio(sku, cantidad, direccion, boleta))
+		precio = boleta.valorTotal / cantidad
+		id = boleta._id
+		#Actualiza Bodega
+		Bodega.iniciarBodega(false)
+		return despachoDeProductos(sku, cantidad, direccion, precio, id)
+	else
+		return false
 	end
 end
 
@@ -215,3 +214,5 @@ def validarEnvio(sku, cantidad, direccion, boletaId)
 end
 
 end
+
+
