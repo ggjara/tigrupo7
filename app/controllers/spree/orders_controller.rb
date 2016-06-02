@@ -76,8 +76,8 @@ module Spree
         boleta.save
 
         #Redireccion a Sistema Pago
-        urlOk='http%3A%2F%2Fintegra7.ing.puc.cl/spree/confirmarCompra/'<<boleta._id
-        urlFail='http%3A%2F%2Fintegra7.ing.puc.cl/spree/errorCompra/'
+        urlOk='http%3A%2F%2Flocalhost:3000/spree/confirmarCompra/'<<boleta._id
+        urlFail='http%3A%2F%2Flocalhost:3000/spree/errorCompra/'
         url = "http://integracion-2016-dev.herokuapp.com/web/pagoenlinea?callbackUrl="+urlOk+"&cancelUrl="+urlFail+"+&boletaId="+boleta._id
         redirect_to url
       end
