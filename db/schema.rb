@@ -1119,8 +1119,6 @@ ActiveRecord::Schema.define(version: 20160530154718) do
   create_table "stocks", force: :cascade do |t|
     t.string   "sku"
     t.integer  "total"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.integer  "almacen_id"
   end
 
@@ -1131,7 +1129,6 @@ ActiveRecord::Schema.define(version: 20160530154718) do
     t.float    "monto"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
-    t.datetime "fechaCreacion"
   end
 
 end
