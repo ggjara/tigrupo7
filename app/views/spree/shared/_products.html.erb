@@ -37,8 +37,8 @@
                       <span class="price selling lead" itemprop="price"><%= display_price(product) %></span>
                     </span>
                     <br>
-                    <span >
-                       <span>Stock: <%=Time.now %></span>
+                    <span>
+                       <li> Stock: <%=Bodega.checkStockTotal(product.sku) %> </li>
                     </span>
                   </div>
               <% end %>
