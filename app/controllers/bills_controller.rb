@@ -1,6 +1,9 @@
 class BillsController < ApplicationController
   def index
     @bills = Bill.all
+    if(@bills)
+    	@bills = @bills.where(despachada: true)
+    end
   end
 
   def show
