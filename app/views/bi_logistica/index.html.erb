@@ -1,0 +1,151 @@
+<% content_for :header do %>
+    <h1>Business Intelligence: Logística </h1>
+<%end%>
+
+<% content_for :content do %>
+    <div class="row">
+      <div class="box col-md-12">
+        <div class="box-header with-border">
+          <h3 class="box-title">Uso de Bodega</h3>
+          <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+          </div>
+        </div>
+        <div class="box-body col-md-6 col-md-offset-3">
+          <canvas id="pieChart" style="height:50px"></canvas>
+        </div><!-- /.box-body -->
+      </div><!-- /.box -->
+      <div class="box col-md-12">
+        <div class="box-header with-border">
+          <h3 class="box-title">Stock diario por SKU</h3>
+          <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+          </div>
+        </div>
+        <div class="box-body col-md-12">
+          <canvas id="barChart" width="15000" height="400" style="height:250px"></canvas>
+        </div><!-- /.box-body -->
+      </div><!-- /.box -->
+    </div>
+
+    <script type="text/javascript">
+      $(function () {
+        var pieChartCanvas = document.getElementById("pieChart");
+        var data = {
+          labels: [
+            "Despacho",
+            "Recepción",
+            "Otros",
+            "No Usado",
+          ],
+          datasets: [
+            {
+              <% bodegaDespacho = @Almacenes.find_by(despacho: true).usedSpace %>
+              <% bodegaRecepcion = @Almacenes.find_by(recepcion: true).usedSpace %>
+              <% otros = 0 %>
+              <% @Almacenes.where(despacho: false, recepcion: false, pulmon: false).each do |almacen| otros += almacen.usedSpace end %>
+
+              <% bodegaDespachoTotal = @Almacenes.find_by(despacho: true).totalSpace %>
+              <% bodegaRecepcionTotal = @Almacenes.find_by(recepcion: true).totalSpace %>
+              <% otrosTotal = 0 %>
+              <% @Almacenes.where(despacho: false, recepcion: false, pulmon: false).each do |almacen| otrosTotal += almacen.totalSpace end %>
+              <% libre = (bodegaDespachoTotal + bodegaRecepcionTotal + otrosTotal - bodegaDespacho - bodegaRecepcion - otros) %>
+
+              data: [<%= bodegaDespacho %>  , <%= bodegaRecepcion %>, <%= otros %>, <%= libre %>],
+              backgroundColor: [
+                "#FF6384",
+                "#FFCE56",
+                "#6CDC77"
+              ],
+              hoverBackgroundColor: [
+                "#FF6384",
+                "#FFCE56",
+                "#6CDC77"
+              ],
+              hoverBorderColor: [
+                "#FF6384",
+                "#FFCE56",
+                "#6CDC77"
+              ]
+            }]
+        };
+        var pieChart = new Chart(pieChartCanvas, {
+          type: 'pie',
+          data: data
+        });
+
+        var barChartCanvas = document.getElementById("barChart");
+
+        var dataB = {
+          labels: [
+            "<%= (Date.today() - 6).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 5).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 4).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 3).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 2).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 1).strftime("%d-%m-%Y") %>",
+            "<%= Date.today().strftime("%d-%m-%Y") %>"
+
+          ],
+          datasets: [
+            {
+              label: "SKU=1",
+              <% bodegaDespacho = @Almacenes.find_by(despacho: true).usedSpace %>
+              <% bodegaRecepcion = @Almacenes.find_by(recepcion: true).usedSpace %>
+              <% bodegaPulmon = @Almacenes.find_by(pulmon: true).usedSpace %>
+              <% otros = 0%>
+              <% @Almacenes.where(despacho: false, recepcion: false, pulmon: false).each do |almacen| otros += almacen.usedSpace end %>
+              data: [0,0,0,0,0,0, <%= Bodega.checkStock(1)%>],
+              backgroundColor: "#FF6384",
+              hoverBackgroundColor: "#FF6384",
+              hoverBorderColor: "#FF6384"
+
+            },
+            {
+              label: "SKU=10",
+              <% bodegaDespacho = @Almacenes.find_by(despacho: true).usedSpace %>
+              <% bodegaRecepcion = @Almacenes.find_by(recepcion: true).usedSpace %>
+              <% bodegaPulmon = @Almacenes.find_by(pulmon: true).usedSpace %>
+              <% otros = 0%>
+              <% @Almacenes.where(despacho: false, recepcion: false, pulmon: false).each do |almacen| otros += almacen.usedSpace end %>
+              data: [0,0,0,0,0,0, <%= Bodega.checkStock(10)%>],
+              backgroundColor: "#36A2EB",
+              hoverBackgroundColor: "#36A2EB",
+              hoverBorderColor: "#36A2EB"
+            },
+            {
+              label: "SKU=23",
+              <% bodegaDespacho = @Almacenes.find_by(despacho: true).usedSpace %>
+              <% bodegaRecepcion = @Almacenes.find_by(recepcion: true).usedSpace %>
+              <% bodegaPulmon = @Almacenes.find_by(pulmon: true).usedSpace %>
+              <% otros = 0%>
+              <% @Almacenes.where(despacho: false, recepcion: false, pulmon: false).each do |almacen| otros += almacen.usedSpace end %>
+              data: [0,0,0,0,0,0, <%= Bodega.checkStock(23)%>],
+              backgroundColor: "#FFCE56",
+              hoverBackgroundColor: "#FFCE56",
+              hoverBorderColor: "#FFCE56"
+            },
+            {
+              label: "SKU=39",
+              <% bodegaDespacho = @Almacenes.find_by(despacho: true).usedSpace %>
+              <% bodegaRecepcion = @Almacenes.find_by(recepcion: true).usedSpace %>
+              <% bodegaPulmon = @Almacenes.find_by(pulmon: true).usedSpace %>
+              <% otros = 0%>
+              <% @Almacenes.where(despacho: false, recepcion: false, pulmon: false).each do |almacen| otros += almacen.usedSpace end %>
+              data: [0,0,0,0,0,0, <%= Bodega.checkStock(39)%>],
+              backgroundColor: "#6CDC77",
+              hoverBackgroundColor: "#6CDC77",
+              hoverBorderColor: "#6CDC77"
+
+            }]
+        };
+
+        var barChart = new Chart (barChartCanvas, {
+            type: 'bar',
+            data: dataB
+        });
+
+      });
+    </script>
+
+<%end%>

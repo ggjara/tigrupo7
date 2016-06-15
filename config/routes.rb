@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  get 'bi_financieros' => 'bi_financieros#index'
+
+  get 'bi_logistica' => 'bi_logistica#index'
+
   get 'boletas/:id' => 'bills#show', via: :get
 
   get 'boletas' => 'bills#index', via: :get
@@ -24,7 +28,7 @@ Rails.application.routes.draw do
    get 'bodegas/consultarInfo'
  
    get 'bodegas/show'
-   
+
  get '/documentacionAPI', to: 'documentos#index'
   get 'flujos', to: 'documentos#flujos'
 
