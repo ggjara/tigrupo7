@@ -1,2 +1,51 @@
-<h1>BiFinancieros#index</h1>
-<p>Find me in app/views/bi_financieros/index.html.erb</p>
+<% content_for :header do %>
+    <h1>Business Intelligence: Financieros </h1>
+<%end%>
+
+<% content_for :content do %>
+    <div class="row">
+      <div class="box col-md-12">
+        <div class="box-header with-border">
+          <h3 class="box-title">Saldo diario</h3>
+          <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+          </div>
+        </div>
+        <div class="box-body col-md-12">
+          <canvas id="lineChart" style="height:250px"></canvas>
+        </div><!-- /.box-body -->
+      </div><!-- /.box -->
+    </div>
+    <script type="text/javascript">
+      $(function () {
+        var lineChartCanvas = document.getElementById("lineChart");
+        var data = {
+          labels: [
+            "<%= (Date.today() - 6).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 5).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 4).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 3).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 2).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 1).strftime("%d-%m-%Y") %>",
+            "<%= Date.today().strftime("%d-%m-%Y") %>"
+
+          ],
+          datasets: [
+            {
+              label: "saldo en $CLP",
+              data: [0,0,0,0,0,0, <%= Bodega.first.saldo%>],
+              backgroundColor: "#FF6384",
+              hoverBackgroundColor: "#FF6384",
+              hoverBorderColor: "#FF6384"
+
+            }
+          ]
+        };
+        var lineChart = new Chart(lineChartCanvas, {
+          type: 'line',
+          data: data
+        });
+
+      });
+    </script>
+<% end %>
