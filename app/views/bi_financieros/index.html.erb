@@ -15,10 +15,24 @@
           <canvas id="lineChart" style="height:250px"></canvas>
         </div><!-- /.box-body -->
       </div><!-- /.box -->
+
+      <div class="box col-md-12">
+        <div class="box-header with-border">
+          <h3 class="box-title">Facturación diaria y origen</h3>
+          <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+          </div>
+        </div>
+        <div class="box-body col-md-12">
+          <canvas id="lineChart" style="height:250px"></canvas>
+        </div><!-- /.box-body -->
+      </div><!-- /.box -->
     </div>
+
     <script type="text/javascript">
+      var lineChart;
+      var lineChartCanvas = document.getElementById("lineChart");
       $(function () {
-        var lineChartCanvas = document.getElementById("lineChart");
         var data = {
           labels: [
             "<%= (Date.today() - 6).strftime("%d-%m-%Y") %>",
@@ -41,11 +55,16 @@
             }
           ]
         };
-        var lineChart = new Chart(lineChartCanvas, {
+        lineChart = new Chart(lineChartCanvas, {
           type: 'line',
           data: data
         });
 
+      });
+      $("#lineChart").click(function(e) {
+        var activePoints = lineChart.getElementAtEvent(e);
+        console.log(activePoints[0]["_index"]);
+        window.location.href = 'bi_financieros/transacciones/' + activePoints[0]["_index"];
       });
     </script>
 <% end %>
