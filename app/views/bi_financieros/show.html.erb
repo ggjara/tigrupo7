@@ -12,17 +12,25 @@
           <thead>
           <tr>
             <th>Hora</th>
-            <th>Monto</th>
-            <th>Descripción</th>
-            <th>Saldo diario</th>
+            <th>Cargo</th>
+            <th>Abono</th>
+            <th>Cuenta involucrada</th>
           </tr>
           </thead>
           <tbody>
             <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <% Trx.where(fechaCreacion: params[:id]).each do |trx|%>
+                <td><%= trx.fechaCreacion.strftime("%H:%M") %></td>
+                <% if trx.cuentaOrigen == "" %>
+                  <td><%= trx.monto %></td>
+                  <td></td>
+                  <td> <%= trx.cuentaDestino %></td>
+                <% else %>
+                  <td></td>
+                  <td><%= trx.monto %></td>
+                  <td> <%= trx.cuentaOrigen %></td>
+                <% end %>
+              t<% end %>
             </tr>
           </tbody>
         </table>

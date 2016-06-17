@@ -17,7 +17,7 @@
       </div><!-- /.box -->
       <div class="box col-md-12">
         <div class="box-header with-border">
-          <h3 class="box-title">Stock diario por SKU</h3>
+          <h3 class="box-title">Stock diario Total por SKU</h3>
           <div class="box-tools pull-right">
             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
           </div>
@@ -26,6 +26,18 @@
           <canvas id="barChart" style="height:250px"></canvas>
         </div><!-- /.box-body -->
       </div><!-- /.box -->
+      <div class="box col-md-12">
+        <div class="box-header with-border">
+          <h3 class="box-title">Stock diario Disponible por SKU</h3>
+          <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+          </div>
+        </div>
+        <div class="box-body col-md-12">
+          <canvas id="barChart2" style="height:250px"></canvas>
+        </div><!-- /.box-body -->
+      </div><!-- /.box -->
+
     </div>
 
     <script type="text/javascript">
@@ -78,24 +90,18 @@
 
         var dataB = {
           labels: [
-            "<%= (Date.today() - 6).strftime("%d-%m-%Y") %>",
-            "<%= (Date.today() - 5).strftime("%d-%m-%Y") %>",
-            "<%= (Date.today() - 4).strftime("%d-%m-%Y") %>",
-            "<%= (Date.today() - 3).strftime("%d-%m-%Y") %>",
-            "<%= (Date.today() - 2).strftime("%d-%m-%Y") %>",
-            "<%= (Date.today() - 1).strftime("%d-%m-%Y") %>",
-            "<%= Date.today().strftime("%d-%m-%Y") %>"
-
+            <% Infostock.where(sku: "1").order(:fecha).last(7).each do |stock| %>
+              "<%= stock.fecha.strftime("%d-%m-%Y") %>",
+            <% end %>
           ],
           datasets: [
             {
               label: "SKU=1",
-              <% bodegaDespacho = @Almacenes.find_by(despacho: true).usedSpace %>
-              <% bodegaRecepcion = @Almacenes.find_by(recepcion: true).usedSpace %>
-              <% bodegaPulmon = @Almacenes.find_by(pulmon: true).usedSpace %>
-              <% otros = 0%>
-              <% @Almacenes.where(despacho: false, recepcion: false, pulmon: false).each do |almacen| otros += almacen.usedSpace end %>
-              data: [0,0,0,0,0,0, <%= Bodega.checkStock(1)%>],
+              data: [
+                <% Infostock.where(sku: "1").order(:fecha).last(7).each do |stock| %>
+                  <%= stock.cantidadTotal %>,
+                <% end %>
+              ],
               backgroundColor: "#FF6384",
               hoverBackgroundColor: "#FF6384",
               hoverBorderColor: "#FF6384"
@@ -103,36 +109,99 @@
             },
             {
               label: "SKU=10",
-              <% bodegaDespacho = @Almacenes.find_by(despacho: true).usedSpace %>
-              <% bodegaRecepcion = @Almacenes.find_by(recepcion: true).usedSpace %>
-              <% bodegaPulmon = @Almacenes.find_by(pulmon: true).usedSpace %>
-              <% otros = 0%>
-              <% @Almacenes.where(despacho: false, recepcion: false, pulmon: false).each do |almacen| otros += almacen.usedSpace end %>
-              data: [0,0,0,0,0,0, <%= Bodega.checkStock(10)%>],
+              data: [
+                <% Infostock.where(sku: "10").order(:fecha).last(7).each do |stock| %>
+                  <%= stock.cantidadTotal %>,
+                <% end %>
+              ],
               backgroundColor: "#36A2EB",
               hoverBackgroundColor: "#36A2EB",
               hoverBorderColor: "#36A2EB"
             },
             {
               label: "SKU=23",
-              <% bodegaDespacho = @Almacenes.find_by(despacho: true).usedSpace %>
-              <% bodegaRecepcion = @Almacenes.find_by(recepcion: true).usedSpace %>
-              <% bodegaPulmon = @Almacenes.find_by(pulmon: true).usedSpace %>
-              <% otros = 0%>
-              <% @Almacenes.where(despacho: false, recepcion: false, pulmon: false).each do |almacen| otros += almacen.usedSpace end %>
-              data: [0,0,0,0,0,0, <%= Bodega.checkStock(23)%>],
+              data: [
+                <% Infostock.where(sku: "23").order(:fecha).last(7).each do |stock| %>
+                  <%= stock.cantidadTotal %>,
+                <% end %>
+              ],
               backgroundColor: "#FFCE56",
               hoverBackgroundColor: "#FFCE56",
               hoverBorderColor: "#FFCE56"
             },
             {
               label: "SKU=39",
-              <% bodegaDespacho = @Almacenes.find_by(despacho: true).usedSpace %>
-              <% bodegaRecepcion = @Almacenes.find_by(recepcion: true).usedSpace %>
-              <% bodegaPulmon = @Almacenes.find_by(pulmon: true).usedSpace %>
-              <% otros = 0%>
-              <% @Almacenes.where(despacho: false, recepcion: false, pulmon: false).each do |almacen| otros += almacen.usedSpace end %>
-              data: [0,0,0,0,0,0, <%= Bodega.checkStock(39)%>],
+              data: [
+                <% Infostock.where(sku: "39").order(:fecha).last(7).each do |stock| %>
+                  <%= stock.cantidadTotal %>,
+                <% end %>
+              ],
+              backgroundColor: "#6CDC77",
+              hoverBackgroundColor: "#6CDC77",
+              hoverBorderColor: "#6CDC77"
+
+            }],
+
+        };
+
+        var barChart = new Chart (barChartCanvas, {
+            type: 'bar',
+            data: dataB
+        });
+
+        var barChartCanvas2 = document.getElementById("barChart2");
+
+        var dataB2 = {
+          labels: [
+            <% Infostock.where(sku: "1").order(:fecha).last(7).each do |stock| %>
+            "<%= stock.fecha.strftime("%d-%m-%Y") %>",
+            <% end %>
+          ],
+          type: "StackedBar",
+          datasets: [
+            {
+              label: "SKU=1",
+
+              data: [
+                 <% Infostock.where(sku: "1").order(:fecha).last(7).each do |stock| %>
+                <%= stock.cantidadDisponible-200 %> ,, <%= stock.cantidadTotal %>,
+              <% end %>
+
+              ],
+              backgroundColor: "#FF6384",
+              hoverBackgroundColor: "#FF6384",
+              hoverBorderColor: "#FF6384"
+
+            },
+            {
+              label: "SKU=10",
+              data: [
+                <% Infostock.where(sku: "10").order(:fecha).last(7).each do |stock| %>
+                <%= stock.cantidadDisponible %>,
+                <% end %>
+              ],
+              backgroundColor: "#36A2EB",
+              hoverBackgroundColor: "#36A2EB",
+              hoverBorderColor: "#36A2EB"
+            },
+            {
+              label: "SKU=23",
+              data: [
+                <% Infostock.where(sku: "23").order(:fecha).last(7).each do |stock| %>
+                <%= stock.cantidadDisponible %>,
+                <% end %>
+              ],
+              backgroundColor: "#FFCE56",
+              hoverBackgroundColor: "#FFCE56",
+              hoverBorderColor: "#FFCE56"
+            },
+            {
+              label: "SKU=39",
+              data: [
+                <% Infostock.where(sku: "39").order(:fecha).last(7).each do |stock| %>
+                <%= stock.cantidadDisponible %>,
+                <% end %>
+              ],
               backgroundColor: "#6CDC77",
               hoverBackgroundColor: "#6CDC77",
               hoverBorderColor: "#6CDC77"
@@ -140,9 +209,18 @@
             }]
         };
 
-        var barChart = new Chart (barChartCanvas, {
-            type: 'bar',
-            data: dataB
+        var barChart2 = new Chart (barChartCanvas2, {
+          type: 'bar',
+          data: dataB2,
+          responsive: true,
+          scales: {
+            xAxes: [{
+              stacked: true,
+            }],
+            yAxes: [{
+              stacked: true
+            }]
+          }
         });
 
       });
