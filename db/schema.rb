@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160530154718) do
+ActiveRecord::Schema.define(version: 20160617003806) do
 
   create_table "almacenes", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -97,6 +97,22 @@ ActiveRecord::Schema.define(version: 20160530154718) do
   add_index "friendly_id_slugs", ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
   add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id"
   add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
+
+  create_table "infosaldos", force: :cascade do |t|
+    t.datetime "fecha"
+    t.integer  "cantidad"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "infostocks", force: :cascade do |t|
+    t.datetime "fecha"
+    t.integer  "cantidadTotal"
+    t.integer  "cantidadDisponible"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.string   "sku"
+  end
 
   create_table "ocs", force: :cascade do |t|
     t.string   "_id"
@@ -1117,9 +1133,9 @@ ActiveRecord::Schema.define(version: 20160530154718) do
   add_index "spree_zones", ["kind"], name: "index_spree_zones_on_kind"
 
   create_table "stocks", force: :cascade do |t|
-    t.string   "sku"
-    t.integer  "total"
-    t.integer  "almacen_id"
+    t.string  "sku"
+    t.integer "total"
+    t.integer "almacen_id"
   end
 
   create_table "trxes", force: :cascade do |t|

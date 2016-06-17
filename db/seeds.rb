@@ -76,9 +76,6 @@ tax_rate.save
 
 
 puts "Creando Productos"
-#Test
-#product = Spree::Product.create(name: 'ProductoPrueba', description: 'prueba', available_on: Time.now, shipping_category: Spree::ShippingCategory.find_by(id: 1), price: 1000)
-#product.save
 
 productos_list = [
 	["Pollo", "Los mejores pollos del mundo, elevados al aire libre y alimentados por semillas nacidas de la agricultura biológica.", Time.now, "pollo", 1159, "carne-di-pollo-eurocarne.jpg", "1"],
@@ -88,36 +85,105 @@ productos_list = [
 ]
 
 
-
 productos_list.each do |name, description, available_on, meta_keywords, price, image_name, sku|
 	product = Spree::Product.create(sku: sku, cost_currency: "CLP", name: name, description: description, available_on: available_on, meta_keywords: meta_keywords, tax_category_id: 1, shipping_category_id: 1, promotionable: false, price: price)
   	path = 'public/spree/products/' + sku + '/product/' + image_name
   	id = Spree::Variant.find_by(product_id: product.id).id
-	i = Spree::Image.create!(attachment: File.open(path), viewable_type: "Spree::Variant", viewable_id: id, attachment_file_name: image_name)
-  	product.images << i
+	#i = Spree::Image.create!(attachment: File.open(path), viewable_type: "Spree::Variant", viewable_id: id, attachment_file_name: image_name)
+  	#product.images << i
   	product.save
   	puts "Path: " <<path
   	puts "Image: "
-  	puts i
+  	#puts i
+
+
   #path = 'public/spree/products/' + sku + '/product/' + image_name +'.jpg'
 #   image = Spree::Image.create(attachment: File.open(path), viewable: product.master, viewable_id: product.id, viewable_type: 'Spree::Variant', attachment_file_name: image_name , type: "Spree::Image")
 # image.save
 # product.save
 end
 
-# puts "Creando Variants"
-# variants_list = [
-# 	["1", 1, Spree::Product.find_by_name('Pollo').id, Bodega.first.checkStockTotal(1)],
-# 	["10", 1, Spree::Product.find_by_name('Pan Marraqueta').id, Bodega.first.checkStockTotal(10)],
-# 	["23", 1, Spree::Product.find_by_name('Farina').id, Bodega.first.checkStockTotal(23)],
-# 	["39", 1, Spree::Product.find_by_name('Uva').id, Bodega.checkStockTotal(39)]
-# ]
-# variants_list.each do |sku, weight, product_id, stock_items_count|
-# 	variant = Spree::Variant.create(sku: sku, weight: weight, is_master: true, product_id: product_id, updated_at: Time.now, stock_items_count: stock_items_count)
-# 	variant.save
-# end
+
+#Info Saldo
+Infosaldo.delete_all
+
+puts "Creando distintos Saldos"
+
+saldos_list =[
+	[Date.yesterday, Bodega.first.saldo-10000],
+	[Date.yesterday.yesterday, Bodega.first.saldo-24000],
+	[Date.yesterday.yesterday.yesterday, Bodega.first.saldo-35000],
+	[Date.yesterday.yesterday.yesterday.yesterday, Bodega.first.saldo-10000],
+	[Date.yesterday.yesterday.yesterday.yesterday.yesterday, Bodega.first.saldo-5000],
+	[Date.yesterday.yesterday.yesterday.yesterday.yesterday.yesterday, Bodega.first.saldo+15000]
+]
+
+saldos_list.each do |fecha, cantidad|
+	infosaldo = Infosaldo.create(fecha: fecha, cantidad: cantidad)
+	infosaldo.save!
+end
+
+#Info Stock
+Infostock.delete_all
+
+puts "Creando distintos Stocks"
+
+stock_1_list =[
+	['1', Date.yesterday, Bodega.checkStock('1')+20, Bodega.checkStockTotal('1')+20],
+	['1', Date.yesterday.yesterday, Bodega.checkStock('1')+200, Bodega.checkStockTotal('1')+200],
+	['1', Date.yesterday.yesterday.yesterday, Bodega.checkStock('1')+180, Bodega.checkStockTotal('1')+180],
+	['1', Date.yesterday.yesterday.yesterday.yesterday, Bodega.checkStock('1')+1200, Bodega.checkStockTotal('1')+1200],
+	['1', Date.yesterday.yesterday.yesterday.yesterday.yesterday, Bodega.checkStock('1'), Bodega.checkStockTotal('1')],
+	['1', Date.yesterday.yesterday.yesterday.yesterday.yesterday.yesterday, Bodega.checkStock('1')+500, Bodega.checkStockTotal('1')+500]
+]
+
+stock_1_list.each do |sku, fecha, cantidadTotal, cantidadDisponible|
+	infostock = Infostock.create(sku: sku, fecha: fecha, cantidadTotal: cantidadTotal, cantidadDisponible: cantidadDisponible)
+	infostock.save!
+end
+
+stock_10_list =[
+	['10', Date.yesterday, Bodega.checkStock('10')+20, Bodega.checkStockTotal('10')+20],
+	['10', Date.yesterday.yesterday, Bodega.checkStock('10')+200, Bodega.checkStockTotal('10')+200],
+	['10', Date.yesterday.yesterday.yesterday, Bodega.checkStock('10')+180, Bodega.checkStockTotal('10')+180],
+	['10', Date.yesterday.yesterday.yesterday.yesterday, Bodega.checkStock('10')+1200, Bodega.checkStockTotal('10')+1200],
+	['10', Date.yesterday.yesterday.yesterday.yesterday.yesterday, Bodega.checkStock('10'), Bodega.checkStockTotal('10')],
+	['10', Date.yesterday.yesterday.yesterday.yesterday.yesterday.yesterday, Bodega.checkStock('10')+500, Bodega.checkStockTotal('10')+500]
+]
+
+stock_10_list.each do |sku, fecha, cantidadTotal, cantidadDisponible|
+	infostock = Infostock.create(sku: sku, fecha: fecha, cantidadTotal: cantidadTotal, cantidadDisponible: cantidadDisponible)
+	infostock.save!
+end
+
+stock_23_list =[
+	['23', Date.yesterday, Bodega.checkStock('23')+20, Bodega.checkStockTotal('23')+20],
+	['23', Date.yesterday.yesterday, Bodega.checkStock('23')+200, Bodega.checkStockTotal('23')+200],
+	['23', Date.yesterday.yesterday.yesterday, Bodega.checkStock('23')+180, Bodega.checkStockTotal('23')+180],
+	['23', Date.yesterday.yesterday.yesterday.yesterday, Bodega.checkStock('23')+1200, Bodega.checkStockTotal('23')+1200],
+	['23', Date.yesterday.yesterday.yesterday.yesterday.yesterday, Bodega.checkStock('23'), Bodega.checkStockTotal('23')],
+	['23', Date.yesterday.yesterday.yesterday.yesterday.yesterday.yesterday, Bodega.checkStock('23')+500, Bodega.checkStockTotal('23')+500]
+]
+
+stock_23_list.each do |sku, fecha, cantidadTotal, cantidadDisponible|
+	infostock = Infostock.create(sku: sku, fecha: fecha, cantidadTotal: cantidadTotal, cantidadDisponible: cantidadDisponible)
+	infostock.save!
+end
 
 
+stock_39_list =[
+	['39', Date.yesterday, Bodega.checkStock('39')+20, Bodega.checkStockTotal('39')+20],
+	['39', Date.yesterday.yesterday, Bodega.checkStock('39')+200, Bodega.checkStockTotal('39')+200],
+	['39', Date.yesterday.yesterday.yesterday, Bodega.checkStock('39')+180, Bodega.checkStockTotal('39')+180],
+	['39', Date.yesterday.yesterday.yesterday.yesterday, Bodega.checkStock('39')+1200, Bodega.checkStockTotal('39')+1200],
+	['39', Date.yesterday.yesterday.yesterday.yesterday.yesterday, Bodega.checkStock('39'), Bodega.checkStockTotal('39')],
+	['39', Date.yesterday.yesterday.yesterday.yesterday.yesterday.yesterday, Bodega.checkStock('39')+500, Bodega.checkStockTotal('39')+500]
+]
+
+stock_39_list.each do |sku, fecha, cantidadTotal, cantidadDisponible|
+	infostock = Infostock.create(sku: sku, fecha: fecha, cantidadTotal: cantidadTotal, cantidadDisponible: cantidadDisponible)
+	infostock.save!
+end
 
 
 
