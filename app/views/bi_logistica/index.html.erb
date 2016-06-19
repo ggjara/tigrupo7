@@ -15,6 +15,69 @@
           <canvas id="pieChart" style="height:50px"></canvas>
         </div><!-- /.box-body -->
       </div><!-- /.box -->
+
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-5 col-md-offset-1">
+            <div class="info-box" style="background-color: #E5B94D; color: white">
+              <span class="info-box-icon"><i class="fa fa-sign-in"></i></span>
+              <div class="info-box-content">
+                <span class="info-box-text">Bodega Recepción</span>
+                <span class="info-box-number"><%= Bodega.first.almacenes.find_by(recepcion: true).usedSpace%></span>
+                <div class="progress">
+                  <div class="progress-bar" style="width:<%= ((Bodega.first.almacenes.find_by(recepcion: true).usedSpace * 100)/Bodega.first.almacenes.find_by(recepcion: true).totalSpace)%>%"></div>
+                </div>
+                  <span class="progress-description">
+                     <%= ((Bodega.first.almacenes.find_by(recepcion: true).usedSpace * 100)/Bodega.first.almacenes.find_by(recepcion: true).totalSpace)%>% de uso
+                  </span>
+              </div><!-- /.info-box-content -->
+            </div><!-- /.info-box -->
+          </div><!-- /.col -->
+          <div class="col-md-5">
+            <div class="info-box" style="background-color: #FF6384; color: white">
+              <span class="info-box-icon"><i class="fa fa-sign-out"></i></span>
+              <div class="info-box-content">
+                <span class="info-box-text">Bodega Despacho</span>
+                <span class="info-box-number"><%= Bodega.first.almacenes.find_by(despacho: true).usedSpace%></span>
+                <div class="progress">
+                  <div class="progress-bar" style="width:<%= ((Bodega.first.almacenes.find_by(despacho: true).usedSpace * 100)/Bodega.first.almacenes.find_by(despacho: true).totalSpace)%>%"></div>
+                </div>
+                  <span class="progress-description">
+                     <%= ((Bodega.first.almacenes.find_by(despacho: true).usedSpace * 100)/Bodega.first.almacenes.find_by(despacho: true).totalSpace)%>% de uso
+                  </span>
+              </div><!-- /.info-box-content -->
+            </div><!-- /.info-box -->
+          </div><!-- /.col -->
+        </div>
+        <div class="row">
+          <div class="col-md-5 col-md-offset-1">
+            <div class="info-box" style="background-color: #61C66B; color: white">
+              <span class="info-box-icon"><span class="fa fa-square-o" aria-hidden="true"></span></span>
+              <div class="info-box-content">
+                <span class="info-box-text">Bodega 'Otros'</span>
+                <span class="info-box-number"><%= Bodega.first.almacenes.where(pulmon: false, recepcion: false, despacho: false).sum(:usedSpace)%></span>
+                <div class="progress">
+                  <div class="progress-bar" style="width:<%= (Bodega.first.almacenes.where(pulmon: false, recepcion: false, despacho: false).sum(:usedSpace) * 100)/(Bodega.first.almacenes.where(pulmon: false, recepcion: false, despacho: false).sum(:totalSpace))%>%"></div>
+                </div>
+                  <span class="progress-description">
+                     <%= ((Bodega.first.almacenes.find_by(despacho: true).usedSpace * 100)/Bodega.first.almacenes.find_by(despacho: true).totalSpace)%>% de uso
+                  </span>
+              </div><!-- /.info-box-content -->
+            </div><!-- /.info-box -->
+          </div><!-- /.col -->
+          <div class="col-md-5">
+            <div class="info-box bg-aqua">
+              <span class="info-box-icon"><span class="fa fa-share-alt" aria-hidden="true"></span></span>
+              <div class="info-box-content">
+                <span class="info-box-text">Bodega Pulmón</span>
+                <span class="info-box-number"><%= Bodega.first.almacenes.find_by(pulmon: true).usedSpace%></span>
+
+              </div><!-- /.info-box-content -->
+            </div><!-- /.info-box -->
+          </div><!-- /.col -->
+        </div>
+      </div>
+
       <div class="box col-md-12">
         <div class="box-header with-border">
           <h3 class="box-title">Stock diario Total por SKU</h3>
@@ -26,21 +89,12 @@
           <canvas id="barChart" style="height:250px"></canvas>
         </div><!-- /.box-body -->
       </div><!-- /.box -->
-      <div class="box col-md-12">
-        <div class="box-header with-border">
-          <h3 class="box-title">Stock diario Disponible por SKU</h3>
-          <div class="box-tools pull-right">
-            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-          </div>
-        </div>
-        <div class="box-body col-md-12">
-          <canvas id="barChart2" style="height:250px"></canvas>
-        </div><!-- /.box-body -->
-      </div><!-- /.box -->
+
 
     </div>
 
     <script type="text/javascript">
+
       $(function () {
         var pieChartCanvas = document.getElementById("pieChart");
         var data = {
@@ -88,141 +142,290 @@
 
         var barChartCanvas = document.getElementById("barChart");
 
-        var dataB = {
-          labels: [
-            <% Infostock.where(sku: "1").order(:fecha).last(7).each do |stock| %>
-              "<%= stock.fecha.strftime("%d-%m-%Y") %>",
-            <% end %>
-          ],
-          datasets: [
-            {
-              label: "SKU=1",
-              data: [
-                <% Infostock.where(sku: "1").order(:fecha).last(7).each do |stock| %>
-                  <%= stock.cantidadTotal %>,
-                <% end %>
-              ],
-              backgroundColor: "#FF6384",
-              hoverBackgroundColor: "#FF6384",
-              hoverBorderColor: "#FF6384"
 
-            },
-            {
-              label: "SKU=10",
-              data: [
-                <% Infostock.where(sku: "10").order(:fecha).last(7).each do |stock| %>
-                  <%= stock.cantidadTotal %>,
-                <% end %>
-              ],
-              backgroundColor: "#36A2EB",
-              hoverBackgroundColor: "#36A2EB",
-              hoverBorderColor: "#36A2EB"
-            },
-            {
-              label: "SKU=23",
-              data: [
-                <% Infostock.where(sku: "23").order(:fecha).last(7).each do |stock| %>
-                  <%= stock.cantidadTotal %>,
-                <% end %>
-              ],
-              backgroundColor: "#FFCE56",
-              hoverBackgroundColor: "#FFCE56",
-              hoverBorderColor: "#FFCE56"
-            },
-            {
-              label: "SKU=39",
-              data: [
-                <% Infostock.where(sku: "39").order(:fecha).last(7).each do |stock| %>
-                  <%= stock.cantidadTotal %>,
-                <% end %>
-              ],
-              backgroundColor: "#6CDC77",
-              hoverBackgroundColor: "#6CDC77",
-              hoverBorderColor: "#6CDC77"
+        Chart.defaults.groupableBar = Chart.helpers.clone(Chart.defaults.bar);
 
-            }],
+        var helpers = Chart.helpers;
+        Chart.controllers.groupableBar = Chart.controllers.bar.extend({
+        getMeta: function () {
+          var e = this.chart.data.datasets[this.index];
+          e._meta || (e._meta = {});
+          var i = e._meta[this.id];
+          return i || (i = e._meta[this.id] = {
+            type: null,
+            data: [],
+            dataset: null,
+            controller: null,
+            hidden: null,
+            xAxisID: null,
+            yAxisID: null
+          }), i
 
-        };
+        },
+          calculateBarX: function (index, datasetIndex) {
+            // position the bars based on the stack index
+            var stackIndex = this.getMeta().stackIndex;
+            return Chart.controllers.bar.prototype.calculateBarX.apply(this, [index, stackIndex]);
+          },
 
-        var barChart = new Chart (barChartCanvas, {
-            type: 'bar',
-            data: dataB
-        });
+          hideOtherStacks: function (datasetIndex) {
+            var meta = this.getMeta();
+            var stackIndex = meta.stackIndex;
 
-        var barChartCanvas2 = document.getElementById("barChart2");
+            this.hiddens = [];
+            for (var i = 0; i < datasetIndex; i++) {
+              var e = this.chart.data.datasets[i];
+              e._meta || (e._meta = {});
+              var ii = e._meta[this.id];
+              if (ii != null){
+                var dsMeta = ii;
+              }
+              else{
+                var dsMeta  = e._meta[this.id] = {
+                  type: null,
+                  data: [],
+                  dataset: null,
+                  controller: null,
+                  hidden: null,
+                  xAxisID: null,
+                  yAxisID: null
+                };
+              }
+              if (dsMeta.stackIndex !== stackIndex) {
+                this.hiddens.push(dsMeta.hidden);
+                dsMeta.hidden = true;
+              }
+            }
+          },
 
-        var dataB2 = {
-          labels: [
-            <% Infostock.where(sku: "1").order(:fecha).last(7).each do |stock| %>
-            "<%= stock.fecha.strftime("%d-%m-%Y") %>",
-            <% end %>
-          ],
-          type: "StackedBar",
-          datasets: [
-            {
-              label: "SKU=1",
+          unhideOtherStacks: function (datasetIndex) {
+            var meta = this.getMeta();
+            var stackIndex = meta.stackIndex;
 
-              data: [
-                 <% Infostock.where(sku: "1").order(:fecha).last(7).each do |stock| %>
-                <%= stock.cantidadDisponible-200 %> ,, <%= stock.cantidadTotal %>,
-              <% end %>
+            for (var i = 0; i < datasetIndex; i++) {
+              var e = this.chart.data.datasets[i];
+              e._meta || (e._meta = {});
+              var ii = e._meta[this.id];
+              if (ii != null){
+                var dsMeta = ii;
+              }
+              else{
+                var dsMeta  = e._meta[this.id] = {
+                  type: null,
+                  data: [],
+                  dataset: null,
+                  controller: null,
+                  hidden: null,
+                  xAxisID: null,
+                  yAxisID: null
+                };
+              }
+              if (dsMeta.stackIndex !== stackIndex) {
+                dsMeta.hidden = this.hiddens.unshift();
+              }
+            }
+          },
 
-              ],
-              backgroundColor: "#FF6384",
-              hoverBackgroundColor: "#FF6384",
-              hoverBorderColor: "#FF6384"
+          calculateBarY: function (index, datasetIndex) {
+            this.hideOtherStacks(datasetIndex);
+            var barY = Chart.controllers.bar.prototype.calculateBarY.apply(this, [index, datasetIndex]);
+            this.unhideOtherStacks(datasetIndex);
+            return barY;
+          },
 
-            },
-            {
-              label: "SKU=10",
-              data: [
-                <% Infostock.where(sku: "10").order(:fecha).last(7).each do |stock| %>
-                <%= stock.cantidadDisponible %>,
-                <% end %>
-              ],
-              backgroundColor: "#36A2EB",
-              hoverBackgroundColor: "#36A2EB",
-              hoverBorderColor: "#36A2EB"
-            },
-            {
-              label: "SKU=23",
-              data: [
-                <% Infostock.where(sku: "23").order(:fecha).last(7).each do |stock| %>
-                <%= stock.cantidadDisponible %>,
-                <% end %>
-              ],
-              backgroundColor: "#FFCE56",
-              hoverBackgroundColor: "#FFCE56",
-              hoverBorderColor: "#FFCE56"
-            },
-            {
-              label: "SKU=39",
-              data: [
-                <% Infostock.where(sku: "39").order(:fecha).last(7).each do |stock| %>
-                <%= stock.cantidadDisponible %>,
-                <% end %>
-              ],
-              backgroundColor: "#6CDC77",
-              hoverBackgroundColor: "#6CDC77",
-              hoverBorderColor: "#6CDC77"
+          calculateBarBase: function (datasetIndex, index) {
+            this.hideOtherStacks(datasetIndex);
+            this.getScaleForId(this.getDataset().yAxisID).options.stacked = false;
+            this.getScaleForId(this.getDataset().yAxisID).beginAtZero = true;
+            var barBase = Chart.controllers.bar.prototype.calculateBarBase.apply(this, [datasetIndex, index]);
+            //this.getScaleForId(this.getDataset().yAxisID).options.stacked = true;
+            this.unhideOtherStacks(datasetIndex);
+            return barBase;
+          },
 
-            }]
-        };
+          getBarCount: function () {
+            var stacks = [];
 
-        var barChart2 = new Chart (barChartCanvas2, {
-          type: 'bar',
-          data: dataB2,
-          responsive: true,
-          scales: {
-            xAxes: [{
-              stacked: true,
-            }],
-            yAxes: [{
-              stacked: true
-            }]
+            // put the stack index in the dataset meta
+            Chart.helpers.each(this.chart.data.datasets, function (dataset, datasetIndex) {
+              var e = this.chart.data.datasets[datasetIndex];
+              e._meta || (e._meta = {});
+              var i = e._meta[this.id];
+              if (i != null){
+                var meta = i;
+              }
+              else{
+                var meta  = e._meta[this.id] = {
+                type: null,
+                  data: [],
+                  dataset: null,
+                  controller: null,
+                  hidden: null,
+                  xAxisID: null,
+                  yAxisID: null
+                };
+              }
+
+                var stackIndex = stacks.indexOf(dataset.stack);
+                if (stackIndex === -1) {
+                  stackIndex = stacks.length;
+                  stacks.push(dataset.stack);
+                }
+                meta.stackIndex = stackIndex;
+
+            }, this);
+
+            this.getMeta().stacks = stacks;
+            return stacks.length;
           }
         });
 
+        var dataB = {
+          labels: [
+            "<%= (Date.today() - 6).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 5).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 4).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 3).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 2).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 1).strftime("%d-%m-%Y") %>",
+            "<%= Date.today().strftime("%d-%m-%Y") %>"
+          ],
+          datasets: [
+            {
+              label: "Cantidad disponible SKU=1",
+              data: [
+                <% Infostock.where(sku: "1").order(:fecha).last(7).each do |stock| %>
+                  <%= stock.cantidadDisponible %>,
+                <% end %>
+              ],
+              stack: 1,
+              backgroundColor: "#ff96ac",
+              hoverBackgroundColor: "#ff96ac",
+              hoverBorderColor: "#ff96ac"
+            },
+            {
+
+              label: "Cantidad Total SKU=1",
+              data: [
+                 <% Infostock.where(sku: "1").order(:fecha).last(7).each do |stock| %>
+                  <%= stock.cantidadTotal %>,
+                <% end %>
+              ],
+              stack: 1,
+              backgroundColor: "#FF6384",
+              hoverBackgroundColor: "#FF6384",
+              hoverBorderColor: "#FF6384"
+
+            },
+            {
+              label: "Cantidad Disponible SKU=10",
+              data: [
+                <% Infostock.where(sku: "10").order(:fecha).last(7).each do |stock| %>
+                  <%= stock.cantidadDisponible %>,
+                <% end %>
+              ],
+              stack: 2,
+              backgroundColor: "#64b7f0",
+              hoverBackgroundColor: "#64b7f0",
+              hoverBorderColor: "#64b7f0"
+            },
+            {
+              label: "Cantidad Total SKU=10",
+              data: [
+                <% Infostock.where(sku: "10").order(:fecha).last(7).each do |stock| %>
+                <%= stock.cantidadTotal + 1000%>,
+                <% end %>
+              ],
+              stack: 2,
+              backgroundColor: "#36A2EB",
+              hoverBackgroundColor: "#36A2EB",
+              hoverBorderColor: "#36A2EB"
+            },
+            {
+              label: "Cantidad Disponible SKU=23",
+              data: [
+                <% Infostock.where(sku: "23").order(:fecha).last(7).each do |stock| %>
+                  <%= stock.cantidadDisponible %>,
+                <% end %>
+              ],
+              stack: 3,
+              backgroundColor: "#ffdd89",
+              hoverBackgroundColor: "#ffdd89",
+              hoverBorderColor: "#ffdd89"
+            },
+            {
+              label: "Cantidad Total SKU=23",
+              data: [
+                <% Infostock.where(sku: "23").order(:fecha).last(7).each do |stock| %>
+                <%= stock.cantidadTotal + 300 %>,
+                <% end %>
+              ],
+              stack: 3,
+              backgroundColor: "#FFCE56",
+              hoverBackgroundColor: "#FFCE56",
+              hoverBorderColor: "#FFCE56"
+            },
+            {
+              label: "Cantidad Disponible SKU=39",
+              data: [
+                <% Infostock.where(sku: "39").order(:fecha).last(7).each do |stock| %>
+                <%= stock.cantidadDisponible %>,
+                <% end %>
+              ],
+              stack: 4,
+              backgroundColor: "#95e69d",
+              hoverBackgroundColor: "#95e69d",
+              hoverBorderColor: "#95e69d"
+
+            },
+            {
+              label: "Cantidad Total SKU=39",
+              data: [
+                <% Infostock.where(sku: "39").order(:fecha).last(7).each do |stock| %>
+                <%= stock.cantidadTotal + 400 %>,
+                <% end %>
+              ],
+              stack: 4,
+              backgroundColor: "#6CDC77",
+              hoverBackgroundColor: "#6CDC77",
+              hoverBorderColor: "#6CDC77"
+
+            }
+          ],
+
+        };
+        var max = 0;
+        var aux;
+        for (i = 0; i < dataB.datasets.length; i++) {
+          aux = 0;
+          for (j = 0; j < dataB.datasets[i].data.length; j++) {
+            aux = Math.max(aux, dataB.datasets[i].data[j]);
+
+          }
+          max = Math.max(max, aux);
+        }
+        var barChart = new Chart (barChartCanvas, {
+            type: 'groupableBar',
+            data: dataB,
+            options: {
+              legend:{
+                onClick: false
+              },
+              scales: {
+                xAxes: [{
+                  stacked: false
+                }],
+                yAxes: [{
+                  ticks: {
+                    max: max + (1000 - max%1000),
+                  },
+                  stacked: true
+                }]
+              }
+            }
+
+        });
+        console.log(barChart)
       });
     </script>
 
