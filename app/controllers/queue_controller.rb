@@ -8,8 +8,7 @@ class QueueController < ApplicationController
   end
 
   def put
-    QueueRecibir.new.send
-    render json: "mandado"
+    render json: QueueRecibir.new.send
   end
 
   def get
