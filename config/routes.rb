@@ -16,15 +16,15 @@ Rails.application.routes.draw do
    match '/spree/errorCompra/' => 'spree/bills#error', via: :get
 
   get 'stocks/show'
- 
+
   get 'stocks/index'
- 
+
    get 'bodegas/initialize'
- 
+
    get 'bodegas/consultarInfo'
- 
+
    get 'bodegas/show'
-   
+
  get '/documentacionAPI', to: 'documentos#index'
   get 'flujos', to: 'documentos#flujos'
 
@@ -60,8 +60,6 @@ Rails.application.routes.draw do
     match '/despachos/recibir/:id'=> 'application#recibirDespacho', via: :get
     match '/pagos/recibir/:idtrx'=> 'application#recibirTrx', via: :get
 
-
-
   end
 
    namespace :admin do
@@ -78,8 +76,12 @@ Rails.application.routes.draw do
     match '/facturas' => 'application#facturas', via: :get
     match '/clientes/iniciar' => 'application#clientesIniciar', via: :get
 
-    
-
   end
+
+
+
+   get 'queue/send', to: 'queue#put'
+   get 'queue/receive', to: 'queue#get'
+
 
 end
