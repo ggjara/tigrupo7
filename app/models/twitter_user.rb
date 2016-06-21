@@ -27,8 +27,6 @@ class TwitterUser < ActiveRecord::Base
       client.update(tweet['message'])
      else
       url = tweet['media']
-          # media = uri.open
-          # media.instance_eval("def original_filename; '#{File.basename(uri.path)}'; end")
       client.update_with_media(tweet['message'], open(url))
     
     end

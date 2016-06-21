@@ -154,6 +154,8 @@ Rails.application.routes.draw do
   get '/social', to: 'social_networks#index'
   post 'facebook/article', to: 'facebook#page_wall_post'
 
+  
+
 
     
 
