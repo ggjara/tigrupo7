@@ -60,6 +60,9 @@ gem 'font-awesome-sass'
 
 gem "figaro"
 
+
+
+
 #gem 'whenever', :require => false
 
 # Use ActiveModel has_secure_password
@@ -88,3 +91,8 @@ end
 gem 'spree', '~> 3.0.9'
 gem 'spree_gateway', '~> 3.0.0'
 gem 'spree_auth_devise', '~> 3.0.0'
+
+gem 'twitter', '~> 5.3.1'
+gem 'omniauth-twitter', '~> 1.0.1'
+gem 'omniauth-facebook'
+gem 'koala', "~> 2.2"

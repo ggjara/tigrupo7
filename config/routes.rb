@@ -1,5 +1,49 @@
 Rails.application.routes.draw do
 
+  get 'twitter/createTwitterSession'
+
+  get 'twitter/destroyTwitterSession'
+
+  get 'twitter/createTweet'
+
+  get 'twitter/newTweet'
+
+  get 'twitter/twitter_params'
+
+  get 'twitter/current_twitter_user'
+
+  get 'facebook/initialize'
+
+  get 'facebook/page_wall_post'
+
+  get 'social_networks/new'
+
+  get 'social_networks/index'
+
+  get 'social_networks/newTwitterSession'
+
+  get 'social_networks/createTwitterSession'
+
+  get 'social_networks/destroyTwitterSession'
+
+  get 'social_networks/newTweet'
+
+  get 'social_networks/createTweet'
+
+  get 'home/show'
+
+  get 'tweets/new'
+
+  get 'tweets/create'
+
+  get 'sessions/new'
+
+  get 'sessions/create'
+
+  get 'sessions/destroy'
+
+  get 'home/show'
+
   get 'boletas/:id' => 'bills#show', via: :get
 
   get 'boletas' => 'bills#index', via: :get
@@ -81,5 +125,38 @@ Rails.application.routes.draw do
     
 
   end
+
+
+
+
+# Twitter integration routes
+    
+  get '/auth/:provider/callback', to: 'twitter#createTwitterSession'
+  get '/auth/failure', to: redirect('/')
+  get '/signout', to: 'twitter#destroyTwitterSession', as: 'signout'
+
+    get '/twitter', to: 'twitter#index'
+
+    
+  post  '/twitter/createTweet(.:format)', to: 'twitter#createTweet'
+   
+
+   resource :twitter, only: [:newTweet, :createTweet, :createTwitterSession, :destroyTwitterSession]
+# Facebook integration routes
+
+# match '/facebook' => 'social_networks#indexFacebook', via: :get
+# match '/social_networks/login' => 'social_networks#signinfacebook', via: :get
+# match '/login' => 'social_networks#signinfacebook', via: :get
+# match '/facebookMethod' => 'social_networks#facebookMethod', via: :post
+
+# match 'callback_url' => 'social_networks#facebookMethod', via: :post
+#Facebook Posters
+  get '/social', to: 'social_networks#index'
+  post 'facebook/article', to: 'facebook#page_wall_post'
+
+
+    
+
+  
 
 end

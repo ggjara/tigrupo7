@@ -1,0 +1,27 @@
+<% content_for :header do %>
+    <h1>New Tweet </h1>
+<%end%>
+
+<% content_for :content do %>
+<div>
+      <% if current_twitter_user %>
+        Signed in as <strong><%= current_twitter_user.name %></strong>!
+        <%= link_to "Sign out", signout_path, id: "sign_out" %>
+      <% else %>
+        <%= link_to "Sign in with Twitter", "/auth/twitter", id: "sign_in" %>
+      <% end %>
+    </div>
+    <div>
+    <p>
+  <%= form_for :tweet, url: twitter_createTweet_path, method: :post do |f| %>
+    <%= f.label "message" %>
+    <%= f.text_field :message %>
+    <%= f.label "media" %>
+    <%= f.text_field :media %>
+    <%= f.submit "Send Tweet" %>
+  <% end %>
+</p>
+</div>
+
+
+<%end%><p>Find me in app/views/twitter/newTweet.html.erb</p>
