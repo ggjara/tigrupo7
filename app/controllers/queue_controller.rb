@@ -14,5 +14,5 @@ class QueueController < ApplicationController
   def get
     render json: QueueRecibir.new.receive
   end
-
+  
 end

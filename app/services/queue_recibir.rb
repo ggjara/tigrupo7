@@ -1,31 +1,59 @@
 class QueueRecibir < ApplicationController
 require "bunny"
+require "json"
 
 def initialize
 end
 
 def receive
+  return threadReceive
+end
+
+#metodo que inicia un thread que queda suscrito a la cola, recibiendo mensajes y gatillando accion
+def threadReceive
+  #inicia conneccion con cola amqp
   conn = Bunny.new('amqp://eoddqask:UZDMkggws1re_EjcJet7iv8Sm56KiifC@jellyfish.rmq.cloudamqp.com/eoddqask')
   conn.start # start a communication session with the amqp server
   ch = conn.create_channel
   q = ch.queue("ofertas", :durable => true) # declare a queue
 
-  msg = ""
-  q.subscribe(:block => true) do |delivery_info, properties, body|
-    puts " [x] Received #{body}"
-    msg = body
-    # cancel the consumer to exit
-    delivery_info.consumer.cancel
-  end
-  # paramsMsg = { sku: msg['sku'],
-  #   precio: msg['precio'],
-  #   inicio: msg['inicio'],
-  #   fin: msg['fin'],
-  #   codigo: msg['codigo'],
-  #   publicar: msg['publicar']}
+  #inicia thread que quedara ecuchando mensajes
+  t1 = Thread.new do
+    begin
+    puts " [*] Waiting for messages. To exit press CTRL+C"
+    q.subscribe(:block => true) do |delivery_info, properties, body|
 
+      #Aca debe gatillar posteo en fb y tweeter
+      #Mensaje esta en body
+
+      puts " [x] Received #{body}"
+      msg = body
+
+    end
+    rescue Interrupt => _
+      conn.close
+
+      exit(0)
+    end
+
+  end
+  return "running"
+end
+
+#metodo que recibe mensaje un mensaje cada vez que se llama
+def webHookReceive
+  conn = Bunny.new('amqp://eoddqask:UZDMkggws1re_EjcJet7iv8Sm56KiifC@jellyfish.rmq.cloudamqp.com/eoddqask')
+  conn.start # start a communication session with the amqp server
+  ch = conn.create_channel
+  q = ch.queue("ofertas", :durable => true) # declare a queue
+
+  delivery_info, properties, payload = q.pop
+  msg = payload
+  puts msg
+  conn.close
   return msg
 end
+
 
 def send
 
