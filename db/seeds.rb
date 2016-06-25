@@ -7,6 +7,9 @@ require 'bodega.rb'
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+if(Bodega.first==nil)
+	Bodega.iniciarBodega(true) #True porque se inicia
+end
 Cliente.delete_all
 
 # # *** ----- PRODUCCION ***** -----

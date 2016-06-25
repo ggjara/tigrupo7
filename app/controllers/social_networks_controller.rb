@@ -31,7 +31,7 @@ class SocialNetworksController < ApplicationController
     @graph.put_wall_post(title, {
            link: page_link      #picture: image_url
        })
-  end
+end
 
 # Method to create a twitter session (user = Tigrupo7Com)
   def createTwitterSession
