@@ -1,0 +1,26 @@
+<% content_for :header do %>
+    <h1>Social Media Post </h1>
+<%end%>
+
+<% content_for :content do %>
+
+  <div>
+        <% if current_twitter_user %>
+          Signed in Twitter as <strong><%= current_twitter_user.name %></strong>!
+          <%= link_to "Sign out", signout_path, id: "sign_out" %>
+        <% else %>
+          <%= link_to "Sign in with Twitter", "/auth/twitter", id: "sign_in" %>
+        <% end %>
+  </div>
+
+  <div>
+    <%= form_for :tweet, url: '/social/publish', method: :post do |f| %>
+      <%= f.label "message" %> 
+      <%= f.text_field :message %> 
+      <%= f.label "media" %>
+      <%= f.text_field :media %>
+      <%= f.submit "Post" %>
+      <% end %>
+  </div>
+
+<%end%>
