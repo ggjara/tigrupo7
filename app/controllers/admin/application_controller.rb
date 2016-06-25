@@ -119,3 +119,5 @@ end
 def agregarInfoDiaria
   Bodega.agregarInfoDiaria
 end
+
+end
