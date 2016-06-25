@@ -103,7 +103,6 @@ def almacenes
 end
 
 def facturas
-  almacenes = 
   render json: Factura.all
 end
 
