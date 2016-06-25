@@ -1,45 +1,26 @@
 <% content_for :header do %>
-    <h1>Tweet Send </h1>
+    <h1>Twitter identification </h1>
 <%end%>
 
 <% content_for :content do %>
-<form action='/facebook/article' method='post'>
-  <fieldset><legend>Facebook Post</legend>
-  
-  <input type='text' placeholder='Title is optional' name='title' required=required /><br>
-  <input type='url' placeholder='Page Link' name='page_link' /><br>
-  <input type='text' placeholder='Link Name' name='link_name'/><br>
-  <textarea type='text' placeholder='Description' name='description'></textarea><br>
-  <input type='url' placeholder='Image url' name='url'/><br>
-  <input type="submit" value = "post" />
-  </fieldset>
-</form>
-<script>
-  window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '1210610395625557',
-      xfbml      : true,
-      version    : 'v2.6'
-    });
-  };
 
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "//connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
-</script>
+	<div>
+    <% if current_twitter_user %>
+        Signed in as <strong><%= current_twitter_user.name %></strong>!
+        <%= link_to "Sign out", signout_path, id: "sign_out" %>
+    <% else %>
+        <%= link_to "Sign in with Twitter", "/auth/twitter", id: "sign_in" %>
+    <% end %>
+	</div>
 
-<div
-  class="fb-like"
-  data-share="true"
-  data-width="450"
-  data-show-faces="true">
-</div>
-
-	
+  <div>
+    <% if !current_twitter_user.nil? %>
+    		<p>Click The link below to send a tweet.</p>
+    		<%= link_to "Post on social media", "/social/newPost" %>
+		<% else %>
+    		<p>You must log in to send tweets.</p>
+		<% end %>
+	</div>
 
 
 <%end%>

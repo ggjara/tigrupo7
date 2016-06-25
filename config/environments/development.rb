@@ -46,9 +46,4 @@ Rails.application.configure do
   config.twitter_key = "8Cjg53yivB3vv3Odw2X85dDfs"
   config.twitter_secret = "fYTDXPC3iIN86sdvzZpYXBj6tvuGKvQTjHUcQR9wd9d14qDR6x"
 
-  #Facebook configurations
-  
-  # config.facebook_id = "1210610395625557"
-  # config.facebook_secret = "a292334b1682c6456f556214f8a4fe43"
-  
 end

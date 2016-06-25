@@ -1,48 +1,6 @@
 Rails.application.routes.draw do
 
-  get 'twitter/createTwitterSession'
-
-  get 'twitter/destroyTwitterSession'
-
-  get 'twitter/createTweet'
-
-  get 'twitter/newTweet'
-
-  get 'twitter/twitter_params'
-
-  get 'twitter/current_twitter_user'
-
-  get 'facebook/initialize'
-
-  get 'facebook/page_wall_post'
-
-  get 'social_networks/new'
-
-  get 'social_networks/index'
-
-  get 'social_networks/newTwitterSession'
-
-  get 'social_networks/createTwitterSession'
-
-  get 'social_networks/destroyTwitterSession'
-
-  get 'social_networks/newTweet'
-
-  get 'social_networks/createTweet'
-
-  get 'home/show'
-
-  get 'tweets/new'
-
-  get 'tweets/create'
-
-  get 'sessions/new'
-
-  get 'sessions/create'
-
-  get 'sessions/destroy'
-
-  get 'home/show'
+  
 
   get 'boletas/:id' => 'bills#show', via: :get
 
@@ -129,36 +87,18 @@ Rails.application.routes.draw do
 
 
 
-# Twitter integration routes
-    
-  get '/auth/:provider/callback', to: 'twitter#createTwitterSession'
-  get '/auth/failure', to: redirect('/')
-  get '/signout', to: 'twitter#destroyTwitterSession', as: 'signout'
+# Twitter and facebook integration routes :
 
-    get '/twitter', to: 'twitter#index'
-
-    
-  post  '/twitter/createTweet(.:format)', to: 'twitter#createTweet'
-   
-
-   resource :twitter, only: [:newTweet, :createTweet, :createTwitterSession, :destroyTwitterSession]
-# Facebook integration routes
-
-# match '/facebook' => 'social_networks#indexFacebook', via: :get
-# match '/social_networks/login' => 'social_networks#signinfacebook', via: :get
-# match '/login' => 'social_networks#signinfacebook', via: :get
-# match '/facebookMethod' => 'social_networks#facebookMethod', via: :post
-
-# match 'callback_url' => 'social_networks#facebookMethod', via: :post
-#Facebook Posters
+  # Route to authorize twitter app - only need to do it once (user account = Tigrupo7Com)
   get '/social', to: 'social_networks#index'
-  post 'facebook/article', to: 'facebook#page_wall_post'
+  # Twitter connection routes
+  get '/auth/:provider/callback', to: 'social_networks#createTwitterSession'
+  get '/auth/failure', to: redirect('/social')
+  get '/signout', to: 'social_networks#destroyTwitterSession', as: 'signout'
+  # Route to enter manualy parameters to send a new post {tweet: {message: message, media: media}}
+  get '/social/newPost', to: 'social_networks#newPost'
+  # Route to post on facebook and twitter with the right parameters
+  post '/social/publish', to: 'social_networks#publish'
 
-  
-
-
-    
-
-  
 
 end

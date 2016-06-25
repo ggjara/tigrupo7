@@ -1,71 +1,62 @@
 class SocialNetworksController < ApplicationController
+  protect_from_forgery with: :exception
+  helper_method :current_twitter_user
+  skip_before_action :verify_authenticity_token
   
-
-
-
-
   def index
   end
 
+# Method used to enter manually parameters {tweet: {message: message,media: media}}
+  def newPost
+  end
 
-  
+# Method which combines post on facebook page and twitter account
+  def publish
+    page_wall_post
+    createTweet
+  end
 
-
-
-
-#   def signinfacebook
+# Method to post on facebook
+  def page_wall_post
+    tweet = params[:tweet]
+    title = tweet['message']
+    page_link = tweet['media']
+    # I'm not sure about what facebook means with "page_link" and "image_url". 
+    # To post an image of the internet thanks to its complete URL, page_link works and not image_url.
+    # To switch :
+                                # image_url = tweet['media']
     
-#     # @callback_url = SITE_URL+"facebookMethod/"
-#     # session['oauth'] = Koala::Facebook::OAuth.new(FACEBOOK_ID, FACEBOOK_SECRET, @callback_url)
-#     # @url=session['oauth'].url_for_oauth_code(:permissions => 'manage_pages, publish_stream')
-#     # redirect_to @url
+    #Picking the graph api object from koala gem
+    @graph = Koala::Facebook::API.new(ACCESS_TOKEN)
+    @graph.put_wall_post(title, {
+           link: page_link      #picture: image_url
+       })
+  end
 
-#         session[:oauth] = Koala::Facebook::OAuth.new('1210610395625557', 'a292334b1682c6456f556214f8a4fe43', 'http://localhost:3000/facebookMethod')
-#         @auth_url =  session[:oauth].url_for_oauth_code(:permissions=>"read_stream publish_stream")  
- 
-#         redirect_to @auth_url
-    
-#   end
+# Method to create a twitter session (user = Tigrupo7Com)
+  def createTwitterSession
+    user = TwitterUser.from_omniauth(env["omniauth.auth"])
+    session[:user_id] = user.id
+    redirect_to '/social'
+  end
 
-# def facebookMethod
+#Method to destroy a twitter session
+  def destroyTwitterSession
+    session[:user_id] = nil
+    redirect_to '/social'
+  end
 
-# @access_token_info = session['oauth'].get_access_token_info(params[:code])
+# Method to post on twitter account logged in
+  def createTweet
+    current_twitter_user.tweet(twitter_params)
+  end
 
-# user = Koala::Facebook::API.new(@access_token_info['access_token'])
+   def twitter_params
+     params.require(:tweet).permit(:message, :media)
+   end
 
-# page_token = user.get_page_access_token('1224405857569745')['access_token']
-# page = Koala::Facebook::API.new(page_token)
-# koala_page.put_connections(page_id, 'feed', :message => message, :picture => picture_url, :link => link_url)
-
-# end
-
-
-
-
-
-
-  # def postPromotion
-  #   hash = JSON.parse(:promocion)
-  #   if (hash["publicar"])
-  #     message ="PROMOCION de "+ hash["inicio"] + " hasta " + hash["fin"] " sobre " + Product.find_by(:sku => hash["sku"]).name + " - PRECIO :  " + hash["precio"] + " - CODIGO : " + hash["codigo"]
-  #     case hash["sku"]
-  #       when 1
-  #         media="carne-di-pollo-eurocarne.jpg"
-  #       when 10
-  #         media="marraqueta.jpg"
-  #       when 23
-  #         media="harina.jpg"
-  #       when 39
-  #         media="uva.jpg"
-  #       else
-  #         media=""
-  #     end
-  #     tweet = {message: message, media: media}
-  #     generateParam(tweet, tweet)
-  #     createTweet
-  #   end
-  # end
-
-
+  def current_twitter_user
+    @current_twitter_user ||= TwitterUser.find(session[:user_id]) if session[:user_id]
+  end
 
 end

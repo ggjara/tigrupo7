@@ -76,4 +76,11 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+
+
+  #Twitters configurations
+  config.twitter_key = "8Cjg53yivB3vv3Odw2X85dDfs"
+  config.twitter_secret = "fYTDXPC3iIN86sdvzZpYXBj6tvuGKvQTjHUcQR9wd9d14qDR6x"
+  
 end
