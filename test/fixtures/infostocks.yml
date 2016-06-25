@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  fecha: 2016-06-16 20:11:57
+  cantidadTotal: 1
+  cantidadDisponible: 1
+
+two:
+  fecha: 2016-06-16 20:11:57
+  cantidadTotal: 1
+  cantidadDisponible: 1
