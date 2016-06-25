@@ -15,7 +15,7 @@ def threadReceive
   conn = Bunny.new('amqp://eoddqask:UZDMkggws1re_EjcJet7iv8Sm56KiifC@jellyfish.rmq.cloudamqp.com/eoddqask')
   conn.start # start a communication session with the amqp server
   ch = conn.create_channel
-  q = ch.queue("ofertas", :durable => true) # declare a queue
+  q = ch.queue("ofertas", :auto_delete => true) # declare a queue
 
   #inicia thread que quedara ecuchando mensajes
   t1 = Thread.new do
@@ -23,11 +23,24 @@ def threadReceive
     puts " [*] Waiting for messages. To exit press CTRL+C"
     q.subscribe(:block => true) do |delivery_info, properties, body|
 
-      #Aca debe gatillar posteo en fb y tweeter
-      #Mensaje esta en body
+      #Aca debe gatillar posteo en fb y tweeters
+      msg = JSON.parse(body)
 
-      puts " [x] Received #{body}"
-      msg = body
+      sku = msg['sku']
+      precio = msg['precio']
+      inicio = msg['inicio']
+      fin = msg['fin']
+      codigo = msg['codigo']
+      publicar = msg['publicar']
+
+
+      puts sku
+      puts precio
+      puts inicio
+      puts fin
+      puts codigo
+      puts publicar
+
 
     end
     rescue Interrupt => _
@@ -42,10 +55,10 @@ end
 
 #metodo que recibe mensaje un mensaje cada vez que se llama
 def webHookReceive
-  conn = Bunny.new('amqp://eoddqask:UZDMkggws1re_EjcJet7iv8Sm56KiifC@jellyfish.rmq.cloudamqp.com/eoddqask')
+  conn = Bunny.new('amqp://eoddqask:UZDMkggws1re_EjcJet7iv8Sm56KiifC@jellyfish.rmq.cloudamqp.com/eoddqaskcd')
   conn.start # start a communication session with the amqp server
   ch = conn.create_channel
-  q = ch.queue("ofertas", :durable => true) # declare a queue
+  q = ch.queue("ofertas") # declare a queue
 
   delivery_info, properties, payload = q.pop
   msg = payload
@@ -55,6 +68,7 @@ def webHookReceive
 end
 
 
+#metodo para hacer pruebas
 def send
 
   b = Bunny.new('amqp://eoddqask:UZDMkggws1re_EjcJet7iv8Sm56KiifC@jellyfish.rmq.cloudamqp.com/eoddqask')
@@ -62,7 +76,7 @@ def send
   existe = b.queue_exists?("ofertas")
   puts existe
   ch = b.create_channel
-  q = ch.queue("ofertas", :durable => true) # declare a queue
+  q = ch.queue("ofertas") # declare a queue
 
   # declare default direct exchange which is bound to all queues
   e = ch.exchange("")

@@ -7,6 +7,7 @@ class QueueController < ApplicationController
     render json: "hola"
   end
 
+  #para pruebas
   def put
     render json: QueueRecibir.new.send
   end
@@ -14,5 +15,5 @@ class QueueController < ApplicationController
   def get
     render json: QueueRecibir.new.receive
   end
-  
+
 end
