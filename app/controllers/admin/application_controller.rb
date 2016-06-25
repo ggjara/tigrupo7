@@ -117,4 +117,6 @@ def ocs
   render json: ocs
 end
 
+def agregarInfoDiaria
+  Bodega.agregarInfoDiaria
 end

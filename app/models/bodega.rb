@@ -12,6 +12,29 @@ def self.iniciarBodega(desdeCero)
 	end
 end
 
+def self.agregarInfoDiaria
+  #Agregar Saldo
+  if (Infosaldo.where(fecha: Date.today.to_time(:utc)).count==0)
+    infosaldo = Infosaldo.create(fecha: Date.today, cantidad: Bodega.first.saldo)
+    infosaldo.save!
+  end
+
+  #Agregar Stocks
+  if (Infostock.where(fecha: Date.today.to_time(:utc)).count==0)
+    infostock1 = Infostock.create(sku: '1', fecha: Date.today, cantidadTotal: Bodega.checkStock('1'), cantidadDisponible: Bodega.checkStockTotal('1'))
+    infostock1.save!
+    infostock10 = Infostock.create(sku: '10', fecha: Date.today, cantidadTotal: Bodega.checkStock('10'), cantidadDisponible: Bodega.checkStockTotal('10'))
+    infostock10.save!
+    infostock23 = Infostock.create(sku: '23', fecha: Date.today, cantidadTotal: Bodega.checkStock('23'), cantidadDisponible: Bodega.checkStockTotal('23'))
+    infostock23.save!
+    infostock39 = Infostock.create(sku: '39', fecha: Date.today, cantidadTotal: Bodega.checkStock('39'), cantidadDisponible: Bodega.checkStockTotal('39'))
+    infostock39.save!
+  end
+end
+
+
+
+
 def self.checkStockTotal(sku)
 	return checkStock(sku) - checkStockGuardado(sku)
 end
