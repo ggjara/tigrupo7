@@ -1,0 +1,74 @@
+<% content_for :header do %>
+    <h1>Boleta </h1>
+<%end%>
+
+<% content_for :content do %>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="box box-info">
+          <div class="row">
+            <div class="box-body col-xs-12 col-sm-offset-3 col-sm-6">
+              <table class="table table-hover search-table">
+                <tbody>
+                <tr>
+                  <td>ID</td>
+                  <td><%= @bill._id %></td>
+                </tr>
+                <tr>
+                  <td>Proveedor</td>
+                  <td><%= @bill.proveedor %></td>
+                </tr>
+                <tr>
+                  <td>Cliente</td>
+                  <td><%= @bill.cliente %></td>
+                </tr>
+                <tr>
+                  <td>Valor Bruto</td>
+                  <td>$ <%= @bill.valorBruto %></td>
+                </tr>
+                <tr>
+                  <td>IVA</td>
+                  <td>$ <%= @bill.iva %></td>
+                </tr>
+                <tr>
+                  <td>Valor Total</td>
+                  <td>$ <%= @bill.valorTotal %></td>
+                </tr>
+                <tr>
+                  <td>Estado Pago</td>
+                  <td><%= @bill.estadoPago %></td>
+                </tr>
+                <tr>
+                  <td>Dirección</td>
+                  <td><%= @bill.direccion %></td>
+                </tr>
+                <tr>
+                  <td>sku</td>
+                  <td><%= @bill.sku %></td>
+                </tr>
+                <tr>
+                  <td>cantidad</td>
+                  <td><%= @bill.cantidad %></td>
+                </tr>
+                <tr>
+                  <td>despachada</td>
+                  <td><%= @bill.despachada %></td>
+                </tr>
+                <tr>
+                  <td>Fecha creación</td>
+                  <td><%= @bill.fechaCreacion.strftime("%d-%m-%Y %H:%M:%S") %></td>
+                </tr>
+                <tr>
+                  <td>Fecha actualización</td>
+                  <td><%= @bill.fechaUpdate.strftime("%d-%m-%Y %H:%M:%S") %></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+<%end%>

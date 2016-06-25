@@ -1,16 +1,30 @@
 Rails.application.routes.draw do
- resources :facturas
- 
+
+  get 'boletas/:id' => 'bills#show', via: :get
+
+  get 'boletas' => 'bills#index', via: :get
+
+
+  # This line mounts Spree's routes at the root of your application.
+  # This means, any requests to URLs such as /products, will go to Spree::ProductsController.
+  # If you would like to change where this engine is mounted, simply change the :at option to something different.
+  #
+  # We ask that you don't use the :as option here, as Spree relies on it being the default of "spree"
+  mount Spree::Core::Engine, at: '/spree'
+
+  match '/spree/confirmarCompra/:id' => 'spree/bills#show', via: :get
+   match '/spree/errorCompra/' => 'spree/bills#error', via: :get
+
   get 'stocks/show'
- 
+
   get 'stocks/index'
- 
+
    get 'bodegas/initialize'
- 
+
    get 'bodegas/consultarInfo'
- 
+
    get 'bodegas/show'
-   
+
  get '/documentacionAPI', to: 'documentos#index'
   get 'flujos', to: 'documentos#flujos'
 
@@ -33,6 +47,7 @@ Rails.application.routes.draw do
   get 'bodegas/consultar/:id' => 'bodegas#consultarProducto'
 
   resources :pizzas
+  resources :facturas
 
   root 'application#index'
 
@@ -44,8 +59,6 @@ Rails.application.routes.draw do
     match '/facturas/recibir/:id'=> 'application#recibirFactura', via: :get
     match '/despachos/recibir/:id'=> 'application#recibirDespacho', via: :get
     match '/pagos/recibir/:idtrx'=> 'application#recibirTrx', via: :get
-
-
 
   end
 
@@ -63,8 +76,13 @@ Rails.application.routes.draw do
     match '/facturas' => 'application#facturas', via: :get
     match '/clientes/iniciar' => 'application#clientesIniciar', via: :get
 
-    
-
   end
+
+
+   #metodo para hacer pruebas
+   get 'queue/send', to: 'queue#put'
+   #se debe llamar a recieve para que quede corriendo el thread
+   get 'queue/receive', to: 'queue#get'
+
 
 end
