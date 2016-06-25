@@ -1130,17 +1130,6 @@ ActiveRecord::Schema.define(version: 20160615060930) do
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
   end
-
-  create_table "twitter_users", force: :cascade do |t|
-    t.string   "provider"
-    t.string   "uid"
-    t.string   "name"
-    t.string   "oauth_token"
-    t.string   "oauth_secret"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-  end
-
  
 
 end

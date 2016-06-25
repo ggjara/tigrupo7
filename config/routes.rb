@@ -91,12 +91,6 @@ Rails.application.routes.draw do
 
   # Route to authorize twitter app - only need to do it once (user account = Tigrupo7Com)
   get '/social', to: 'social_networks#index'
-  # Twitter connection routes
-  get '/auth/:provider/callback', to: 'social_networks#createTwitterSession'
-  get '/auth/failure', to: redirect('/social')
-  get '/signout', to: 'social_networks#destroyTwitterSession', as: 'signout'
-  # Route to enter manualy parameters to send a new post {tweet: {message: message, media: media}}
-  get '/social/newPost', to: 'social_networks#newPost'
   # Route to post on facebook and twitter with the right parameters
   post '/social/publish', to: 'social_networks#publish'
 

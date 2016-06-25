@@ -42,8 +42,14 @@ Rails.application.configure do
 
 
 
-  #Twitters configurations
+  # Twitter configurations
   config.twitter_key = "8Cjg53yivB3vv3Odw2X85dDfs"
   config.twitter_secret = "fYTDXPC3iIN86sdvzZpYXBj6tvuGKvQTjHUcQR9wd9d14qDR6x"
+  config.access_token = "742850285714952192-ON7KA0QAPXNakx9PHhYirYDIUYP2zlk"
+  config.access_token_secret = "Dr2sVHNQt1ZgDZ3yljxGcWvkz64mKZleamKrZ9BD2EnQN"
+
+  # Facebook configuration
+  config.facebook_access_token = 'EAABotInREWUBAIDlrcHt9SrTVo5ELhMKB5i7Q1OaRrBZBah6HVNZAEaYecZCgHYSYiy2JoHem3w0YBTyP3VCG6ebsMfrZASrRr2k7rT4PId470xdzuRFfYT3dUvFcHftHfIjUtE4UZCZBLN10Iml1Uetvf7yO8huDubcT87jZAZCoQZDZD'
+
 
 end

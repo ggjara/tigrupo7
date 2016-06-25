@@ -4,19 +4,9 @@
 
 <% content_for :content do %>
 
-	<div>
-      <% if current_twitter_user %>
-        Signed in Twitter as <strong><%= current_twitter_user.name %></strong>!
-        <%= link_to "Sign out", signout_path, id: "sign_out" %>
-      <% else %>
-        <%= link_to "Sign in with Twitter", "/auth/twitter", id: "sign_in" %>
-      <% end %>
-    </div>
-
-    <div>
 		<h1>Success!</h1>
 		<p>Your post has been published on twitter and facebook!</p>
 		<%= link_to "Would you like to send another?", "/social/newPost" %>
-	</div>
+	
 
 <%end%>
