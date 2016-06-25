@@ -57,6 +57,7 @@ gem 'net-sftp'
 gem 'bootstrap-sass', '~> 3.3'
 gem 'autoprefixer-rails'
 gem 'font-awesome-sass'
+gem 'chart-js-rails'
 
 gem "figaro"
 
