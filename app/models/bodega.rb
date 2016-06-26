@@ -4,7 +4,7 @@ class Bodega < ActiveRecord::Base
 
 
 def self.probando
-	puts "hola"
+	Prize.create(sku:'289')
 end
 def self.iniciarBodega(desdeCero)
 	ib = IniciarBodega.new('grupo7')
