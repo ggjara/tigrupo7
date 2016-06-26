@@ -34,6 +34,9 @@ def threadReceive
       publicar = msg['publicar']
 
 
+      Bodega.publish({message: "Atención! Nueva promoción del producto: "+sku+". Su nuevo precio es: "+precio+". 
+        Esta promoción será desde: "+inicio+" hasta: "+fin+". CODIGO: "+codigo, media: "http://i.vivirsanos.com/2014/10/propiedades-del-pollo.jpg"})
+
       puts sku
       puts precio
       puts inicio

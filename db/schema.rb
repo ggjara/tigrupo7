@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160626190901) do
+ActiveRecord::Schema.define(version: 20160626202245) do
 
   create_table "almacenes", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -24,6 +24,16 @@ ActiveRecord::Schema.define(version: 20160626190901) do
     t.integer  "totalSpace"
     t.integer  "usedSpace"
     t.integer  "bodega_id"
+  end
+
+  create_table "app_promotions", force: :cascade do |t|
+    t.string   "sku"
+    t.integer  "precio"
+    t.datetime "fechaInicio"
+    t.datetime "fechaTermino"
+    t.string   "codigo"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
   create_table "bills", force: :cascade do |t|
@@ -170,6 +180,16 @@ ActiveRecord::Schema.define(version: 20160626190901) do
     t.datetime "updated_at", null: false
     t.integer  "almacen_id"
     t.boolean  "despachado"
+  end
+
+  create_table "promotions", force: :cascade do |t|
+    t.string   "sku"
+    t.integer  "precio"
+    t.datetime "fechaInicio"
+    t.datetime "fechaTermino"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.string   "codigo"
   end
 
   create_table "spree_addresses", force: :cascade do |t|
