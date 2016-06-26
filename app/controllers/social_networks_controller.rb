@@ -27,9 +27,7 @@ class SocialNetworksController < ApplicationController
     @graph.put_wall_post(title, {
            link: url      #picture: image_url
        })
-
-
-  end
+end
 
 
 end
