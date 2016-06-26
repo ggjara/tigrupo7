@@ -56,6 +56,7 @@ GEM
     acts_as_list (0.7.2)
       activerecord (>= 3.0)
     addressable (2.4.0)
+    amq-protocol (2.0.1)
     arel (6.0.3)
     autoprefixer-rails (6.3.6.1)
       execjs
@@ -69,6 +70,8 @@ GEM
       sass (>= 3.3.4)
     buftok (0.2.0)
     builder (3.2.2)
+    bunny (2.4.0)
+      amq-protocol (>= 2.0.1)
     byebug (9.0.4)
     camertron-eprun (1.1.0)
     cancancan (1.10.1)
@@ -395,6 +398,7 @@ DEPENDENCIES
   active_model_serializers
   autoprefixer-rails
   bootstrap-sass (~> 3.3)
+  bunny
   byebug
   capistrano (~> 3.4.0)
   capistrano-bundler (~> 1.1.4)
@@ -429,4 +433,4 @@ DEPENDENCIES
   web-console (~> 2.0)
 
 BUNDLED WITH
-   1.11.2
+   1.12.3
