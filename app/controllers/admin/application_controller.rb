@@ -103,7 +103,6 @@ def almacenes
 end
 
 def facturas
-  almacenes = 
   render json: Factura.all
 end
 
@@ -115,6 +114,10 @@ end
 def ocs
   ocs = Oc.all
   render json: ocs
+end
+
+def agregarInfoDiaria
+  Bodega.agregarInfoDiaria
 end
 
 end

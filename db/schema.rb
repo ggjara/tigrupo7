@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160530154718) do
+ActiveRecord::Schema.define(version: 20160626190901) do
 
   create_table "almacenes", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -98,6 +98,22 @@ ActiveRecord::Schema.define(version: 20160530154718) do
   add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id"
   add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
 
+  create_table "infosaldos", force: :cascade do |t|
+    t.datetime "fecha"
+    t.integer  "cantidad"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "infostocks", force: :cascade do |t|
+    t.datetime "fecha"
+    t.integer  "cantidadTotal"
+    t.integer  "cantidadDisponible"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.string   "sku"
+  end
+
   create_table "ocs", force: :cascade do |t|
     t.string   "_id"
     t.string   "cliente"
@@ -131,6 +147,13 @@ ActiveRecord::Schema.define(version: 20160530154718) do
   end
 
   create_table "pizzas", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "prizes", force: :cascade do |t|
+    t.string   "sku"
+    t.integer  "prize"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -1129,6 +1152,16 @@ ActiveRecord::Schema.define(version: 20160530154718) do
     t.float    "monto"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+  end
+
+  create_table "twitter_users", force: :cascade do |t|
+    t.string   "provider"
+    t.string   "uid"
+    t.string   "name"
+    t.string   "oauth_token"
+    t.string   "oauth_secret"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
 end

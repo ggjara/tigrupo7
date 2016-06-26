@@ -1,0 +1,338 @@
+<% content_for :header do %>
+    <h1>Business Intelligence: Financieros </h1>
+<%end%>
+
+<% content_for :content do %>
+    <div class="row">
+      <div class="box col-md-10 col-md-offset-1">
+        <div class="box-header with-border">
+          <h3 class="box-title">Saldo diario</h3>
+          <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+          </div>
+        </div>
+        <div class="box-body col-md-12">
+          <canvas id="lineChart" style="height:250px"></canvas>
+        </div><!-- /.box-body -->
+      </div><!-- /.box -->
+      <div class="box col-md-6">
+        <div class="box-header with-border">
+          <h3 class="box-title">Facturación diaria (num)</h3>
+
+          <div class="box-tools pull-right">
+            <select class="form-control" id="tipoFactura">
+              <option id="enviadas">Emitidas</option>
+              <option id="recibidas">Recibidas</option>
+            </select>
+          </div>
+        </div>
+        <div class="box-body col-md-12">
+          <canvas id="barChart" style="height:250px"></canvas>
+        </div><!-- /.box-body -->
+      </div><!-- /.box -->
+      <div class="box col-md-6">
+        <div class="box-header with-border">
+          <h3 class="box-title">Facturación diaria ($)</h3>
+          <div class="box-tools pull-right">
+            <select class="form-control" id="tipoFactura2">
+              <option id="enviadas">Emitidas</option>
+              <option id="recibidas">Recibidas</option>
+            </select>
+          </div>
+        </div>
+        <div class="box-body col-md-12">
+          <canvas id="barChart2" style="height:250px"></canvas>
+        </div><!-- /.box-body -->
+      </div><!-- /.box -->
+    </div>
+
+    <script type="text/javascript">
+      <% facturas = Factura.all.where('created_at > ?', 7.days.ago) %>
+      <% boletas = Bill.all.where('created_at > ?', 7.days.ago) %>
+      <% facturasFTP = facturas.where(cliente: "internacional") %>
+      <% facturasB2Be = facturas.where.not(cliente: "internacional")%>
+      <% facturasB2Be = facturasB2Be.where.not(cliente: Cliente.find_by(grupo: 7)._idGrupo) %>
+      <% facturasB2Br = facturas.where.not(cliente: "internacional", proveedor: Cliente.find_by(grupo: 7)._idGrupo) %>
+
+      var lineChart;
+      var lineChartCanvas = document.getElementById("lineChart");
+      var barChart;
+      var dataB; //num emitidas
+      var dataBr; //num recibidas
+      var barChart2;
+      var dataB2; //monto emitidas
+      var dataB2r; //monto recibidas
+
+      $(function () {
+        var data = {
+          labels: [
+            <% Infosaldo.order(:fecha).last(7).each do |saldo| %>
+            "<%= saldo.fecha.strftime("%d-%m-%Y") %>",
+            <% end %>
+
+          ],
+          datasets: [
+            {
+              label: "saldo en $CLP",
+              data: [
+                <% Infosaldo.order(:fecha).last(7).each do |saldo| %>
+                  <%= saldo.cantidad %>,
+                <% end %>
+              ],
+              backgroundColor: "#6CDC77",
+              hoverBackgroundColor: "#6CDC77",
+              hoverBorderColor: "#6CDC77"
+
+            }
+          ]
+        };
+        lineChart = new Chart(lineChartCanvas, {
+          type: 'line',
+          data: data
+        });
+
+        var barChartCanvas = document.getElementById("barChart");
+
+
+        dataB = {
+          labels: [
+            "<%= (Date.today() - 6).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 5).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 4).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 3).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 2).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 1).strftime("%d-%m-%Y") %>",
+            "<%= Date.today().strftime("%d-%m-%Y") %>"
+          ],
+          datasets: [
+            {
+              label: "FTP",
+              data: [
+                <%= facturasFTP.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 6).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 6).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 6).strftime("%Y")).count %>,
+                <%= facturasFTP.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 5).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 5).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 5).strftime("%Y")).count %>,
+                <%= facturasFTP.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 4).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 4).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 4).strftime("%Y")).count %>,
+                <%= facturasFTP.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 3).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 3).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 3).strftime("%Y")).count %>,
+                <%= facturasFTP.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 2).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 2).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 2).strftime("%Y")).count %>,
+                <%= facturasFTP.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 1).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 1).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 1).strftime("%Y")).count %>,
+                <%= facturasFTP.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()).strftime("%Y")).count %>
+              ],
+              backgroundColor: "#FF6384",
+              hoverBackgroundColor: "#FF6384",
+              hoverBorderColor: "#FF6384"
+
+            },
+            {
+              label: "B2B",
+              data: [
+                <%= facturasB2Be.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 6).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 6).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 6).strftime("%Y")).count %>,
+                <%= facturasB2Be.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 5).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 5).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 5).strftime("%Y")).count %>,
+                <%= facturasB2Be.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 4).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 4).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 4).strftime("%Y")).count %>,
+                <%= facturasB2Be.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 3).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 3).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 3).strftime("%Y")).count %>,
+                <%= facturasB2Be.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 2).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 2).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 2).strftime("%Y")).count %>,
+                <%= facturasB2Be.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 1).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 1).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 1).strftime("%Y")).count %>,
+                <%= facturasB2Be.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()).strftime("%Y")).count %>
+              ],
+              backgroundColor: "#36A2EB",
+              hoverBackgroundColor: "#36A2EB",
+              hoverBorderColor: "#36A2EB"
+            },
+            {
+              label: "B2C",
+              data: [
+                <%= boletas.where("cast(strftime('%d', fechaCreacion) as int) = ?", (Date.today()- 6).strftime("%d")).where("cast(strftime('%m', fechaCreacion) as int) = ?", (Date.today()- 6).strftime("%m")).where("cast(strftime('%Y', fechaCreacion) as int) = ?", (Date.today()- 6).strftime("%Y")).count %>,
+                <%= boletas.where("cast(strftime('%d', fechaCreacion) as int) = ?", (Date.today()- 5).strftime("%d")).where("cast(strftime('%m', fechaCreacion) as int) = ?", (Date.today()- 5).strftime("%m")).where("cast(strftime('%Y', fechaCreacion) as int) = ?", (Date.today()- 5).strftime("%Y")).count %>,
+                <%= boletas.where("cast(strftime('%d', fechaCreacion) as int) = ?", (Date.today()- 4).strftime("%d")).where("cast(strftime('%m', fechaCreacion) as int) = ?", (Date.today()- 4).strftime("%m")).where("cast(strftime('%Y', fechaCreacion) as int) = ?", (Date.today()- 4).strftime("%Y")).count %>,
+                <%= boletas.where("cast(strftime('%d', fechaCreacion) as int) = ?", (Date.today()- 3).strftime("%d")).where("cast(strftime('%m', fechaCreacion) as int) = ?", (Date.today()- 3).strftime("%m")).where("cast(strftime('%Y', fechaCreacion) as int) = ?", (Date.today()- 3).strftime("%Y")).count %>,
+                <%= boletas.where("cast(strftime('%d', fechaCreacion) as int) = ?", (Date.today()- 2).strftime("%d")).where("cast(strftime('%m', fechaCreacion) as int) = ?", (Date.today()- 2).strftime("%m")).where("cast(strftime('%Y', fechaCreacion) as int) = ?", (Date.today()- 2).strftime("%Y")).count %>,
+                <%= boletas.where("cast(strftime('%d', fechaCreacion) as int) = ?", (Date.today()- 1).strftime("%d")).where("cast(strftime('%m', fechaCreacion) as int) = ?", (Date.today()- 1).strftime("%m")).where("cast(strftime('%Y', fechaCreacion) as int) = ?", (Date.today()- 1).strftime("%Y")).count %>,
+                <%= boletas.where("cast(strftime('%d', fechaCreacion) as int) = ?", (Date.today()).strftime("%d")).where("cast(strftime('%m', fechaCreacion) as int) = ?", (Date.today()).strftime("%m")).where("cast(strftime('%Y', fechaCreacion) as int) = ?", (Date.today()).strftime("%Y")).count %>
+              ],
+              backgroundColor: "#FFCE56",
+              hoverBackgroundColor: "#FFCE56",
+              hoverBorderColor: "#FFCE56"
+            }],
+
+        };
+        dataBr = {
+          labels: [
+            "<%= (Date.today() - 6).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 5).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 4).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 3).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 2).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 1).strftime("%d-%m-%Y") %>",
+            "<%= Date.today().strftime("%d-%m-%Y") %>"
+          ],
+          datasets: [
+            {
+              label: "FTP",
+              data: [
+                0,0,0,0,0,0,0
+              ]
+            },
+            {
+              label: "B2B",
+              data: [
+                <%= facturasB2Br.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 6).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 6).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 6).strftime("%Y")).count %>,
+                <%= facturasB2Br.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 5).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 5).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 5).strftime("%Y")).count %>,
+                <%= facturasB2Br.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 4).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 4).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 4).strftime("%Y")).count %>,
+                <%= facturasB2Br.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 3).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 3).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 3).strftime("%Y")).count %>,
+                <%= facturasB2Br.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 2).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 2).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 2).strftime("%Y")).count %>,
+                <%= facturasB2Br.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 1).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 1).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 1).strftime("%Y")).count %>,
+                <%= facturasB2Br.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()).strftime("%Y")).count %>
+              ],
+              backgroundColor: "#36A2EB",
+              hoverBackgroundColor: "#36A2EB",
+              hoverBorderColor: "#36A2EB"
+            },
+            {
+              label: "B2C",
+              data: [
+                0,0,0,0,0,0,0
+              ]
+            }],
+
+        };
+        barChart = new Chart (barChartCanvas, {
+          type: 'bar',
+          data: dataB
+        });
+
+        var barChartCanvas2 = document.getElementById("barChart2");
+
+        dataB2 = {
+          labels: [
+            "<%= (Date.today() - 6).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 5).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 4).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 3).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 2).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 1).strftime("%d-%m-%Y") %>",
+            "<%= Date.today().strftime("%d-%m-%Y") %>"
+          ],
+          datasets: [
+            {
+              label: "FTP",
+              data: [
+                <%= facturasFTP.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 6).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 6).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 6).strftime("%Y")).sum(:valorTotal) %>,
+                <%= facturasFTP.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 5).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 5).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 5).strftime("%Y")).sum(:valorTotal) %>,
+                <%= facturasFTP.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 4).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 4).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 4).strftime("%Y")).sum(:valorTotal) %>,
+                <%= facturasFTP.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 3).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 3).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 3).strftime("%Y")).sum(:valorTotal) %>,
+                <%= facturasFTP.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 2).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 2).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 2).strftime("%Y")).sum(:valorTotal) %>,
+                <%= facturasFTP.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 1).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 1).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 1).strftime("%Y")).sum(:valorTotal) %>,
+                <%= facturasFTP.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()).strftime("%Y")).sum(:valorTotal) %>
+              ],
+              backgroundColor: "#FF6384",
+              hoverBackgroundColor: "#FF6384",
+              hoverBorderColor: "#FF6384"
+
+            },
+            {
+              label: "B2B",
+              data: [
+                <%= facturasB2Be.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 6).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 6).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 6).strftime("%Y")).sum(:valorTotal) %>,
+                <%= facturasB2Be.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 5).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 5).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 5).strftime("%Y")).sum(:valorTotal) %>,
+                <%= facturasB2Be.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 4).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 4).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 4).strftime("%Y")).sum(:valorTotal) %>,
+                <%= facturasB2Be.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 3).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 3).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 3).strftime("%Y")).sum(:valorTotal) %>,
+                <%= facturasB2Be.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 2).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 2).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 2).strftime("%Y")).sum(:valorTotal) %>,
+                <%= facturasB2Be.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 1).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 1).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 1).strftime("%Y")).sum(:valorTotal) %>,
+                <%= facturasB2Be.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()).strftime("%Y")).sum(:valorTotal) %>
+              ],
+              backgroundColor: "#36A2EB",
+              hoverBackgroundColor: "#36A2EB",
+              hoverBorderColor: "#36A2EB"
+            },
+            {
+              label: "B2C",
+              data: [
+                <%= boletas.where("cast(strftime('%d', fechaCreacion) as int) = ?", (Date.today()- 6).strftime("%d")).where("cast(strftime('%m', fechaCreacion) as int) = ?", (Date.today()- 6).strftime("%m")).where("cast(strftime('%Y', fechaCreacion) as int) = ?", (Date.today()- 6).strftime("%Y")).sum(:valorTotal) %>,
+                <%= boletas.where("cast(strftime('%d', fechaCreacion) as int) = ?", (Date.today()- 5).strftime("%d")).where("cast(strftime('%m', fechaCreacion) as int) = ?", (Date.today()- 5).strftime("%m")).where("cast(strftime('%Y', fechaCreacion) as int) = ?", (Date.today()- 5).strftime("%Y")).sum(:valorTotal) %>,
+                <%= boletas.where("cast(strftime('%d', fechaCreacion) as int) = ?", (Date.today()- 4).strftime("%d")).where("cast(strftime('%m', fechaCreacion) as int) = ?", (Date.today()- 4).strftime("%m")).where("cast(strftime('%Y', fechaCreacion) as int) = ?", (Date.today()- 4).strftime("%Y")).sum(:valorTotal) %>,
+                <%= boletas.where("cast(strftime('%d', fechaCreacion) as int) = ?", (Date.today()- 3).strftime("%d")).where("cast(strftime('%m', fechaCreacion) as int) = ?", (Date.today()- 3).strftime("%m")).where("cast(strftime('%Y', fechaCreacion) as int) = ?", (Date.today()- 3).strftime("%Y")).sum(:valorTotal) %>,
+                <%= boletas.where("cast(strftime('%d', fechaCreacion) as int) = ?", (Date.today()- 2).strftime("%d")).where("cast(strftime('%m', fechaCreacion) as int) = ?", (Date.today()- 2).strftime("%m")).where("cast(strftime('%Y', fechaCreacion) as int) = ?", (Date.today()- 2).strftime("%Y")).sum(:valorTotal) %>,
+                <%= boletas.where("cast(strftime('%d', fechaCreacion) as int) = ?", (Date.today()- 1).strftime("%d")).where("cast(strftime('%m', fechaCreacion) as int) = ?", (Date.today()- 1).strftime("%m")).where("cast(strftime('%Y', fechaCreacion) as int) = ?", (Date.today()- 1).strftime("%Y")).sum(:valorTotal) %>,
+                <%= boletas.where("cast(strftime('%d', fechaCreacion) as int) = ?", (Date.today()).strftime("%d")).where("cast(strftime('%m', fechaCreacion) as int) = ?", (Date.today()).strftime("%m")).where("cast(strftime('%Y', fechaCreacion) as int) = ?", (Date.today()).strftime("%Y")).sum(:valorTotal) %>
+              ],
+              backgroundColor: "#FFCE56",
+              hoverBackgroundColor: "#FFCE56",
+              hoverBorderColor: "#FFCE56"
+            }],
+
+        };
+        dataB2r = {
+          labels: [
+            "<%= (Date.today() - 6).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 5).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 4).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 3).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 2).strftime("%d-%m-%Y") %>",
+            "<%= (Date.today() - 1).strftime("%d-%m-%Y") %>",
+            "<%= Date.today().strftime("%d-%m-%Y") %>"
+          ],
+          datasets: [
+            {
+              label: "FTP",
+              data: [
+                0,0,0,0,0,0,0
+              ]
+            },
+            {
+              label: "B2B",
+              data: [
+                <%= facturasB2Br.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 6).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 6).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 6).strftime("%Y")).sum(:valorTotal) %>,
+                <%= facturasB2Br.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 5).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 5).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 5).strftime("%Y")).sum(:valorTotal) %>,
+                <%= facturasB2Br.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 4).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 4).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 4).strftime("%Y")).sum(:valorTotal) %>,
+                <%= facturasB2Br.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 3).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 3).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 3).strftime("%Y")).sum(:valorTotal) %>,
+                <%= facturasB2Br.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 2).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 2).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 2).strftime("%Y")).sum(:valorTotal) %>,
+                <%= facturasB2Br.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 1).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 1).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 1).strftime("%Y")).sum(:valorTotal) %>,
+                <%= facturasB2Br.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()).strftime("%Y")).sum(:valorTotal) %>
+              ],
+              backgroundColor: "#36A2EB",
+              hoverBackgroundColor: "#36A2EB",
+              hoverBorderColor: "#36A2EB"
+            },
+            {
+              label: "B2C",
+              data: [
+                0,0,0,0,0,0,0
+              ]
+            }],
+
+        };
+
+        barChart2 = new Chart (barChartCanvas2, {
+          type: 'bar',
+          data: dataB2
+        });
+
+      });
+      $('#tipoFactura').on('change', function() {
+        tipo = $(this).val();
+        if (tipo == "Emitidas"){
+          barChart.config.data = dataB;
+          barChart.update();
+        }
+        else { //Recibidas
+          barChart.config.data = dataBr;
+          barChart.update();
+        }
+      });
+      $('#tipoFactura2').on('change', function() {
+        tipo = $(this).val();
+        if (tipo == "Emitidas"){
+          barChart2.config.data = dataB2;
+          barChart2.update();
+        }
+        else { //Recibidas
+          barChart2.config.data = dataB2r;
+          barChart2.update();
+        }
+      });
+
+      $("#lineChart").click(function(e) {
+        var activePoints = lineChart.getElementAtEvent(e);
+        var index = activePoints[0]["_index"];
+        window.location.href = 'bi_financieros/transacciones/' + activePoints[0]["_chart"]["config"]["data"]["labels"][index];
+      });
+    </script>
+<% end %>

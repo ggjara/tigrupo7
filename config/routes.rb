@@ -1,5 +1,13 @@
 Rails.application.routes.draw do
 
+
+  get 'bi_financieros' => 'bi_financieros#index'
+
+  get 'bi_financieros/transacciones/:id' => 'bi_financieros#show'
+
+  get 'bi_logistica' => 'bi_logistica#index'
+
+
   get 'boletas/:id' => 'bills#show', via: :get
 
   get 'boletas' => 'bills#index', via: :get
@@ -83,6 +91,14 @@ Rails.application.routes.draw do
    get 'queue/send', to: 'queue#put'
    #se debe llamar a recieve para que quede corriendo el thread
    get 'queue/receive', to: 'queue#get'
+
+
+# Twitter and facebook integration routes :
+
+  # Route to authorize twitter app - only need to do it once (user account = Tigrupo7Com)
+  get '/social', to: 'social_networks#index'
+  # Route to post on facebook and twitter with the right parameters
+  post '/social/publish', to: 'social_networks#publish'
 
 
 end
