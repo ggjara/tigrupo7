@@ -16,6 +16,8 @@ set :rvm_ruby_string, :local              # use the same ruby as used locally fo
 # before 'deploy:setup', 'rvm:install_rvm'  # install/update RVM
 # before 'deploy:setup', 'rvm:install_ruby'
 
+set :branch, "development2"
+
 set :bundle_binstubs, nil
 
 set :application, 'tigrupo7'

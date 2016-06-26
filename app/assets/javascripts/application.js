@@ -15,5 +15,5 @@
 //= require turbolinks
 //= require bootstrap-sprockets
 //= require AdminLTE.min
-
+//= require Chart
 //= require_tree .
