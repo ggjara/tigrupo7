@@ -33,9 +33,22 @@ def threadReceive
       codigo = msg['codigo']
       publicar = msg['publicar']
 
+      mensajeAPublicar = "Atención! Nueva promoción del producto: "+sku+". Su nuevo precio es: "+precio+". 
+        Esta promoción será desde: "+inicio+" hasta: "+fin+". CODIGO: "+codigo
+      urlSku1 = "url"
+      urlSku10 = "url"
+      urlSku23 = "url"
+      urlSku39 = "url"
+      urlImagen = "http://i.vivirsanos.com/2014/10/propiedades-del-pollo.jpg"
 
-      Bodega.publish({message: "Atención! Nueva promoción del producto: "+sku+". Su nuevo precio es: "+precio+". 
-        Esta promoción será desde: "+inicio+" hasta: "+fin+". CODIGO: "+codigo, media: "http://i.vivirsanos.com/2014/10/propiedades-del-pollo.jpg"})
+
+      #Post En Facebook y Twitter
+      if(publicar)
+        Bodega.publish({message: mensajeAPublicar, media: urlImagen})
+      end
+
+      #CREAR PROMOCION
+      #AppPromotion.create(sku: sku.to_s, precio: precio.to_i, fechaInicio: inicio, fechaTermino: fin, codigo: codigo.to_s)
 
       puts sku
       puts precio
