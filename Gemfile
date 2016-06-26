@@ -64,7 +64,7 @@ gem "figaro"
 gem "bunny"
 
 
-gem 'whenever', :require => false
+#gem 'whenever', :require => false
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
