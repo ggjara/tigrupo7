@@ -92,9 +92,7 @@ end
 gem 'spree', '~> 3.0.9'
 gem 'spree_gateway', '~> 3.0.0'
 gem 'spree_auth_devise', '~> 3.0.0'
-<<<<<<< HEAD
-=======
 
 gem 'twitter', '~> 5.3.1'
 gem 'koala', "~> 2.2"
->>>>>>> development2
+
