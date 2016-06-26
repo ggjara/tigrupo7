@@ -10,7 +10,6 @@ class SocialNetworksController < ApplicationController
 # Method which combines post on facebook page and twitter account
 # params = {tweet: {message: ,media: }}
   def publish
-
     client = Twitter::REST::Client.new do |config|
       config.consumer_key        = Rails.application.config.twitter_key
       config.consumer_secret     = Rails.application.config.twitter_secret

@@ -121,13 +121,13 @@ module Spree
 
     def precioDeSku(sku)
       if sku=='1' || sku==1
-        return 1159
+        return  Prize.find_by(sku: '1').prize
       elsif sku=='10' || sku==10
-        return  15718 
+        return  Prize.find_by(sku: '10').prize 
       elsif sku=='23'|| sku==23
-        return 4294
+        return  Prize.find_by(sku: '23').prize
       elsif sku=='39'|| sku==39
-        return 1217
+        return  Prize.find_by(sku: '39').prize
       end
     end
 

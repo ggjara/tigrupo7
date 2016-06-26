@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160617003806) do
+ActiveRecord::Schema.define(version: 20160626190901) do
 
   create_table "almacenes", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -147,6 +147,13 @@ ActiveRecord::Schema.define(version: 20160617003806) do
   end
 
   create_table "pizzas", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "prizes", force: :cascade do |t|
+    t.string   "sku"
+    t.integer  "prize"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -1147,5 +1154,14 @@ ActiveRecord::Schema.define(version: 20160617003806) do
     t.datetime "updated_at",    null: false
   end
 
+  create_table "twitter_users", force: :cascade do |t|
+    t.string   "provider"
+    t.string   "uid"
+    t.string   "name"
+    t.string   "oauth_token"
+    t.string   "oauth_secret"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
 
 end

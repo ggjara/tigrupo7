@@ -189,4 +189,14 @@ stock_39_list.each do |sku, fecha, cantidadTotal, cantidadDisponible|
 end
 
 
+#Crear prizes
+ 
+Prize.delete_all
+
+Prize.create(sku: '1', prize: 1159)
+Prize.create(sku: '10', prize: 15718)
+Prize.create(sku: '23', prize: 4294)
+Prize.create(sku: '39', prize: 1217)
+
+
 
