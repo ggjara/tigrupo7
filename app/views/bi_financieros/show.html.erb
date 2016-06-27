@@ -19,9 +19,9 @@
           </thead>
           <tbody>
             <tr>
-              <% Trx.where(fechaCreacion: params[:id]).each do |trx|%>
+              <% @transacciones.each do |trx|%>
                 <td><%= trx.fechaCreacion.strftime("%H:%M") %></td>
-                <% if trx.cuentaOrigen == "" %>
+                <% if trx.cuentaOrigen == Cliente.find_by(grupo: 7)._idBanco %>
                   <td><%= trx.monto %></td>
                   <td></td>
                   <td> <%= trx.cuentaDestino %></td>

@@ -47,12 +47,6 @@
     </div>
 
     <script type="text/javascript">
-      <% facturas = Factura.all.where('created_at > ?', 7.days.ago) %>
-      <% boletas = Bill.all.where('created_at > ?', 7.days.ago) %>
-      <% facturasFTP = facturas.where(cliente: "internacional") %>
-      <% facturasB2Be = facturas.where.not(cliente: "internacional", cliente: Cliente.find_by(grupo: 7)._idGrupo) %>
-      <% facturasB2Br = facturas.where.not(cliente: "internacional", proveedor: Cliente.find_by(grupo: 7)._idGrupo) %>
-
       var lineChart;
       var lineChartCanvas = document.getElementById("lineChart");
       var barChart;
@@ -65,18 +59,25 @@
       $(function () {
         var data = {
           labels: [
-            <% Infosaldo.order(:fecha).last(7).each do |saldo| %>
-            "<%= saldo.fecha.strftime("%d-%m-%Y") %>",
-            <% end %>
-
+            "<%= 6.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 5.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 4.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 3.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 2.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 1.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 0.days.ago.strftime("%d-%m-%Y") %>"
           ],
           datasets: [
             {
               label: "saldo en $CLP",
               data: [
-                <% Infosaldo.order(:fecha).last(7).each do |saldo| %>
-                  <%= saldo.cantidad %>,
-                <% end %>
+                <%= @saldos.find_by(fecha: 6.days.ago.beginning_of_day..6.days.ago.end_of_day).cantidad unless @saldos.find_by(fecha: 6.days.ago.beginning_of_day..6.days.ago.end_of_day).nil? %>,
+                <%= @saldos.find_by(fecha: 5.days.ago.beginning_of_day..5.days.ago.end_of_day).cantidad unless @saldos.find_by(fecha: 5.days.ago.beginning_of_day..5.days.ago.end_of_day).nil?%>,
+                <%= @saldos.find_by(fecha: 4.days.ago.beginning_of_day..4.days.ago.end_of_day).cantidad unless @saldos.find_by(fecha: 4.days.ago.beginning_of_day..4.days.ago.end_of_day).nil? %>,
+                <%= @saldos.find_by(fecha: 3.days.ago.beginning_of_day..3.days.ago.end_of_day).cantidad unless @saldos.find_by(fecha: 3.days.ago.beginning_of_day..3.days.ago.end_of_day).nil?  %>,
+                <%= @saldos.find_by(fecha: 2.days.ago.beginning_of_day..2.days.ago.end_of_day).cantidad unless @saldos.find_by(fecha: 2.days.ago.beginning_of_day..2.days.ago.end_of_day).nil? %>,
+                <%= @saldos.find_by(fecha: 1.days.ago.beginning_of_day..1.days.ago.end_of_day).cantidad unless @saldos.find_by(fecha: 1.days.ago.beginning_of_day..1.days.ago.end_of_day).nil? %>,
+                <%= @saldos.find_by(fecha: 0.days.ago.beginning_of_day..0.days.ago.end_of_day).cantidad unless @saldos.find_by(fecha: 0.days.ago.beginning_of_day..0.days.ago.end_of_day).nil? %>,
               ],
               backgroundColor: "#6CDC77",
               hoverBackgroundColor: "#6CDC77",
@@ -95,25 +96,25 @@
 
         dataB = {
           labels: [
-            "<%= (Date.today() - 6).strftime("%d-%m-%Y") %>",
-            "<%= (Date.today() - 5).strftime("%d-%m-%Y") %>",
-            "<%= (Date.today() - 4).strftime("%d-%m-%Y") %>",
-            "<%= (Date.today() - 3).strftime("%d-%m-%Y") %>",
-            "<%= (Date.today() - 2).strftime("%d-%m-%Y") %>",
-            "<%= (Date.today() - 1).strftime("%d-%m-%Y") %>",
-            "<%= Date.today().strftime("%d-%m-%Y") %>"
+            "<%= 6.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 5.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 4.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 3.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 2.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 1.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 0.days.ago.strftime("%d-%m-%Y") %>"
           ],
           datasets: [
             {
               label: "FTP",
               data: [
-                <%= facturasFTP.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 6).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 6).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 6).strftime("%Y")).count %>,
-                <%= facturasFTP.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 5).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 5).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 5).strftime("%Y")).count %>,
-                <%= facturasFTP.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 4).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 4).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 4).strftime("%Y")).count %>,
-                <%= facturasFTP.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 3).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 3).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 3).strftime("%Y")).count %>,
-                <%= facturasFTP.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 2).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 2).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 2).strftime("%Y")).count %>,
-                <%= facturasFTP.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 1).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 1).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 1).strftime("%Y")).count %>,
-                <%= facturasFTP.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()).strftime("%Y")).count %>
+                <%= @facturasFTP.where(created_at: 6.days.ago.beginning_of_day..6.days.ago.end_of_day).count %>,
+                <%= @facturasFTP.where(created_at: 5.days.ago.beginning_of_day..5.days.ago.end_of_day).count %>,
+                <%= @facturasFTP.where(created_at: 4.days.ago.beginning_of_day..4.days.ago.end_of_day).count %>,
+                <%= @facturasFTP.where(created_at: 3.days.ago.beginning_of_day..3.days.ago.end_of_day).count %>,
+                <%= @facturasFTP.where(created_at: 2.days.ago.beginning_of_day..2.days.ago.end_of_day).count %>,
+                <%= @facturasFTP.where(created_at: 1.days.ago.beginning_of_day..1.days.ago.end_of_day).count %>,
+                <%= @facturasFTP.where(created_at: 0.days.ago.beginning_of_day..0.days.ago.end_of_day).count %>,
               ],
               backgroundColor: "#FF6384",
               hoverBackgroundColor: "#FF6384",
@@ -123,13 +124,13 @@
             {
               label: "B2B",
               data: [
-                <%= facturasB2Be.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 6).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 6).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 6).strftime("%Y")).count %>,
-                <%= facturasB2Be.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 5).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 5).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 5).strftime("%Y")).count %>,
-                <%= facturasB2Be.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 4).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 4).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 4).strftime("%Y")).count %>,
-                <%= facturasB2Be.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 3).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 3).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 3).strftime("%Y")).count %>,
-                <%= facturasB2Be.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 2).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 2).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 2).strftime("%Y")).count %>,
-                <%= facturasB2Be.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 1).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 1).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 1).strftime("%Y")).count %>,
-                <%= facturasB2Be.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()).strftime("%Y")).count %>
+                <%= @facturasB2Be.where(created_at: 6.days.ago.beginning_of_day..6.days.ago.end_of_day).count %>,
+                <%= @facturasB2Be.where(created_at: 5.days.ago.beginning_of_day..5.days.ago.end_of_day).count %>,
+                <%= @facturasB2Be.where(created_at: 4.days.ago.beginning_of_day..4.days.ago.end_of_day).count %>,
+                <%= @facturasB2Be.where(created_at: 3.days.ago.beginning_of_day..3.days.ago.end_of_day).count %>,
+                <%= @facturasB2Be.where(created_at: 2.days.ago.beginning_of_day..2.days.ago.end_of_day).count %>,
+                <%= @facturasB2Be.where(created_at: 1.days.ago.beginning_of_day..1.days.ago.end_of_day).count %>,
+                <%= @facturasB2Be.where(created_at: 0.days.ago.beginning_of_day..0.days.ago.end_of_day).count %>,
               ],
               backgroundColor: "#36A2EB",
               hoverBackgroundColor: "#36A2EB",
@@ -138,13 +139,13 @@
             {
               label: "B2C",
               data: [
-                <%= boletas.where("cast(strftime('%d', fechaCreacion) as int) = ?", (Date.today()- 6).strftime("%d")).where("cast(strftime('%m', fechaCreacion) as int) = ?", (Date.today()- 6).strftime("%m")).where("cast(strftime('%Y', fechaCreacion) as int) = ?", (Date.today()- 6).strftime("%Y")).count %>,
-                <%= boletas.where("cast(strftime('%d', fechaCreacion) as int) = ?", (Date.today()- 5).strftime("%d")).where("cast(strftime('%m', fechaCreacion) as int) = ?", (Date.today()- 5).strftime("%m")).where("cast(strftime('%Y', fechaCreacion) as int) = ?", (Date.today()- 5).strftime("%Y")).count %>,
-                <%= boletas.where("cast(strftime('%d', fechaCreacion) as int) = ?", (Date.today()- 4).strftime("%d")).where("cast(strftime('%m', fechaCreacion) as int) = ?", (Date.today()- 4).strftime("%m")).where("cast(strftime('%Y', fechaCreacion) as int) = ?", (Date.today()- 4).strftime("%Y")).count %>,
-                <%= boletas.where("cast(strftime('%d', fechaCreacion) as int) = ?", (Date.today()- 3).strftime("%d")).where("cast(strftime('%m', fechaCreacion) as int) = ?", (Date.today()- 3).strftime("%m")).where("cast(strftime('%Y', fechaCreacion) as int) = ?", (Date.today()- 3).strftime("%Y")).count %>,
-                <%= boletas.where("cast(strftime('%d', fechaCreacion) as int) = ?", (Date.today()- 2).strftime("%d")).where("cast(strftime('%m', fechaCreacion) as int) = ?", (Date.today()- 2).strftime("%m")).where("cast(strftime('%Y', fechaCreacion) as int) = ?", (Date.today()- 2).strftime("%Y")).count %>,
-                <%= boletas.where("cast(strftime('%d', fechaCreacion) as int) = ?", (Date.today()- 1).strftime("%d")).where("cast(strftime('%m', fechaCreacion) as int) = ?", (Date.today()- 1).strftime("%m")).where("cast(strftime('%Y', fechaCreacion) as int) = ?", (Date.today()- 1).strftime("%Y")).count %>,
-                <%= boletas.where("cast(strftime('%d', fechaCreacion) as int) = ?", (Date.today()).strftime("%d")).where("cast(strftime('%m', fechaCreacion) as int) = ?", (Date.today()).strftime("%m")).where("cast(strftime('%Y', fechaCreacion) as int) = ?", (Date.today()).strftime("%Y")).count %>
+                <%= @boletas.where(fechaCreacion: 6.days.ago.beginning_of_day..6.days.ago.end_of_day).count %>,
+                <%= @boletas.where(fechaCreacion: 5.days.ago.beginning_of_day..5.days.ago.end_of_day).count %>,
+                <%= @boletas.where(fechaCreacion: 4.days.ago.beginning_of_day..4.days.ago.end_of_day).count %>,
+                <%= @boletas.where(fechaCreacion: 3.days.ago.beginning_of_day..3.days.ago.end_of_day).count %>,
+                <%= @boletas.where(fechaCreacion: 2.days.ago.beginning_of_day..2.days.ago.end_of_day).count %>,
+                <%= @boletas.where(fechaCreacion: 1.days.ago.beginning_of_day..1.days.ago.end_of_day).count %>,
+                <%= @boletas.where(fechaCreacion: 0.days.ago.beginning_of_day..0.days.ago.end_of_day).count %>,
               ],
               backgroundColor: "#FFCE56",
               hoverBackgroundColor: "#FFCE56",
@@ -154,13 +155,13 @@
         };
         dataBr = {
           labels: [
-            "<%= (Date.today() - 6).strftime("%d-%m-%Y") %>",
-            "<%= (Date.today() - 5).strftime("%d-%m-%Y") %>",
-            "<%= (Date.today() - 4).strftime("%d-%m-%Y") %>",
-            "<%= (Date.today() - 3).strftime("%d-%m-%Y") %>",
-            "<%= (Date.today() - 2).strftime("%d-%m-%Y") %>",
-            "<%= (Date.today() - 1).strftime("%d-%m-%Y") %>",
-            "<%= Date.today().strftime("%d-%m-%Y") %>"
+            "<%= 6.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 5.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 4.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 3.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 2.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 1.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 0.days.ago.strftime("%d-%m-%Y") %>"
           ],
           datasets: [
             {
@@ -172,13 +173,13 @@
             {
               label: "B2B",
               data: [
-                <%= facturasB2Br.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 6).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 6).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 6).strftime("%Y")).count %>,
-                <%= facturasB2Br.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 5).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 5).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 5).strftime("%Y")).count %>,
-                <%= facturasB2Br.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 4).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 4).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 4).strftime("%Y")).count %>,
-                <%= facturasB2Br.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 3).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 3).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 3).strftime("%Y")).count %>,
-                <%= facturasB2Br.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 2).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 2).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 2).strftime("%Y")).count %>,
-                <%= facturasB2Br.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 1).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 1).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 1).strftime("%Y")).count %>,
-                <%= facturasB2Br.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()).strftime("%Y")).count %>
+                <%= @facturasB2Br.where(created_at: 6.days.ago.beginning_of_day..6.days.ago.end_of_day).count %>,
+                <%= @facturasB2Br.where(created_at: 5.days.ago.beginning_of_day..5.days.ago.end_of_day).count %>,
+                <%= @facturasB2Br.where(created_at: 4.days.ago.beginning_of_day..4.days.ago.end_of_day).count %>,
+                <%= @facturasB2Br.where(created_at: 3.days.ago.beginning_of_day..3.days.ago.end_of_day).count %>,
+                <%= @facturasB2Br.where(created_at: 2.days.ago.beginning_of_day..2.days.ago.end_of_day).count %>,
+                <%= @facturasB2Br.where(created_at: 1.days.ago.beginning_of_day..1.days.ago.end_of_day).count %>,
+                <%= @facturasB2Br.where(created_at: 0.days.ago.beginning_of_day..0.days.ago.end_of_day).count %>,
               ],
               backgroundColor: "#36A2EB",
               hoverBackgroundColor: "#36A2EB",
@@ -201,25 +202,25 @@
 
         dataB2 = {
           labels: [
-            "<%= (Date.today() - 6).strftime("%d-%m-%Y") %>",
-            "<%= (Date.today() - 5).strftime("%d-%m-%Y") %>",
-            "<%= (Date.today() - 4).strftime("%d-%m-%Y") %>",
-            "<%= (Date.today() - 3).strftime("%d-%m-%Y") %>",
-            "<%= (Date.today() - 2).strftime("%d-%m-%Y") %>",
-            "<%= (Date.today() - 1).strftime("%d-%m-%Y") %>",
-            "<%= Date.today().strftime("%d-%m-%Y") %>"
+            "<%= 6.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 5.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 4.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 3.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 2.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 1.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 0.days.ago.strftime("%d-%m-%Y") %>"
           ],
           datasets: [
             {
               label: "FTP",
               data: [
-                <%= facturasFTP.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 6).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 6).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 6).strftime("%Y")).sum(:valorTotal) %>,
-                <%= facturasFTP.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 5).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 5).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 5).strftime("%Y")).sum(:valorTotal) %>,
-                <%= facturasFTP.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 4).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 4).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 4).strftime("%Y")).sum(:valorTotal) %>,
-                <%= facturasFTP.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 3).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 3).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 3).strftime("%Y")).sum(:valorTotal) %>,
-                <%= facturasFTP.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 2).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 2).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 2).strftime("%Y")).sum(:valorTotal) %>,
-                <%= facturasFTP.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 1).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 1).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 1).strftime("%Y")).sum(:valorTotal) %>,
-                <%= facturasFTP.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()).strftime("%Y")).sum(:valorTotal) %>
+                <%= @facturasFTP.where(created_at: 6.days.ago.beginning_of_day..6.days.ago.end_of_day).sum(:valorTotal) %>,
+                <%= @facturasFTP.where(created_at: 5.days.ago.beginning_of_day..5.days.ago.end_of_day).sum(:valorTotal) %>,
+                <%= @facturasFTP.where(created_at: 4.days.ago.beginning_of_day..4.days.ago.end_of_day).sum(:valorTotal) %>,
+                <%= @facturasFTP.where(created_at: 3.days.ago.beginning_of_day..3.days.ago.end_of_day).sum(:valorTotal) %>,
+                <%= @facturasFTP.where(created_at: 2.days.ago.beginning_of_day..2.days.ago.end_of_day).sum(:valorTotal) %>,
+                <%= @facturasFTP.where(created_at: 1.days.ago.beginning_of_day..1.days.ago.end_of_day).sum(:valorTotal) %>,
+                <%= @facturasFTP.where(created_at: 0.days.ago.beginning_of_day..0.days.ago.end_of_day).sum(:valorTotal) %>,
               ],
               backgroundColor: "#FF6384",
               hoverBackgroundColor: "#FF6384",
@@ -229,13 +230,13 @@
             {
               label: "B2B",
               data: [
-                <%= facturasB2Be.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 6).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 6).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 6).strftime("%Y")).sum(:valorTotal) %>,
-                <%= facturasB2Be.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 5).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 5).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 5).strftime("%Y")).sum(:valorTotal) %>,
-                <%= facturasB2Be.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 4).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 4).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 4).strftime("%Y")).sum(:valorTotal) %>,
-                <%= facturasB2Be.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 3).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 3).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 3).strftime("%Y")).sum(:valorTotal) %>,
-                <%= facturasB2Be.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 2).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 2).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 2).strftime("%Y")).sum(:valorTotal) %>,
-                <%= facturasB2Be.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 1).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 1).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 1).strftime("%Y")).sum(:valorTotal) %>,
-                <%= facturasB2Be.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()).strftime("%Y")).sum(:valorTotal) %>
+                <%= @facturasB2Be.where(created_at: 6.days.ago.beginning_of_day..6.days.ago.end_of_day).sum(:valorTotal) %>,
+                <%= @facturasB2Be.where(created_at: 5.days.ago.beginning_of_day..5.days.ago.end_of_day).sum(:valorTotal) %>,
+                <%= @facturasB2Be.where(created_at: 4.days.ago.beginning_of_day..4.days.ago.end_of_day).sum(:valorTotal) %>,
+                <%= @facturasB2Be.where(created_at: 3.days.ago.beginning_of_day..3.days.ago.end_of_day).sum(:valorTotal) %>,
+                <%= @facturasB2Be.where(created_at: 2.days.ago.beginning_of_day..2.days.ago.end_of_day).sum(:valorTotal) %>,
+                <%= @facturasB2Be.where(created_at: 1.days.ago.beginning_of_day..1.days.ago.end_of_day).sum(:valorTotal) %>,
+                <%= @facturasB2Be.where(created_at: 0.days.ago.beginning_of_day..0.days.ago.end_of_day).sum(:valorTotal) %>,
               ],
               backgroundColor: "#36A2EB",
               hoverBackgroundColor: "#36A2EB",
@@ -244,13 +245,13 @@
             {
               label: "B2C",
               data: [
-                <%= boletas.where("cast(strftime('%d', fechaCreacion) as int) = ?", (Date.today()- 6).strftime("%d")).where("cast(strftime('%m', fechaCreacion) as int) = ?", (Date.today()- 6).strftime("%m")).where("cast(strftime('%Y', fechaCreacion) as int) = ?", (Date.today()- 6).strftime("%Y")).sum(:valorTotal) %>,
-                <%= boletas.where("cast(strftime('%d', fechaCreacion) as int) = ?", (Date.today()- 5).strftime("%d")).where("cast(strftime('%m', fechaCreacion) as int) = ?", (Date.today()- 5).strftime("%m")).where("cast(strftime('%Y', fechaCreacion) as int) = ?", (Date.today()- 5).strftime("%Y")).sum(:valorTotal) %>,
-                <%= boletas.where("cast(strftime('%d', fechaCreacion) as int) = ?", (Date.today()- 4).strftime("%d")).where("cast(strftime('%m', fechaCreacion) as int) = ?", (Date.today()- 4).strftime("%m")).where("cast(strftime('%Y', fechaCreacion) as int) = ?", (Date.today()- 4).strftime("%Y")).sum(:valorTotal) %>,
-                <%= boletas.where("cast(strftime('%d', fechaCreacion) as int) = ?", (Date.today()- 3).strftime("%d")).where("cast(strftime('%m', fechaCreacion) as int) = ?", (Date.today()- 3).strftime("%m")).where("cast(strftime('%Y', fechaCreacion) as int) = ?", (Date.today()- 3).strftime("%Y")).sum(:valorTotal) %>,
-                <%= boletas.where("cast(strftime('%d', fechaCreacion) as int) = ?", (Date.today()- 2).strftime("%d")).where("cast(strftime('%m', fechaCreacion) as int) = ?", (Date.today()- 2).strftime("%m")).where("cast(strftime('%Y', fechaCreacion) as int) = ?", (Date.today()- 2).strftime("%Y")).sum(:valorTotal) %>,
-                <%= boletas.where("cast(strftime('%d', fechaCreacion) as int) = ?", (Date.today()- 1).strftime("%d")).where("cast(strftime('%m', fechaCreacion) as int) = ?", (Date.today()- 1).strftime("%m")).where("cast(strftime('%Y', fechaCreacion) as int) = ?", (Date.today()- 1).strftime("%Y")).sum(:valorTotal) %>,
-                <%= boletas.where("cast(strftime('%d', fechaCreacion) as int) = ?", (Date.today()).strftime("%d")).where("cast(strftime('%m', fechaCreacion) as int) = ?", (Date.today()).strftime("%m")).where("cast(strftime('%Y', fechaCreacion) as int) = ?", (Date.today()).strftime("%Y")).sum(:valorTotal) %>
+                <%= @boletas.where(fechaCreacion: 6.days.ago.beginning_of_day..6.days.ago.end_of_day).sum(:valorTotal) %>,
+                <%= @boletas.where(fechaCreacion: 5.days.ago.beginning_of_day..5.days.ago.end_of_day).sum(:valorTotal) %>,
+                <%= @boletas.where(fechaCreacion: 4.days.ago.beginning_of_day..4.days.ago.end_of_day).sum(:valorTotal) %>,
+                <%= @boletas.where(fechaCreacion: 3.days.ago.beginning_of_day..3.days.ago.end_of_day).sum(:valorTotal) %>,
+                <%= @boletas.where(fechaCreacion: 2.days.ago.beginning_of_day..2.days.ago.end_of_day).sum(:valorTotal) %>,
+                <%= @boletas.where(fechaCreacion: 1.days.ago.beginning_of_day..1.days.ago.end_of_day).sum(:valorTotal) %>,
+                <%= @boletas.where(fechaCreacion: 0.days.ago.beginning_of_day..0.days.ago.end_of_day).sum(:valorTotal) %>,
               ],
               backgroundColor: "#FFCE56",
               hoverBackgroundColor: "#FFCE56",
@@ -260,13 +261,13 @@
         };
         dataB2r = {
           labels: [
-            "<%= (Date.today() - 6).strftime("%d-%m-%Y") %>",
-            "<%= (Date.today() - 5).strftime("%d-%m-%Y") %>",
-            "<%= (Date.today() - 4).strftime("%d-%m-%Y") %>",
-            "<%= (Date.today() - 3).strftime("%d-%m-%Y") %>",
-            "<%= (Date.today() - 2).strftime("%d-%m-%Y") %>",
-            "<%= (Date.today() - 1).strftime("%d-%m-%Y") %>",
-            "<%= Date.today().strftime("%d-%m-%Y") %>"
+            "<%= 6.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 5.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 4.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 3.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 2.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 1.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 0.days.ago.strftime("%d-%m-%Y") %>"
           ],
           datasets: [
             {
@@ -278,13 +279,13 @@
             {
               label: "B2B",
               data: [
-                <%= facturasB2Br.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 6).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 6).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 6).strftime("%Y")).sum(:valorTotal) %>,
-                <%= facturasB2Br.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 5).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 5).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 5).strftime("%Y")).sum(:valorTotal) %>,
-                <%= facturasB2Br.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 4).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 4).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 4).strftime("%Y")).sum(:valorTotal) %>,
-                <%= facturasB2Br.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 3).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 3).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 3).strftime("%Y")).sum(:valorTotal) %>,
-                <%= facturasB2Br.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 2).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 2).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 2).strftime("%Y")).sum(:valorTotal) %>,
-                <%= facturasB2Br.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()- 1).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()- 1).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()- 1).strftime("%Y")).sum(:valorTotal) %>,
-                <%= facturasB2Br.where("cast(strftime('%d', created_at) as int) = ?", (Date.today()).strftime("%d")).where("cast(strftime('%m', created_at) as int) = ?", (Date.today()).strftime("%m")).where("cast(strftime('%Y', created_at) as int) = ?", (Date.today()).strftime("%Y")).sum(:valorTotal) %>
+                <%= @facturasB2Br.where(created_at: 6.days.ago.beginning_of_day..6.days.ago.end_of_day).sum(:valorTotal) %>,
+                <%= @facturasB2Br.where(created_at: 5.days.ago.beginning_of_day..5.days.ago.end_of_day).sum(:valorTotal) %>,
+                <%= @facturasB2Br.where(created_at: 4.days.ago.beginning_of_day..4.days.ago.end_of_day).sum(:valorTotal) %>,
+                <%= @facturasB2Br.where(created_at: 3.days.ago.beginning_of_day..3.days.ago.end_of_day).sum(:valorTotal) %>,
+                <%= @facturasB2Br.where(created_at: 2.days.ago.beginning_of_day..2.days.ago.end_of_day).sum(:valorTotal) %>,
+                <%= @facturasB2Br.where(created_at: 1.days.ago.beginning_of_day..1.days.ago.end_of_day).sum(:valorTotal) %>,
+                <%= @facturasB2Br.where(created_at: 0.days.ago.beginning_of_day..0.days.ago.end_of_day).sum(:valorTotal) %>,
               ],
               backgroundColor: "#36A2EB",
               hoverBackgroundColor: "#36A2EB",

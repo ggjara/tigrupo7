@@ -282,13 +282,13 @@
 
         var dataB = {
           labels: [
-            "<%= (Date.today() - 6).strftime("%d-%m-%Y") %>",
-            "<%= (Date.today() - 5).strftime("%d-%m-%Y") %>",
-            "<%= (Date.today() - 4).strftime("%d-%m-%Y") %>",
-            "<%= (Date.today() - 3).strftime("%d-%m-%Y") %>",
-            "<%= (Date.today() - 2).strftime("%d-%m-%Y") %>",
-            "<%= (Date.today() - 1).strftime("%d-%m-%Y") %>",
-            "<%= Date.today().strftime("%d-%m-%Y") %>"
+            "<%= 6.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 5.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 4.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 3.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 2.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 1.days.ago.strftime("%d-%m-%Y") %>",
+            "<%= 0.days.ago.strftime("%d-%m-%Y") %>"
           ],
           datasets: [
             {
@@ -333,7 +333,7 @@
               label: "Cantidad Total SKU=10",
               data: [
                 <% Infostock.where(sku: "10").order(:fecha).last(7).each do |stock| %>
-                <%= stock.cantidadTotal + 1000%>,
+                <%= stock.cantidadTotal%>,
                 <% end %>
               ],
               stack: 2,
@@ -357,7 +357,7 @@
               label: "Cantidad Total SKU=23",
               data: [
                 <% Infostock.where(sku: "23").order(:fecha).last(7).each do |stock| %>
-                <%= stock.cantidadTotal + 300 %>,
+                <%= stock.cantidadTotal %>,
                 <% end %>
               ],
               stack: 3,
@@ -382,7 +382,7 @@
               label: "Cantidad Total SKU=39",
               data: [
                 <% Infostock.where(sku: "39").order(:fecha).last(7).each do |stock| %>
-                <%= stock.cantidadTotal + 400 %>,
+                <%= stock.cantidadTotal %>,
                 <% end %>
               ],
               stack: 4,
