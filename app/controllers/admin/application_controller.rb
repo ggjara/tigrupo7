@@ -43,7 +43,7 @@ def actualizarBodega
   agregarInfoDiaria
 
   #3. Revisar FTP
-  #ConsultarPedidosFtp.new.consultarOcsFTP
+  ConsultarPedidosFtp.new.consultarOcsFTP
 
   #2. Mandar a producir si hay bajo Stock
   ProducirMateriasPrimas.new.producirStockBajo

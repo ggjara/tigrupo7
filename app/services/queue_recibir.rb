@@ -33,6 +33,32 @@ def threadReceive
       codigo = msg['codigo']
       publicar = msg['publicar']
 
+      #Crear promoción
+      AppPromotion.create(sku: sku.to_s, precio: precio.to_i, fechaInicio: inicio, fechaTermino: fin, codigo: codigo.to_s)
+
+      #Crear publicación
+      if(publicar)
+        producto = ""
+        url_imagen = ""
+        if(sku=='1')
+          producto = "Pollo"
+          url_imagen = "http://pollopepe.com.mx/wp-content/uploads/2013/07/01-pollo-entero1.jpg" 
+        elsif (sku=='10')
+          producto = "Pan Marraqueta"
+          url_imagen = "http://www.cl.all.biz/img/cl/catalog/37676.jpeg"
+        elsif (sku=='23')
+          producto = "Harina"
+          url_imagen = "http://2.bp.blogspot.com/-R_vACaZLlIU/VMEdsXeWeOI/AAAAAAAAAQk/oSbk3LTj3GA/s900/harina.PNG"
+        elsif (sku=='39')
+          producto = "Uva"
+          url_imagen = "http://difundir.org/wp-content/uploads/2015/04/hu2.jpg"
+        end
+            
+        mensajeAPublicar = "¡Nueva Promoción! - "+producto+ " a sólo: $ "+precio+" - Entre las fechas: "+inicio+"/"+fin+" - CODIGO #"+codigo
+        Bodega.publish({message: mensajeAPublicar, media: url_imagen})
+      end
+
+
 
       puts sku
       puts precio
