@@ -42,7 +42,7 @@ def agregarSaldo
 end
 
 def iniciarAlmacenes(conCreacion)
-  Almacen.destroy_all!
+  Almacen.destroy_all
   if(conCreacion)
     paramsAlmacenes = RequestsBodega.new.getAlmacenes
     paramsAlmacenes.each do |paramsAlmacen|
