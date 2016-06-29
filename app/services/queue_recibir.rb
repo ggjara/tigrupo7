@@ -111,8 +111,8 @@ def send
 
   paramsMsg = '{ "sku": 1,
     "precio": 10,
-    "inicio": 35646513,
-    "fin": 54652318648,
+    "inicio": 1467158400,
+    "fin": 1468972800,
     "codigo": 123,
     "publicar": true}'
   # publish a message to the exchange which then gets routed to the queue

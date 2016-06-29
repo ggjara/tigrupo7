@@ -21,7 +21,7 @@ Rails.application.routes.draw do
   mount Spree::Core::Engine, at: '/spree'
 
   match '/spree/confirmarCompra/:id' => 'spree/bills#show', via: :get
-   match '/spree/errorCompra/' => 'spree/bills#error', via: :get
+   match '/spree/errorCompra/:id' => 'spree/bills#error', via: :get
 
   get 'stocks/show'
 
