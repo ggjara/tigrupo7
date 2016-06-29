@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
 
 
+  get 'promociones' => 'promociones#index'
+
   get 'bi_financieros' => 'bi_financieros#index'
 
   get 'bi_financieros/transacciones/:id' => 'bi_financieros#show'

@@ -1,0 +1,30 @@
+<% content_for :header do %>
+    <h1>Promociones</h1>
+<%end%>
+
+<% content_for :content do %>
+    <div class="box-body">
+      <table class="table">
+        <thead>
+        <tr>
+          <th>SKU</th>
+          <th>Precio</th>
+          <th>Fecha inicio</th>
+          <th>Fecha término</th>
+          <th>Código</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <% @promociones.each do |promocion|%>
+              <td><%= promocion.sku %></td>
+              <td>$<%= promocion.precio %></td>
+              <td><%= promocion.fechaInicio %></td>
+              <td><%= promocion.fechaTermino %></td>
+              <td><%= promocion.codigo %></td>
+          <% end %>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+<% end %>
