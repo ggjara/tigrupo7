@@ -13,7 +13,7 @@ end
 #metodo que inicia un thread que queda suscrito a la cola, recibiendo mensajes y gatillando accion
 def threadReceive
   #inicia conneccion con cola amqp
-  conn = Bunny.new('amqp://eoddqask:UZDMkggws1re_EjcJet7iv8Sm56KiifC@jellyfish.rmq.cloudamqp.com/eoddqask')
+  conn = Bunny.new('amqp://qlwidyig:r4f-jy8Iw19bAUb9uBZtoZ6BbNhfcoFI@jellyfish.rmq.cloudamqp.com/qlwidyig')
   conn.start # start a communication session with the amqp server
   ch = conn.create_channel
   q = ch.queue("ofertas", :auto_delete => true) # declare a queue
