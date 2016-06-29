@@ -19,7 +19,7 @@ def self.actualizarInfo
   	self.agregarInfoDiaria
   	#3. Revisar FTP
   	puts "Revisando pedidos FTP"
-  	ConsultarPedidosFtp.new.consultarOcsFTP
+  	#ConsultarPedidosFtp.new.consultarOcsFTP
  	#4. Mandar a producir si hay bajo Stock
  	puts "Mandando a producir Stock"
   	ProducirMateriasPrimas.new.producirStockBajo
