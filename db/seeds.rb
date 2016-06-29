@@ -129,13 +129,13 @@ Infosaldo.delete_all
 puts "Creando distintos Saldos"
 
 saldos_list =[
-	[Date.today, Bodega.first.saldo+20000],
-  [Date.yesterday, Bodega.first.saldo-10000],
-	[Date.yesterday.yesterday, Bodega.first.saldo-24000],
-	[Date.yesterday.yesterday.yesterday, Bodega.first.saldo-35000],
-	[Date.yesterday.yesterday.yesterday.yesterday, Bodega.first.saldo-10000],
-	[Date.yesterday.yesterday.yesterday.yesterday.yesterday, Bodega.first.saldo-5000],
-	[Date.yesterday.yesterday.yesterday.yesterday.yesterday.yesterday, Bodega.first.saldo+15000]
+	[Date.today, Bodega.first.saldo],
+  [Date.yesterday, Bodega.first.saldo],
+	[Date.yesterday.yesterday, Bodega.first.saldo],
+	[Date.yesterday.yesterday.yesterday, Bodega.first.saldo],
+	[Date.yesterday.yesterday.yesterday.yesterday, Bodega.first.saldo],
+	[Date.yesterday.yesterday.yesterday.yesterday.yesterday, Bodega.first.saldo],
+	[Date.yesterday.yesterday.yesterday.yesterday.yesterday.yesterday, Bodega.first.saldo]
 ]
 
 saldos_list.each do |fecha, cantidad|
@@ -149,13 +149,13 @@ Infostock.delete_all
 puts "Creando distintos Stocks"
 
 stock_1_list =[
-	['1', Date.today, Bodega.checkStock('1')+200, Bodega.checkStockTotal('1')+200],
-  ['1', Date.yesterday, Bodega.checkStock('1')+20, Bodega.checkStockTotal('1')+20],
-	['1', Date.yesterday.yesterday, Bodega.checkStock('1')+200, Bodega.checkStockTotal('1')+200],
-	['1', Date.yesterday.yesterday.yesterday, Bodega.checkStock('1')+180, Bodega.checkStockTotal('1')+180],
-	['1', Date.yesterday.yesterday.yesterday.yesterday, Bodega.checkStock('1')+1200, Bodega.checkStockTotal('1')+1200],
+	['1', Date.today, Bodega.checkStock('1'), Bodega.checkStockTotal('1')],
+  ['1', Date.yesterday, Bodega.checkStock('1'), Bodega.checkStockTotal('1')],
+	['1', Date.yesterday.yesterday, Bodega.checkStock('1'), Bodega.checkStockTotal('1')],
+	['1', Date.yesterday.yesterday.yesterday, Bodega.checkStock('1'), Bodega.checkStockTotal('1')],
+	['1', Date.yesterday.yesterday.yesterday.yesterday, Bodega.checkStock('1'), Bodega.checkStockTotal('1')],
 	['1', Date.yesterday.yesterday.yesterday.yesterday.yesterday, Bodega.checkStock('1'), Bodega.checkStockTotal('1')],
-	['1', Date.yesterday.yesterday.yesterday.yesterday.yesterday.yesterday, Bodega.checkStock('1')+500, Bodega.checkStockTotal('1')+500]
+	['1', Date.yesterday.yesterday.yesterday.yesterday.yesterday.yesterday, Bodega.checkStock('1'), Bodega.checkStockTotal('1')]
 
 ]
 
@@ -165,13 +165,13 @@ stock_1_list.each do |sku, fecha, cantidadTotal, cantidadDisponible|
 end
 
 stock_10_list =[
-	['10', Date.today, Bodega.checkStock('10')+200, Bodega.checkStockTotal('10')+200],
-  ['10', Date.yesterday, Bodega.checkStock('10')+20, Bodega.checkStockTotal('10')+20],
-	['10', Date.yesterday.yesterday, Bodega.checkStock('10')+200, Bodega.checkStockTotal('10')+200],
-	['10', Date.yesterday.yesterday.yesterday, Bodega.checkStock('10')+180, Bodega.checkStockTotal('10')+180],
-	['10', Date.yesterday.yesterday.yesterday.yesterday, Bodega.checkStock('10')+1200, Bodega.checkStockTotal('10')+1200],
+	['10', Date.today, Bodega.checkStock('10'), Bodega.checkStockTotal('10')],
+  ['10', Date.yesterday, Bodega.checkStock('10'), Bodega.checkStockTotal('10')],
+	['10', Date.yesterday.yesterday, Bodega.checkStock('10'), Bodega.checkStockTotal('10')],
+	['10', Date.yesterday.yesterday.yesterday, Bodega.checkStock('10'), Bodega.checkStockTotal('10')],
+	['10', Date.yesterday.yesterday.yesterday.yesterday, Bodega.checkStock('10'), Bodega.checkStockTotal('10')],
 	['10', Date.yesterday.yesterday.yesterday.yesterday.yesterday, Bodega.checkStock('10'), Bodega.checkStockTotal('10')],
-	['10', Date.yesterday.yesterday.yesterday.yesterday.yesterday.yesterday, Bodega.checkStock('10')+500, Bodega.checkStockTotal('10')+500]
+	['10', Date.yesterday.yesterday.yesterday.yesterday.yesterday.yesterday, Bodega.checkStock('10'), Bodega.checkStockTotal('10')]
 ]
 
 stock_10_list.each do |sku, fecha, cantidadTotal, cantidadDisponible|
@@ -180,13 +180,13 @@ stock_10_list.each do |sku, fecha, cantidadTotal, cantidadDisponible|
 end
 
 stock_23_list =[
-	['23', Date.today, Bodega.checkStock('23')+200, Bodega.checkStockTotal('23')+200],
-  ['23', Date.yesterday, Bodega.checkStock('23')+20, Bodega.checkStockTotal('23')+20],
-	['23', Date.yesterday.yesterday, Bodega.checkStock('23')+200, Bodega.checkStockTotal('23')+200],
-	['23', Date.yesterday.yesterday.yesterday, Bodega.checkStock('23')+180, Bodega.checkStockTotal('23')+180],
-	['23', Date.yesterday.yesterday.yesterday.yesterday, Bodega.checkStock('23')+1200, Bodega.checkStockTotal('23')+1200],
+	['23', Date.today, Bodega.checkStock('23'), Bodega.checkStockTotal('23')],
+  ['23', Date.yesterday, Bodega.checkStock('23'), Bodega.checkStockTotal('23')],
+	['23', Date.yesterday.yesterday, Bodega.checkStock('23'), Bodega.checkStockTotal('23')],
+	['23', Date.yesterday.yesterday.yesterday, Bodega.checkStock('23'), Bodega.checkStockTotal('23')],
+	['23', Date.yesterday.yesterday.yesterday.yesterday, Bodega.checkStock('23'), Bodega.checkStockTotal('23')],
 	['23', Date.yesterday.yesterday.yesterday.yesterday.yesterday, Bodega.checkStock('23'), Bodega.checkStockTotal('23')],
-	['23', Date.yesterday.yesterday.yesterday.yesterday.yesterday.yesterday, Bodega.checkStock('23')+500, Bodega.checkStockTotal('23')+500]
+	['23', Date.yesterday.yesterday.yesterday.yesterday.yesterday.yesterday, Bodega.checkStock('23'), Bodega.checkStockTotal('23')]
 ]
 
 stock_23_list.each do |sku, fecha, cantidadTotal, cantidadDisponible|
@@ -196,13 +196,13 @@ end
 
 
 stock_39_list =[
-	['39', Date.today, Bodega.checkStock('39')+200, Bodega.checkStockTotal('39')+200],
-  ['39', Date.yesterday, Bodega.checkStock('39')+20, Bodega.checkStockTotal('39')+20],
-	['39', Date.yesterday.yesterday, Bodega.checkStock('39')+200, Bodega.checkStockTotal('39')+200],
-	['39', Date.yesterday.yesterday.yesterday, Bodega.checkStock('39')+180, Bodega.checkStockTotal('39')+180],
-	['39', Date.yesterday.yesterday.yesterday.yesterday, Bodega.checkStock('39')+1200, Bodega.checkStockTotal('39')+1200],
+	['39', Date.today, Bodega.checkStock('39'), Bodega.checkStockTotal('39')],
+  ['39', Date.yesterday, Bodega.checkStock('39'), Bodega.checkStockTotal('39')],
+	['39', Date.yesterday.yesterday, Bodega.checkStock('39'), Bodega.checkStockTotal('39')],
+	['39', Date.yesterday.yesterday.yesterday, Bodega.checkStock('39'), Bodega.checkStockTotal('39')],
+	['39', Date.yesterday.yesterday.yesterday.yesterday, Bodega.checkStock('39'), Bodega.checkStockTotal('39')],
 	['39', Date.yesterday.yesterday.yesterday.yesterday.yesterday, Bodega.checkStock('39'), Bodega.checkStockTotal('39')],
-	['39', Date.yesterday.yesterday.yesterday.yesterday.yesterday.yesterday, Bodega.checkStock('39')+500, Bodega.checkStockTotal('39')+500]
+	['39', Date.yesterday.yesterday.yesterday.yesterday.yesterday.yesterday, Bodega.checkStock('39'), Bodega.checkStockTotal('39')]
 ]
 
 stock_39_list.each do |sku, fecha, cantidadTotal, cantidadDisponible|
