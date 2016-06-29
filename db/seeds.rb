@@ -7,9 +7,7 @@ require 'bodega.rb'
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-if(Bodega.first==nil)
-	Bodega.iniciarBodega(true) #True porque se inicia
-end
+
 Cliente.delete_all
 
 # # *** ----- PRODUCCION ***** -----
@@ -58,6 +56,10 @@ clientes_list.each do |_idGrupo, _idBanco, _idAlmacenRecepcion, grupo|
 	cliente.save!
 end	
 
+if(Bodega.first==nil)
+	Bodega.iniciarBodega(true) #True porque se inicia
+end
+
 
 Spree::Auth::Engine.load_seed if defined?(Spree::Auth)
 
@@ -95,7 +97,7 @@ productos_list.each do |name, description, available_on, meta_keywords, price, i
 	i = Spree::Image.create!(attachment: File.open(path), viewable_type: "Spree::Variant", viewable_id: id, attachment_file_name: image_name)
   	product.images << i
   	product.save
-  	puts "Path: " <<path
+  	puts "Path: " << path
   	puts "Image: "
   	puts i
 
@@ -196,7 +198,7 @@ end
 
 
 #Crear prizes
- 
+puts "Creando Prizes"
 Prize.delete_all
 
 Prize.create(sku: '1', prize: 1159)
