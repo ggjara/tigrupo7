@@ -116,6 +116,13 @@ productos_list.each do |name, description, available_on, meta_keywords, price, i
 end
 
 
+
+if(Bodega.first==nil)
+	Bodega.iniciarBodega(true) #True porque se inicia
+end
+
+
+
 #Info Saldo
 Infosaldo.delete_all
 
@@ -204,10 +211,6 @@ stock_39_list.each do |sku, fecha, cantidadTotal, cantidadDisponible|
 end
 
 
-
-if(Bodega.first==nil)
-	Bodega.iniciarBodega(true) #True porque se inicia
-end
 
 
 
