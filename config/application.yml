@@ -1,20 +1,20 @@
 # #DEVELOPMENT
-url_banco: "http://mare.ing.puc.cl/banco/"
-url_bodega: "http://integracion-2016-dev.herokuapp.com/bodega/"
-url_factura: "http://mare.ing.puc.cl/facturas/"
-url_oc: "http://mare.ing.puc.cl/oc/"
-url_sftp: "mare.ing.puc.cl"
-pass_sftp: "sFwhHaZE"
-pass_bodega: "Z2ngwOHM%Jb.oMx"
+# url_banco: "http://mare.ing.puc.cl/banco/"
+# url_bodega: "http://integracion-2016-dev.herokuapp.com/bodega/"
+# url_factura: "http://mare.ing.puc.cl/facturas/"
+# url_oc: "http://mare.ing.puc.cl/oc/"
+# url_sftp: "mare.ing.puc.cl"
+# pass_sftp: "sFwhHaZE"
+# pass_bodega: "Z2ngwOHM%Jb.oMx"
 
 #PRODUCTION
-# url_banco: "http://moto.ing.puc.cl/banco/"
-# url_bodega: "http://integracion-2016-prod.herokuapp.com/bodega/"
-# url_factura: "http://moto.ing.puc.cl/facturas/"
-# url_oc: "http://moto.ing.puc.cl/oc/"
-# url_sftp: "moto.ing.puc.cl"
-# pass_sftp: "gAYCBfLR"
-# pass_bodega: "PBEFMUf;oR5$:#@"
+url_banco: "http://moto.ing.puc.cl/banco/"
+url_bodega: "http://integracion-2016-prod.herokuapp.com/bodega/"
+url_factura: "http://moto.ing.puc.cl/facturas/"
+url_oc: "http://moto.ing.puc.cl/oc/"
+url_sftp: "moto.ing.puc.cl"
+pass_sftp: "gAYCBfLR"
+pass_bodega: "PBEFMUf;oR5$:#@"
 
 
 

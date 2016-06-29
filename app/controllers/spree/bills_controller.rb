@@ -16,7 +16,9 @@ module Spree
 	  end
 
 	  def error
-
+	  	@bill = Bill.find_by(_id: params[:id])
+	  	@idBoleta= @bill._id
+	  	@bill.delete
 	  end
 	end
 end

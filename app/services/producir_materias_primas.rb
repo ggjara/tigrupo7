@@ -66,15 +66,17 @@ def cuentaFabrica
 end
 
 def hayPlataProducirCantidad(sku, cantidad_lotes)
-	if Bodega.first == nil
-		return false
-	end
+	return true
 
-	if(cantidad_lotes*cantidadLoteProducto(sku)*precioProduccionProducto(sku)>Bodega.first.saldo)
-		return false
-	else
-		return true
-	end
+	# if Bodega.first == nil
+	# 	return false
+	# end
+
+	# if(cantidad_lotes*cantidadLoteProducto(sku)*precioProduccionProducto(sku)>Bodega.first.saldo)
+	# 	return false
+	# else
+	# 	return true
+	# end
 end
 
 def precioProduccionProducto(sku)

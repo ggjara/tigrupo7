@@ -1,6 +1,7 @@
 class QueueRecibir < ApplicationController
 require "bunny"
 require "json"
+require "date"
 
 def initialize
 end
@@ -12,7 +13,7 @@ end
 #metodo que inicia un thread que queda suscrito a la cola, recibiendo mensajes y gatillando accion
 def threadReceive
   #inicia conneccion con cola amqp
-  conn = Bunny.new('amqp://eoddqask:UZDMkggws1re_EjcJet7iv8Sm56KiifC@jellyfish.rmq.cloudamqp.com/eoddqask')
+  conn = Bunny.new('amqp://qlwidyig:r4f-jy8Iw19bAUb9uBZtoZ6BbNhfcoFI@jellyfish.rmq.cloudamqp.com/qlwidyig')
   conn.start # start a communication session with the amqp server
   ch = conn.create_channel
   q = ch.queue("ofertas", :auto_delete => true) # declare a queue
@@ -28,27 +29,10 @@ def threadReceive
 
       sku = msg['sku']
       precio = msg['precio']
-      inicio = msg['inicio']
-      fin = msg['fin']
+      inicio = Time.at(msg['inicio'])
+      fin = Time.at(msg['fin'])
       codigo = msg['codigo']
       publicar = msg['publicar']
-
-      mensajeAPublicar = "Atención! Nueva promoción del producto: "+sku+". Su nuevo precio es: "+precio+". 
-        Esta promoción será desde: "+inicio+" hasta: "+fin+". CODIGO: "+codigo
-      urlSku1 = "url"
-      urlSku10 = "url"
-      urlSku23 = "url"
-      urlSku39 = "url"
-      urlImagen = "http://i.vivirsanos.com/2014/10/propiedades-del-pollo.jpg"
-
-
-      #Post En Facebook y Twitter
-      if(publicar)
-        Bodega.publish({message: mensajeAPublicar, media: urlImagen})
-      end
-
-      #CREAR PROMOCION
-      #AppPromotion.create(sku: sku.to_s, precio: precio.to_i, fechaInicio: inicio, fechaTermino: fin, codigo: codigo.to_s)
 
       puts sku
       puts precio
@@ -57,6 +41,36 @@ def threadReceive
       puts codigo
       puts publicar
 
+      puts "Crear Promocion"
+      #Crear promoción
+      ap = AppPromotion.create(sku: sku.to_s, precio: precio.to_i, fechaInicio: inicio, fechaTermino: fin, codigo: codigo.to_s)
+      #Crear publicación
+      if(publicar)
+        producto = ""
+        url_imagen = ""
+        if(ap.sku=='1')
+          producto = "Pollo"
+          url_imagen = "http://pollopepe.com.mx/wp-content/uploads/2013/07/01-pollo-entero1.jpg" 
+        elsif (ap.sku=='10')
+          producto = "Pan Marraqueta"
+          url_imagen = "http://www.cl.all.biz/img/cl/catalog/37676.jpeg"
+        elsif (ap.sku=='23')
+          producto = "Harina"
+          url_imagen = "http://2.bp.blogspot.com/-R_vACaZLlIU/VMEdsXeWeOI/AAAAAAAAAQk/oSbk3LTj3GA/s900/harina.PNG"
+        elsif (ap.sku=='39')
+          producto = "Uva"
+          url_imagen = "http://difundir.org/wp-content/uploads/2015/04/hu2.jpg"
+        end
+
+        puts producto
+        puts url_imagen
+            
+        mensajeAPublicar = "¡Nueva Promoción! - "<<producto<< " a sólo: $ "<<precio.to_s<<" - Entre las fechas: "<<ap.fechaInicio.day.to_s<<"/"<<ap.fechaInicio.month.to_s<<"/"<<ap.fechaInicio.year.to_s<<"-"<<ap.fechaTermino.day.to_s<<"/"<<ap.fechaTermino.month.to_s<<"/"<<ap.fechaTermino.year.to_s<<" CODIGO #"<<codigo.to_s<<"."
+        puts mensajeAPublicar
+        Bodega.publish({message: mensajeAPublicar, media: url_imagen})
+      end
+
+   
 
     end
     rescue Interrupt => _
@@ -74,7 +88,7 @@ def webHookReceive
   conn = Bunny.new('amqp://eoddqask:UZDMkggws1re_EjcJet7iv8Sm56KiifC@jellyfish.rmq.cloudamqp.com/eoddqaskcd')
   conn.start # start a communication session with the amqp server
   ch = conn.create_channel
-  q = ch.queue("ofertas") # declare a queue
+  q = ch.queue("ofertas", :auto_delete => true) # declare a queue
 
   delivery_info, properties, payload = q.pop
   msg = payload
@@ -89,26 +103,24 @@ def send
 
   b = Bunny.new('amqp://eoddqask:UZDMkggws1re_EjcJet7iv8Sm56KiifC@jellyfish.rmq.cloudamqp.com/eoddqask')
   b.start # start a communication session with the amqp server
-  existe = b.queue_exists?("ofertas")
-  puts existe
   ch = b.create_channel
-  q = ch.queue("ofertas") # declare a queue
+  q = ch.queue("ofertas", :auto_delete => true) # declare a queue
 
   # declare default direct exchange which is bound to all queues
   e = ch.exchange("")
 
-  paramsMsg = '{ sku: "1",
-    precio: "10",
-    inicio: "1/1/1",
-    fin: "2/1/1",
-    codigo: "123",
-    publicar: "true"}'
+  paramsMsg = '{ "sku": 1,
+    "precio": 10,
+    "inicio": 1467158400,
+    "fin": 1468972800,
+    "codigo": 123,
+    "publicar": true}'
   # publish a message to the exchange which then gets routed to the queue
   e.publish(paramsMsg, :key => 'ofertas')
 
 
   b.stop # close the connection
-  return existe
+  return "sent"
 end
 
 

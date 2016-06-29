@@ -4,8 +4,27 @@ class Bodega < ActiveRecord::Base
 
 
 def self.probando
+	puts "Fecha: "<<Time.now.to_s
 	Prize.create(sku:'289')
 end
+
+def self.actualizarInfo
+	puts "------ACTUALIZACIÓN------"
+	puts "--- "<<Time.now.to_s<<" ---"
+	#1. Actualizar Datos Bodega
+	puts "Actualizando bodega"
+	self.iniciarBodega(false)
+ 	#2. Graba la info del día
+ 	puts "Agregando información diaria"
+  	self.agregarInfoDiaria
+  	#3. Revisar FTP
+  	puts "Revisando pedidos FTP"
+  	#ConsultarPedidosFtp.new.consultarOcsFTP
+ 	#4. Mandar a producir si hay bajo Stock
+ 	puts "Mandando a producir Stock"
+  	ProducirMateriasPrimas.new.producirStockBajo
+end
+
 def self.iniciarBodega(desdeCero)
 	ib = IniciarBodega.new('grupo7')
 	if(desdeCero)
