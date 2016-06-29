@@ -18,8 +18,8 @@
           </tr>
           </thead>
           <tbody>
-            <tr>
               <% @transacciones.each do |trx|%>
+              <tr>
                 <td><%= trx.created_at.strftime("%H:%M") %></td>
                 <% if trx.cuentaOrigen == Cliente.find_by(grupo: 7)._idBanco %>
 
@@ -31,8 +31,8 @@
                   <td><%= trx.monto %></td>
                   <td> <%= trx.cuentaOrigen %></td>
                 <% end %>
-              t<% end %>
-            </tr>
+              </tr>
+              <% end %>
           </tbody>
         </table>
       </div>
