@@ -56,9 +56,16 @@ clientes_list.each do |_idGrupo, _idBanco, _idAlmacenRecepcion, grupo|
 	cliente.save!
 end	
 
-if(Bodega.first==nil)
-	Bodega.iniciarBodega(true) #True porque se inicia
-end
+#Crear prizes
+puts "Creando Prizes"
+Prize.delete_all
+
+Prize.create(sku: '1', prize: 1159)
+Prize.create(sku: '10', prize: 15718)
+Prize.create(sku: '23', prize: 4294)
+Prize.create(sku: '39', prize: 1217)
+
+
 
 
 Spree::Auth::Engine.load_seed if defined?(Spree::Auth)
@@ -197,14 +204,11 @@ stock_39_list.each do |sku, fecha, cantidadTotal, cantidadDisponible|
 end
 
 
-#Crear prizes
-puts "Creando Prizes"
-Prize.delete_all
 
-Prize.create(sku: '1', prize: 1159)
-Prize.create(sku: '10', prize: 15718)
-Prize.create(sku: '23', prize: 4294)
-Prize.create(sku: '39', prize: 1217)
+if(Bodega.first==nil)
+	Bodega.iniciarBodega(true) #True porque se inicia
+end
+
 
 
 
