@@ -39,6 +39,9 @@ def actualizarBodega
   #1. Actualizar Datos Bodega
   ib = Bodega.iniciarBodega(false) #False porque no se inicia, solo actualiza
 
+  #2. Graba la info del día
+  agregarInfoDiaria
+
   #3. Revisar FTP
   #ConsultarPedidosFtp.new.consultarOcsFTP
 
