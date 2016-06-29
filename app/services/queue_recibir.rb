@@ -33,22 +33,6 @@ def threadReceive
       codigo = msg['codigo']
       publicar = msg['publicar']
 
-      mensajeAPublicar = "Atención! Nueva promoción del producto: "+sku+". Su nuevo precio es: "+precio+". 
-        Esta promoción será desde: "+inicio+" hasta: "+fin+". CODIGO: "+codigo
-      urlSku1 = "url"
-      urlSku10 = "url"
-      urlSku23 = "url"
-      urlSku39 = "url"
-      urlImagen = "http://i.vivirsanos.com/2014/10/propiedades-del-pollo.jpg"
-
-
-      #Post En Facebook y Twitter
-      if(publicar)
-        Bodega.publish({message: mensajeAPublicar, media: urlImagen})
-      end
-
-      #CREAR PROMOCION
-      #AppPromotion.create(sku: sku.to_s, precio: precio.to_i, fechaInicio: inicio, fechaTermino: fin, codigo: codigo.to_s)
 
       puts sku
       puts precio
@@ -74,7 +58,7 @@ def webHookReceive
   conn = Bunny.new('amqp://eoddqask:UZDMkggws1re_EjcJet7iv8Sm56KiifC@jellyfish.rmq.cloudamqp.com/eoddqaskcd')
   conn.start # start a communication session with the amqp server
   ch = conn.create_channel
-  q = ch.queue("ofertas") # declare a queue
+  q = ch.queue("ofertas", :auto_delete => true) # declare a queue
 
   delivery_info, properties, payload = q.pop
   msg = payload
@@ -89,26 +73,25 @@ def send
 
   b = Bunny.new('amqp://eoddqask:UZDMkggws1re_EjcJet7iv8Sm56KiifC@jellyfish.rmq.cloudamqp.com/eoddqask')
   b.start # start a communication session with the amqp server
-  existe = b.queue_exists?("ofertas")
   puts existe
   ch = b.create_channel
-  q = ch.queue("ofertas") # declare a queue
+  q = ch.queue("ofertas", :auto_delete => true) # declare a queue
 
   # declare default direct exchange which is bound to all queues
   e = ch.exchange("")
 
-  paramsMsg = '{ sku: "1",
-    precio: "10",
-    inicio: "1/1/1",
-    fin: "2/1/1",
-    codigo: "123",
-    publicar: "true"}'
+  paramsMsg = '{ "sku": 1,
+    "precio": 10,
+    "inicio": 35646513,
+    "fin": 54652318648,
+    "codigo": 123,
+    "publicar": true}'
   # publish a message to the exchange which then gets routed to the queue
   e.publish(paramsMsg, :key => 'ofertas')
 
 
   b.stop # close the connection
-  return existe
+  return "sent"
 end
 
 
