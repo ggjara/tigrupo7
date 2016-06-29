@@ -1,6 +1,7 @@
 class QueueRecibir < ApplicationController
 require "bunny"
 require "json"
+require "date"
 
 def initialize
 end
@@ -28,8 +29,8 @@ def threadReceive
 
       sku = msg['sku']
       precio = msg['precio']
-      inicio = msg['inicio']
-      fin = msg['fin']
+      inicio = Time.at(msg['inicio'])
+      fin = Time.at(msg['fin'])
       codigo = msg['codigo']
       publicar = msg['publicar']
 
