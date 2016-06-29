@@ -1,6 +1,7 @@
 class QueueRecibir < ApplicationController
 require "bunny"
 require "json"
+require "date"
 
 def initialize
 end
@@ -28,8 +29,8 @@ def threadReceive
 
       sku = msg['sku']
       precio = msg['precio']
-      inicio = msg['inicio']
-      fin = msg['fin']
+      inicio = Time.at(msg['inicio'])
+      fin = Time.at(msg['fin'])
       codigo = msg['codigo']
       publicar = msg['publicar']
 
@@ -72,8 +73,7 @@ end
 def send
 
   b = Bunny.new('amqp://eoddqask:UZDMkggws1re_EjcJet7iv8Sm56KiifC@jellyfish.rmq.cloudamqp.com/eoddqask')
-  b.start # start a communication session with the amqp server
-  puts existe
+  b.start # start a communication session with the amqp server\
   ch = b.create_channel
   q = ch.queue("ofertas", :auto_delete => true) # declare a queue
 
@@ -82,8 +82,8 @@ def send
 
   paramsMsg = '{ "sku": 1,
     "precio": 10,
-    "inicio": 35646513,
-    "fin": 54652318648,
+    "inicio": 1467129600,
+    "fin": 1468972800,
     "codigo": 123,
     "publicar": true}'
   # publish a message to the exchange which then gets routed to the queue
