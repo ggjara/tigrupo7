@@ -54,13 +54,18 @@ end
 
 def self.agregarInfoDiaria
   #Agregar Saldo
-  if (Infosaldo.where(fecha: Date.today.to_time(:utc)).count==0)
+  is= Infosaldo.where(fecha: Date.today.to_time(:utc))
+  if (is.count==0)
     infosaldo = Infosaldo.create(fecha: Date.today, cantidad: Bodega.first.saldo)
     infosaldo.save!
+  else
+  	is.cantidad = Bodega.first.saldo
+  	is.save!
   end
 
   #Agregar Stocks
-  if (Infostock.where(fecha: Date.today.to_time(:utc)).count==0)
+  istock = Infostock.where(fecha: Date.today.to_time(:utc))
+  if (istock.count==0)
     infostock1 = Infostock.create(sku: '1', fecha: Date.today, cantidadTotal: Bodega.checkStock('1'), cantidadDisponible: Bodega.checkStockTotal('1'))
     infostock1.save!
     infostock10 = Infostock.create(sku: '10', fecha: Date.today, cantidadTotal: Bodega.checkStock('10'), cantidadDisponible: Bodega.checkStockTotal('10'))
@@ -69,6 +74,26 @@ def self.agregarInfoDiaria
     infostock23.save!
     infostock39 = Infostock.create(sku: '39', fecha: Date.today, cantidadTotal: Bodega.checkStock('39'), cantidadDisponible: Bodega.checkStockTotal('39'))
     infostock39.save!
+else
+	istock1 = Infostock.where(sku: '1', fecha: Date.today.to_time(:utc)).first
+	istock1.cantidadTotal = Bodega.checkStock('1')
+	istock1.cantidadDisponible = Bodega.checkStockTotal('1')
+	istock1.save
+
+	istock10 = Infostock.where(sku: '10', fecha: Date.today.to_time(:utc)).first
+	istock10.cantidadTotal = Bodega.checkStock('10')
+	istock10.cantidadDisponible = Bodega.checkStockTotal('10')
+	istock10.save
+
+	istock23 = Infostock.where(sku: '23', fecha: Date.today.to_time(:utc)).first
+	istock23.cantidadTotal = Bodega.checkStock('23')
+	istock23.cantidadDisponible = Bodega.checkStockTotal('23')
+	istock23.save
+
+	istock39 = Infostock.where(sku: '39', fecha: Date.today.to_time(:utc)).first
+	istock39.cantidadTotal = Bodega.checkStock('39')
+	istock39.cantidadDisponible = Bodega.checkStockTotal('39')
+	istock39.save
   end
 end
 
