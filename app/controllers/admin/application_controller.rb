@@ -38,16 +38,12 @@ end
 def actualizarBodega
   #1. Actualizar Datos Bodega
   ib = Bodega.iniciarBodega(false) #False porque no se inicia, solo actualiza
-
   #2. Graba la info del día
   agregarInfoDiaria
-
   #3. Revisar FTP
   #ConsultarPedidosFtp.new.consultarOcsFTP
-
   #2. Mandar a producir si hay bajo Stock
   ProducirMateriasPrimas.new.producirStockBajo
-
   render json: "Actualizada"
 end
 
