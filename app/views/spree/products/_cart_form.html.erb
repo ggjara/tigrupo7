@@ -64,7 +64,7 @@
            <%= label_tag "Direccion Despacho" %>
               <%= text_field_tag :direccion, "Av. Nueva Providencia 234, Santiago ", class: 'title form-control' %>
             <br />
-            <% promotions= AppPromotion.where(sku: @product.sku, fechaInicio: 6.months.ago..Date.tomorrow, fechaTermino: Date.today..6.months.from_now) %>
+            <% promotions= AppPromotion.where(sku: @product.sku, fechaInicio: 60.years.ago..Date.tomorrow, fechaTermino: Date.today..60.years.from_now) %>
             <% if promotions.count>0 %>
             <%= label_tag "Elige una promoción" %>
               <br />
