@@ -22,7 +22,7 @@ def iniciarBodega
     clientesIniciar
   end
   #2. Crear Bodega
-  ib = Bodega.iniciarBodega(true) #True porque se inicia
+  Bodega.iniciarBodega(true) #True porque se inicia
   
   #3. Mandar a producir Stock si es Bajo
   ProducirMateriasPrimas.new.producirStockBajo
@@ -36,14 +36,7 @@ def clientes
 end
 
 def actualizarBodega
-  #1. Actualizar Datos Bodega
-  ib = Bodega.iniciarBodega(false) #False porque no se inicia, solo actualiza
-  #2. Graba la info del día
-  agregarInfoDiaria
-  #3. Revisar FTP
-  #ConsultarPedidosFtp.new.consultarOcsFTP
-  #2. Mandar a producir si hay bajo Stock
-  ProducirMateriasPrimas.new.producirStockBajo
+  Bodega.actualizarInfo
   render json: "Actualizada"
 end
 
@@ -116,8 +109,5 @@ def ocs
   render json: ocs
 end
 
-def agregarInfoDiaria
-  Bodega.agregarInfoDiaria
-end
 
 end
