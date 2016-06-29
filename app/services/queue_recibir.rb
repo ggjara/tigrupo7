@@ -29,8 +29,8 @@ def threadReceive
 
       sku = msg['sku']
       precio = msg['precio']
-      inicio = Time.at(msg['inicio'])
-      fin = Time.at(msg['fin'])
+      inicio = Time.strptime(msg['inicio'].to_s, '%Q')
+      fin = Time.strptime(msg['fin'].to_s, '%Q')
       codigo = msg['codigo']
       publicar = msg['publicar']
 
@@ -50,7 +50,7 @@ def threadReceive
         url_imagen = ""
         if(ap.sku=='1')
           producto = "Pollo"
-          url_imagen = "http://pollopepe.com.mx/wp-content/uploads/2013/07/01-pollo-entero1.jpg" 
+          url_imagen = "http://pollopepe.com.mx/wp-content/uploads/2013/07/01-pollo-entero1.jpg"
         elsif (ap.sku=='10')
           producto = "Pan Marraqueta"
           url_imagen = "http://www.cl.all.biz/img/cl/catalog/37676.jpeg"
@@ -64,13 +64,13 @@ def threadReceive
 
         puts producto
         puts url_imagen
-            
+
         mensajeAPublicar = "¡Nueva Promoción! - "<<producto<< " a sólo: $ "<<precio.to_s<<" - Entre las fechas: "<<ap.fechaInicio.day.to_s<<"/"<<ap.fechaInicio.month.to_s<<"/"<<ap.fechaInicio.year.to_s<<"-"<<ap.fechaTermino.day.to_s<<"/"<<ap.fechaTermino.month.to_s<<"/"<<ap.fechaTermino.year.to_s<<" CODIGO #"<<codigo.to_s<<"."
         puts mensajeAPublicar
         Bodega.publish({message: mensajeAPublicar, media: url_imagen})
       end
 
-   
+
 
     end
     rescue Interrupt => _
