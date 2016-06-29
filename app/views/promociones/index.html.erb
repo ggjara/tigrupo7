@@ -15,15 +15,16 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
           <% @promociones.each do |promocion|%>
+          <tr>
               <td><%= promocion.sku %></td>
               <td>$<%= promocion.precio %></td>
               <td><%= promocion.fechaInicio %></td>
               <td><%= promocion.fechaTermino %></td>
               <td><%= promocion.codigo %></td>
+          </tr>
           <% end %>
-        </tr>
+        
         </tbody>
       </table>
     </div>
