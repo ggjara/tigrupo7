@@ -1,6 +1,7 @@
 class QueueRecibir < ApplicationController
 require "bunny"
 require "json"
+require "date"
 
 def initialize
 end
@@ -28,37 +29,10 @@ def threadReceive
 
       sku = msg['sku']
       precio = msg['precio']
-      inicio = msg['inicio']
-      fin = msg['fin']
+      inicio = Time.at(msg['inicio'])
+      fin = Time.at(msg['fin'])
       codigo = msg['codigo']
       publicar = msg['publicar']
-
-      #Crear promoción
-      AppPromotion.create(sku: sku.to_s, precio: precio.to_i, fechaInicio: inicio, fechaTermino: fin, codigo: codigo.to_s)
-
-      #Crear publicación
-      if(publicar)
-        producto = ""
-        url_imagen = ""
-        if(sku=='1')
-          producto = "Pollo"
-          url_imagen = "http://pollopepe.com.mx/wp-content/uploads/2013/07/01-pollo-entero1.jpg" 
-        elsif (sku=='10')
-          producto = "Pan Marraqueta"
-          url_imagen = "http://www.cl.all.biz/img/cl/catalog/37676.jpeg"
-        elsif (sku=='23')
-          producto = "Harina"
-          url_imagen = "http://2.bp.blogspot.com/-R_vACaZLlIU/VMEdsXeWeOI/AAAAAAAAAQk/oSbk3LTj3GA/s900/harina.PNG"
-        elsif (sku=='39')
-          producto = "Uva"
-          url_imagen = "http://difundir.org/wp-content/uploads/2015/04/hu2.jpg"
-        end
-            
-        mensajeAPublicar = "¡Nueva Promoción! - "+producto+ " a sólo: $ "+precio+" - Entre las fechas: "+inicio+"/"+fin+" - CODIGO #"+codigo
-        Bodega.publish({message: mensajeAPublicar, media: url_imagen})
-      end
-
-
 
       puts sku
       puts precio
@@ -67,6 +41,36 @@ def threadReceive
       puts codigo
       puts publicar
 
+      puts "Crear Promocion"
+      #Crear promoción
+      ap = AppPromotion.create(sku: sku.to_s, precio: precio.to_i, fechaInicio: inicio, fechaTermino: fin, codigo: codigo.to_s)
+      #Crear publicación
+      if(publicar)
+        producto = ""
+        url_imagen = ""
+        if(ap.sku=='1')
+          producto = "Pollo"
+          url_imagen = "http://pollopepe.com.mx/wp-content/uploads/2013/07/01-pollo-entero1.jpg" 
+        elsif (ap.sku=='10')
+          producto = "Pan Marraqueta"
+          url_imagen = "http://www.cl.all.biz/img/cl/catalog/37676.jpeg"
+        elsif (ap.sku=='23')
+          producto = "Harina"
+          url_imagen = "http://2.bp.blogspot.com/-R_vACaZLlIU/VMEdsXeWeOI/AAAAAAAAAQk/oSbk3LTj3GA/s900/harina.PNG"
+        elsif (ap.sku=='39')
+          producto = "Uva"
+          url_imagen = "http://difundir.org/wp-content/uploads/2015/04/hu2.jpg"
+        end
+
+        puts producto
+        puts url_imagen
+            
+        mensajeAPublicar = "¡Nueva Promoción! - "<<producto<< " a sólo: $ "<<precio.to_s<<" - Entre las fechas: "<<ap.fechaInicio.day.to_s<<"/"<<ap.fechaInicio.month.to_s<<"/"<<ap.fechaInicio.year.to_s<<"-"<<ap.fechaTermino.day.to_s<<"/"<<ap.fechaTermino.month.to_s<<"/"<<ap.fechaTermino.year.to_s<<" CODIGO #"<<codigo.to_s<<"."
+        puts mensajeAPublicar
+        Bodega.publish({message: mensajeAPublicar, media: url_imagen})
+      end
+
+   
 
     end
     rescue Interrupt => _
@@ -99,7 +103,6 @@ def send
 
   b = Bunny.new('amqp://eoddqask:UZDMkggws1re_EjcJet7iv8Sm56KiifC@jellyfish.rmq.cloudamqp.com/eoddqask')
   b.start # start a communication session with the amqp server
-  puts existe
   ch = b.create_channel
   q = ch.queue("ofertas", :auto_delete => true) # declare a queue
 
