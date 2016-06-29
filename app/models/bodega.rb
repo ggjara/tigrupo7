@@ -59,6 +59,7 @@ def self.agregarInfoDiaria
     infosaldo = Infosaldo.create(fecha: Date.today, cantidad: Bodega.first.saldo)
     infosaldo.save!
   else
+  	is= is.first
   	is.cantidad = Bodega.first.saldo
   	is.save!
   end
