@@ -9,6 +9,7 @@ require 'capistrano/rails'
 require 'capistrano/passenger'
 require 'capistrano/rvm'
 #require "whenever/capistrano"
+#require "whenever/capistrano"
 
 # Includes tasks from other gems included in your Gemfile
 #

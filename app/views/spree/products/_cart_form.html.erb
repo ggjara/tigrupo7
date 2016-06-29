@@ -60,9 +60,21 @@
         <%# if @product.can_supply? %>
 
           <div class="add-to-cart">
-          <br />
+
            <%= label_tag "Direccion Despacho" %>
               <%= text_field_tag :direccion, "Av. Nueva Providencia 234, Santiago ", class: 'title form-control' %>
+            <br />
+            <% promotions= AppPromotion.where(sku: @product.sku, fechaInicio: 6.months.ago..Date.tomorrow, fechaTermino: Date.today..6.months.from_now) %>
+            <% if promotions.count>0 %>
+            <%= label_tag "Elige una promoción" %>
+              <br />
+            <% end %>
+            <% promotions.each do |promotion| %>
+            <%= f.radio_button :promotion, promotion.codigo %> 
+            <%= f.label :promotion, '$ '+promotion.precio.to_s + " ("+promotion.codigo + ")", :value => promotion.codigo %>
+            <br />
+            <% end %>
+      
             <br />
              <%= label_tag "Cantidad" %>
             <div class="input-group">

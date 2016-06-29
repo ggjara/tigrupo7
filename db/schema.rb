@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160617003806) do
+ActiveRecord::Schema.define(version: 20160626202245) do
 
   create_table "almacenes", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -24,6 +24,16 @@ ActiveRecord::Schema.define(version: 20160617003806) do
     t.integer  "totalSpace"
     t.integer  "usedSpace"
     t.integer  "bodega_id"
+  end
+
+  create_table "app_promotions", force: :cascade do |t|
+    t.string   "sku"
+    t.integer  "precio"
+    t.datetime "fechaInicio"
+    t.datetime "fechaTermino"
+    t.string   "codigo"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
   create_table "bills", force: :cascade do |t|
@@ -151,6 +161,13 @@ ActiveRecord::Schema.define(version: 20160617003806) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "prizes", force: :cascade do |t|
+    t.string   "sku"
+    t.integer  "prize"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "productos", force: :cascade do |t|
     t.string   "_id"
     t.integer  "grupo"
@@ -163,6 +180,16 @@ ActiveRecord::Schema.define(version: 20160617003806) do
     t.datetime "updated_at", null: false
     t.integer  "almacen_id"
     t.boolean  "despachado"
+  end
+
+  create_table "promotions", force: :cascade do |t|
+    t.string   "sku"
+    t.integer  "precio"
+    t.datetime "fechaInicio"
+    t.datetime "fechaTermino"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.string   "codigo"
   end
 
   create_table "spree_addresses", force: :cascade do |t|
@@ -1133,11 +1160,9 @@ ActiveRecord::Schema.define(version: 20160617003806) do
   add_index "spree_zones", ["kind"], name: "index_spree_zones_on_kind"
 
   create_table "stocks", force: :cascade do |t|
-    t.string   "sku"
-    t.integer  "total"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer  "almacen_id"
+    t.string  "sku"
+    t.integer "total"
+    t.integer "almacen_id"
   end
 
   create_table "trxes", force: :cascade do |t|
@@ -1147,7 +1172,16 @@ ActiveRecord::Schema.define(version: 20160617003806) do
     t.float    "monto"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
-    t.datetime "fechaCreacion"
+  end
+
+  create_table "twitter_users", force: :cascade do |t|
+    t.string   "provider"
+    t.string   "uid"
+    t.string   "name"
+    t.string   "oauth_token"
+    t.string   "oauth_secret"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
 end

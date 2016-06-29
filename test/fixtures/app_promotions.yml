@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  sku: MyString
+  precio: 1
+  fechaInicio: 2016-06-26 16:22:45
+  fechaTermino: 2016-06-26 16:22:45
+  codigo: MyString
+
+two:
+  sku: MyString
+  precio: 1
+  fechaInicio: 2016-06-26 16:22:45
+  fechaTermino: 2016-06-26 16:22:45
+  codigo: MyString

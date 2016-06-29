@@ -65,10 +65,19 @@ module Spree
         redirect_back_or_default(spree.root_path)
       else
 
+
+      #Recoger precio promoción
+
+      precioProducto=precioDeSku(sku)
+
+    if(params[:bill])
+      precioProducto = AppPromotion.find_by(codigo: params[:bill][:promotion].to_s).precio
+    end
+    
         #Enviar a página de pago
 
         #Crear Boleta
-        paramsBill = RequestsFactura.new.crearBoleta(Cliente.find_by(grupo: 7)._idGrupo, "b2c", cantidad*precioDeSku(sku))
+        paramsBill = RequestsFactura.new.crearBoleta(Cliente.find_by(grupo: 7)._idGrupo, "b2c", cantidad*precioProducto)
         boleta = Bill.new(paramsBill)
         boleta.direccion = direccion
         boleta.sku = sku.to_s
@@ -78,7 +87,7 @@ module Spree
         #Redireccion a Sistema Pago
         urlOk='http%3A%2F%2Fintegra7.ing.puc.cl/spree/confirmarCompra/'<<boleta._id
         urlFail='http%3A%2F%2Fintegra7.ing.puc.cl/spree/errorCompra/'
-        url = "http://integracion-2016-prod.herokuapp.com/web/pagoenlinea?callbackUrl="+urlOk+"&cancelUrl="+urlFail+"+&boletaId="+boleta._id
+        url = "http://integracion-2016-dev.herokuapp.com/web/pagoenlinea?callbackUrl="+urlOk+"&cancelUrl="+urlFail+"+&boletaId="+boleta._id
         redirect_to url
       end
 
@@ -121,13 +130,13 @@ module Spree
 
     def precioDeSku(sku)
       if sku=='1' || sku==1
-        return 1159
+        return  Prize.find_by(sku: '1').prize
       elsif sku=='10' || sku==10
-        return  15718 
+        return  Prize.find_by(sku: '10').prize 
       elsif sku=='23'|| sku==23
-        return 4294
+        return  Prize.find_by(sku: '23').prize
       elsif sku=='39'|| sku==39
-        return 1217
+        return  Prize.find_by(sku: '39').prize
       end
     end
 

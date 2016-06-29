@@ -7,6 +7,9 @@ require 'bodega.rb'
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+if(Bodega.first==nil)
+	Bodega.iniciarBodega(true) #True porque se inicia
+end
 Cliente.delete_all
 
 # # *** ----- PRODUCCION ***** -----
@@ -190,6 +193,16 @@ stock_39_list.each do |sku, fecha, cantidadTotal, cantidadDisponible|
 	infostock = Infostock.create(sku: sku, fecha: fecha, cantidadTotal: cantidadTotal, cantidadDisponible: cantidadDisponible)
 	infostock.save!
 end
+
+
+#Crear prizes
+ 
+Prize.delete_all
+
+Prize.create(sku: '1', prize: 1159)
+Prize.create(sku: '10', prize: 15718)
+Prize.create(sku: '23', prize: 4294)
+Prize.create(sku: '39', prize: 1217)
 
 
 

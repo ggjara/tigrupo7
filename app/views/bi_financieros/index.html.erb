@@ -47,6 +47,12 @@
     </div>
 
     <script type="text/javascript">
+      <% facturas = Factura.all.where('created_at > ?', 7.days.ago) %>
+      <% boletas = Bill.all.where('created_at > ?', 7.days.ago) %>
+      <% facturasFTP = facturas.where(cliente: "internacional") %>
+      <% facturasB2Be = facturas.where.not(cliente: "internacional")%>
+      <% facturasB2Be = facturasB2Be.where.not(cliente: Cliente.find_by(grupo: 7)._idGrupo) %>
+      <% facturasB2Br = facturas.where.not(cliente: "internacional", proveedor: Cliente.find_by(grupo: 7)._idGrupo) %>
       var lineChart;
       var lineChartCanvas = document.getElementById("lineChart");
       var barChart;

@@ -1,14 +1,14 @@
 source 'https://rubygems.org'
 
 
-group :development do	
+group :development do
 	#Capistrano
 	gem 'capistrano', '~> 3.4.0'
 	gem 'capistrano-bundler', '~> 1.1.4'
 	gem 'capistrano-rails', '~> 1.1.3'
 	gem 'capistrano-passenger'
 	# Add this if you're using rbenv
-	# gem 'capistrano-rbenv', github: "capistrano/rbenv"	
+	# gem 'capistrano-rbenv', github: "capistrano/rbenv"
 	# Add this if you're using rvm
 	gem 'capistrano-rvm', github: "capistrano/rvm"
 	gem 'rvm-capistrano'
@@ -61,6 +61,9 @@ gem 'chart-js-rails'
 
 gem "figaro"
 
+gem "bunny"
+
+
 #gem 'whenever', :require => false
 
 # Use ActiveModel has_secure_password
@@ -89,3 +92,7 @@ end
 gem 'spree', '~> 3.0.9'
 gem 'spree_gateway', '~> 3.0.0'
 gem 'spree_auth_devise', '~> 3.0.0'
+
+gem 'twitter', '~> 5.3.1'
+gem 'koala', "~> 2.2"
+

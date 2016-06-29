@@ -39,8 +39,11 @@ def actualizarBodega
   #1. Actualizar Datos Bodega
   ib = Bodega.iniciarBodega(false) #False porque no se inicia, solo actualiza
 
+  #2. Graba la info del día
+  agregarInfoDiaria
+
   #3. Revisar FTP
-  #ConsultarPedidosFtp.new.consultarOcsFTP
+  ConsultarPedidosFtp.new.consultarOcsFTP
 
   #2. Mandar a producir si hay bajo Stock
   ProducirMateriasPrimas.new.producirStockBajo
@@ -103,7 +106,6 @@ def almacenes
 end
 
 def facturas
-  almacenes = 
   render json: Factura.all
 end
 
@@ -115,6 +117,10 @@ end
 def ocs
   ocs = Oc.all
   render json: ocs
+end
+
+def agregarInfoDiaria
+  Bodega.agregarInfoDiaria
 end
 
 end
