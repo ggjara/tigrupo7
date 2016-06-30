@@ -34,14 +34,6 @@ def threadReceive
       codigo = msg['codigo']
       publicar = msg['publicar']
 
-      puts sku
-      puts precio
-      puts inicio
-      puts fin
-      puts codigo
-      puts publicar
-
-      puts "Crear Promocion"
       #Crear promoción
       ap = AppPromotion.create(sku: sku.to_s, precio: precio.to_i, fechaInicio: inicio, fechaTermino: fin, codigo: codigo.to_s)
       #Crear publicación
@@ -61,9 +53,6 @@ def threadReceive
           producto = "Uva"
           url_imagen = "http://difundir.org/wp-content/uploads/2015/04/hu2.jpg"
         end
-
-        puts producto
-        puts url_imagen
 
         mensajeAPublicar = "¡Nueva Promoción! - "<<producto<< " a sólo: $ "<<precio.to_s<<" - Entre las fechas: "<<ap.fechaInicio.day.to_s<<"/"<<ap.fechaInicio.month.to_s<<"/"<<ap.fechaInicio.year.to_s<<"-"<<ap.fechaTermino.day.to_s<<"/"<<ap.fechaTermino.month.to_s<<"/"<<ap.fechaTermino.year.to_s<<" CODIGO #"<<codigo.to_s<<"."
         puts mensajeAPublicar
