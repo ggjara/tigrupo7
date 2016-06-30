@@ -100,13 +100,40 @@ def send
   e = ch.exchange("")
 
   paramsMsg = '{ "sku": 1,
-    "precio": 10,
+    "precio": 1000,
     "inicio": 1467158400000,
     "fin": 1468972800000,
-    "codigo": 123,
+    "codigo": promoPollo,
     "publicar": true}'
   # publish a message to the exchange which then gets routed to the queue
   e.publish(paramsMsg, :key => 'ofertas')
+
+    paramsMsg2 = '{ "sku": 10,
+    "precio": 14000,
+    "inicio": 1467158400000,
+    "fin": 1468972800000,
+    "codigo": promoPan,
+    "publicar": true}'
+  # publish a message to the exchange which then gets routed to the queue
+  e.publish(paramsMsg2, :key => 'ofertas')
+
+      paramsMsg3 = '{ "sku": 23,
+    "precio": 4000,
+    "inicio": 1467158400000,
+    "fin": 1468972800000,
+    "codigo": promoHarina,
+    "publicar": true}'
+  # publish a message to the exchange which then gets routed to the queue
+  e.publish(paramsMsg3, :key => 'ofertas')
+
+  paramsMsg4 = '{ "sku": 39,
+    "precio": 1000,
+    "inicio": 1467158400000,
+    "fin": 1468972800000,
+    "codigo": promoUva,
+    "publicar": true}'
+  # publish a message to the exchange which then gets routed to the queue
+  e.publish(paramsMsg4, :key => 'ofertas')
 
 
   b.stop # close the connection
