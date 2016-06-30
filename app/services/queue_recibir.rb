@@ -35,7 +35,7 @@ def threadReceive
       publicar = msg['publicar']
 
       ap = AppPromotion.where(codigo: codigo.to_s)
-      if(ap.count==0 && ap.codigo[0..1]!='[]')
+      if !(ap.count>0 && ap.codigo[0..1]=='[]')
         #Crear promoción
         ap = AppPromotion.create(sku: sku.to_s, precio: precio.to_i, fechaInicio: inicio, fechaTermino: fin, codigo: codigo.to_s)
         #Crear publicación
