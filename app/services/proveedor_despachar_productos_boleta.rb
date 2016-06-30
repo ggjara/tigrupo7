@@ -24,10 +24,8 @@ end
 #Despacha los productos
 def despachoDeProductos(sku, cantidad, direccion, precio, id)
 	#1. Envía todos los que están en almacenDespacho
-	puts '#1. Envía todos los que están en almacenDespacho'
 	cantidad = enviarProductosDesdeDespacho(sku, cantidad, direccion, precio, id)
 	if(cantidad>0)
-		puts '#2. Envía todos los de los demás almacenes'
 		otrosAlmacenes = Almacen.where(pulmon: false, despacho: false)
 		otrosAlmacenes.each do |otroAlmacen|
 			enviarProductosDesdeAlmacenADespacho(sku, otroAlmacen, cantidad)
@@ -35,7 +33,6 @@ def despachoDeProductos(sku, cantidad, direccion, precio, id)
 			break if cantidad <= 0
 		end
 		if(cantidad > 0)
-			puts '#3. Envia desde Pulmon a Despacho y de Ahí para afuera'
 			enviarProductosDesdePulmonADespacho(sku, cantidad)
 			cantidad = enviarProductosDesdeDespacho(sku, cantidad, direccion, precio, id)
 			if(cantidad>0)

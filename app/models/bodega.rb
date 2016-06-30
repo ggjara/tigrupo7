@@ -5,7 +5,13 @@ class Bodega < ActiveRecord::Base
 
 def self.probando
 	puts "Fecha: "<<Time.now.to_s
-	Prize.create(sku:'289')
+	puts "A esperar 5 segundos"
+	sleep 5
+	puts "Fecha: "<<Time.now.to_s
+	puts "A esperar 10"
+	puts "Fecha: "<<Time.now.to_s
+	puts "Sin Espera"
+	puts "Fecha: "<<Time.now.to_s
 end
 
 def self.actualizarInfo

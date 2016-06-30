@@ -119,8 +119,6 @@ def despacharStock(producto_id, direccion, precio, oc_id)
   jsonDespacharStock = requestWeb('DELETE', ENV["url_bodega"]+"stock",
     generateParam('productoId', producto_id.to_s), generateParam('direccion', direccion.to_s),
     generateParam('precio', precio.to_i), generateParam('oc', oc_id.to_s))
-  puts '---- Respuesta:'
-  puts jsonDespacharStock
 	return jsonDespacharStock
 end
 
