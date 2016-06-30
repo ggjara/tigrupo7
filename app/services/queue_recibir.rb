@@ -92,7 +92,7 @@ end
 #metodo para hacer pruebas
 def send
 
-  b = Bunny.new('amqp://eoddqask:UZDMkggws1re_EjcJet7iv8Sm56KiifC@jellyfish.rmq.cloudamqp.com/eoddqask')
+  b = Bunny.new('amqp://eoddqask:UZDMkggws1re_EjcJet7iv8Sm56KiifC@jellyfish.rmq.cloudamqp.com/eoddqaskcd')
   b.start # start a communication session with the amqp server
   ch = b.create_channel
   q = ch.queue("ofertas", :auto_delete => true) # declare a queue
