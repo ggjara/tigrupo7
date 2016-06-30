@@ -117,7 +117,7 @@ def enviarProductosDesdeAlmacenADespacho(sku, almacen, cantidad)
 			productosGenerados = cargarProductos(sku, almacen)
 		end
 		productoAEnviar = productosGenerados.first
-		puts "[] ALMACEN->DESPACHO: ("<<productoAEnviar.sku.to_s<<") "<<productoAEnviar._id
+		puts "[] ALMACEN->DESPACHO: ("<<sku.to_s<<") "<<productoAEnviar._id
 		#puts RequestsBodega.new.moverStock(productoAEnviar._id, almacenDespacho._id)
 		productosGenerados.delete(productoAEnviar)
 		almacen.eliminarStock(sku.to_s)
@@ -139,7 +139,7 @@ def enviarProductosDesdePulmonADespacho(sku, cantidad)
 			productosGenerados = cargarProductos(sku, almacenPulmon)
 		end
 		productoAEnviar = productosGenerados.first
-		puts "[] PULMON->RECEPCION: ("<<productoAEnviar.sku.to_s<<") "<<productoAEnviar._id
+		puts "[] PULMON->RECEPCION: ("<<sku.to_s<<") "<<productoAEnviar._id
 		#puts RequestsBodega.new.moverStock(productoAEnviar._id, almacenRecepcion._id)
 		productosGenerados.delete(productoAEnviar)
 		almacenPulmon.eliminarStock(sku.to_s)
