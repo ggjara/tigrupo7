@@ -40,7 +40,9 @@ def requestWeb(typeOfRequest, uri, *paramsRequest)
     end
 
     if(response.code==429)
+      puts "Bloqueo Cuenta.. A esperar 70 sgds"
         sleep 70
+      puts "70 sgds terminados"
     else
         if(response.code < 300)
             return JSON.parse(response.body)
