@@ -103,7 +103,7 @@ def send
     "precio": 1000,
     "inicio": 1467158400000,
     "fin": 1468972800000,
-    "codigo": 321,
+    "codigo": "promoPollo",
     "publicar": true}'
   # publish a message to the exchange which then gets routed to the queue
   e.publish(paramsMsg, :key => 'ofertas')
@@ -112,7 +112,7 @@ def send
     "precio": 14000,
     "inicio": 1467158400000,
     "fin": 1468972800000,
-    "codigo": promoPan,
+    "codigo": "promoPan",
     "publicar": true}'
   # publish a message to the exchange which then gets routed to the queue
   e.publish(paramsMsg2, :key => 'ofertas')
@@ -121,7 +121,7 @@ def send
     "precio": 4000,
     "inicio": 1467158400000,
     "fin": 1468972800000,
-    "codigo": promoHarina,
+    "codigo": "promoHarina",
     "publicar": true}'
   # publish a message to the exchange which then gets routed to the queue
   e.publish(paramsMsg3, :key => 'ofertas')
@@ -130,7 +130,7 @@ def send
     "precio": 1000,
     "inicio": 1467158400000,
     "fin": 1468972800000,
-    "codigo": promoUva,
+    "codigo": "promoUva",
     "publicar": true}'
   # publish a message to the exchange which then gets routed to the queue
   e.publish(paramsMsg4, :key => 'ofertas')
