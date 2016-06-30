@@ -9,6 +9,7 @@ def self.probando
 	sleep 5
 	puts "Fecha: "<<Time.now.to_s
 	puts "A esperar 10"
+	sleep 10
 	puts "Fecha: "<<Time.now.to_s
 	puts "Sin Espera"
 	puts "Fecha: "<<Time.now.to_s

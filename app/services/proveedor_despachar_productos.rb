@@ -35,10 +35,8 @@ def despachoDeProductos(oc, esFtp)
 		return false
 	end
 	#1. Envía todos los que están en almacenDespacho
-	puts '#1. Envía todos los que están en almacenDespacho'
 	cantidad = enviarProductosDesdeDespacho(oc, sku, cantidad, almacenDestino, esFtp)
 	if(cantidad>0)
-		puts '#2. Envía todos los de los demás almacenes'
 		otrosAlmacenes = Almacen.where(pulmon: false, despacho: false)
 		otrosAlmacenes.each do |otroAlmacen|
 			enviarProductosDesdeAlmacenADespacho(sku, otroAlmacen, cantidad)
@@ -46,7 +44,6 @@ def despachoDeProductos(oc, esFtp)
 			break if cantidad <= 0
 		end
 		if(cantidad > 0)
-			puts '#3. Envia desde Pulmon a Despacho y de Ahí para afuera'
 			enviarProductosDesdePulmonADespacho(sku, cantidad)
 			cantidad = enviarProductosDesdeDespacho(oc, sku, cantidad, almacenDestino, esFtp)
 			if(cantidad>0)
@@ -120,7 +117,8 @@ def enviarProductosDesdeAlmacenADespacho(sku, almacen, cantidad)
 			productosGenerados = cargarProductos(sku, almacen)
 		end
 		productoAEnviar = productosGenerados.first
-		puts RequestsBodega.new.moverStock(productoAEnviar._id, almacenDespacho._id)
+		puts "[] ALMACEN->DESPACHO: ("<<productoAEnviar.sku.to_s<<") "<<productoAEnviar._id
+		#puts RequestsBodega.new.moverStock(productoAEnviar._id, almacenDespacho._id)
 		productosGenerados.delete(productoAEnviar)
 		almacen.eliminarStock(sku.to_s)
 		almacenDespacho.agregarStock(sku.to_s)
@@ -141,7 +139,8 @@ def enviarProductosDesdePulmonADespacho(sku, cantidad)
 			productosGenerados = cargarProductos(sku, almacenPulmon)
 		end
 		productoAEnviar = productosGenerados.first
-		puts RequestsBodega.new.moverStock(productoAEnviar._id, almacenRecepcion._id)
+		puts "[] PULMON->RECEPCION: ("<<productoAEnviar.sku.to_s<<") "<<productoAEnviar._id
+		#puts RequestsBodega.new.moverStock(productoAEnviar._id, almacenRecepcion._id)
 		productosGenerados.delete(productoAEnviar)
 		almacenPulmon.eliminarStock(sku.to_s)
 		almacenRecepcion.agregarStock(sku.to_s)
