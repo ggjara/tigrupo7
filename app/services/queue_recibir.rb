@@ -76,7 +76,7 @@ end
 
 #metodo que recibe mensaje un mensaje cada vez que se llama
 def webHookReceive
-  conn = Bunny.new('amqp://eoddqask:UZDMkggws1re_EjcJet7iv8Sm56KiifC@jellyfish.rmq.cloudamqp.com/eoddqaskcd')
+  conn = Bunny.new('amqp://qlwidyig:r4f-jy8Iw19bAUb9uBZtoZ6BbNhfcoFI@jellyfish.rmq.cloudamqp.com/qlwidyig')
   conn.start # start a communication session with the amqp server
   ch = conn.create_channel
   q = ch.queue("ofertas", :auto_delete => true) # declare a queue
@@ -91,7 +91,7 @@ end
 
 def send
 
-  b = Bunny.new('amqp://eoddqask:UZDMkggws1re_EjcJet7iv8Sm56KiifC@jellyfish.rmq.cloudamqp.com/eoddqask')
+  b = Bunny.new('amqp://qlwidyig:r4f-jy8Iw19bAUb9uBZtoZ6BbNhfcoFI@jellyfish.rmq.cloudamqp.com/qlwidyig')
   b.start # start a communication session with the amqp server
   ch = b.create_channel
   q = ch.queue("ofertas", :auto_delete => true) # declare a queue
