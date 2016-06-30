@@ -89,10 +89,9 @@ def webHookReceive
 end
 
 
-#metodo para hacer pruebas
 def send
 
-  b = Bunny.new('amqp://eoddqask:UZDMkggws1re_EjcJet7iv8Sm56KiifC@jellyfish.rmq.cloudamqp.com/eoddqaskcd')
+  b = Bunny.new('amqp://eoddqask:UZDMkggws1re_EjcJet7iv8Sm56KiifC@jellyfish.rmq.cloudamqp.com/eoddqask')
   b.start # start a communication session with the amqp server
   ch = b.create_channel
   q = ch.queue("ofertas", :auto_delete => true) # declare a queue
@@ -101,52 +100,19 @@ def send
   e = ch.exchange("")
 
   paramsMsg = '{ "sku": 1,
-    "precio": 1000,
-    "inicio": 1467086400000,
-    "fin": 1469678400000,
-    "codigo": promoPollo,
+    "precio": 10,
+    "inicio": 1467158400000,
+    "fin": 1468972800000,
+    "codigo": 123,
     "publicar": true}'
   # publish a message to the exchange which then gets routed to the queue
   e.publish(paramsMsg, :key => 'ofertas')
-
-  # sleep 3
-
-  # paramsMsg2 = '{ "sku": 10,
-  #   "precio": 15000,
-  #   "inicio": 1467086400000,
-  #   "fin": 1469678400000,
-  #   "codigo": promoPan,
-  #   "publicar": true}'
-  # # publish a message to the exchange which then gets routed to the queue
-  # e.publish(paramsMsg2, :key => 'ofertas')
-
-  # sleep 3
-
-  #  paramsMsg3 = '{ "sku": 23,
-  #   "precio": 4000,
-  #   "inicio": 1467086400000,
-  #   "fin": 1469678400000,
-  #   "codigo": promoHarina,
-  #   "publicar": true}'
-  # # publish a message to the exchange which then gets routed to the queue
-  # e.publish(paramsMsg3, :key => 'ofertas')
-
-  # sleep 3
-
-  #   paramsMsg4 = '{ "sku": 23,
-  #   "precio": 1000,
-  #   "inicio": 1467086400000,
-  #   "fin": 1469678400000,
-  #   "codigo": promoUva,
-  #   "publicar": true}'
-  # # publish a message to the exchange which then gets routed to the queue
-  # e.publish(paramsMsg4, :key => 'ofertas')
-
 
 
   b.stop # close the connection
   return "sent"
 end
+
 
 
 end
