@@ -103,7 +103,7 @@ def send
     "precio": 1000,
     "inicio": 1467158400000,
     "fin": 1468972800000,
-    "codigo": promoPollo,
+    "codigo": 321,
     "publicar": true}'
   # publish a message to the exchange which then gets routed to the queue
   e.publish(paramsMsg, :key => 'ofertas')
@@ -139,7 +139,5 @@ def send
   b.stop # close the connection
   return "sent"
 end
-
-
 
 end
